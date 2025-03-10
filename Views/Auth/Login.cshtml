@@ -1,0 +1,26 @@
+﻿@model UserModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_GuestLayout";
+}
+
+<div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100">
+        <div class="col-12 col-md-4 mx-auto p-4 shadow rounded bg-light">
+            <h2 class="text-center mb-4">Login</h2>
+            <form method="post">
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input name="Password" type="password" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
