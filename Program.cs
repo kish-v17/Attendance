@@ -10,6 +10,7 @@ builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(buil
 
 builder.Services.AddSession();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +28,11 @@ app.UseRouting();
 
 app.UseAuthorization();
 app.UseSession();
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Auth}/{action=Login}/{id?}");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=Login}/{id?}");

@@ -39,9 +39,12 @@ namespace Attendance.Controllers
                 // Redirect based on user role
                 return user.Role switch
                 {
-                    UserRole.Admin => RedirectToAction("Index", "Admin"),
-                    UserRole.Faculty => RedirectToAction("Index", "Faculty"),
+                    UserRole.Admin => RedirectToAction("Index", "Home", new { area = "Admin" }),
+                    UserRole.Faculty => RedirectToAction("Index", "Home", new { area = "Faculty" }),
                 };
+                //return (user.Role == UserRole.Admin)
+                //? RedirectToAction("Index", "Home", new { area = "Admin" })
+                //: RedirectToAction("Index", "Home", new { area = "Faculty" });
             }
 
             ModelState.AddModelError("", "Invalid email or password");

@@ -2,13 +2,14 @@
 using Attendance.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Attendance.Controllers
+namespace Attendance.Areas.Admin.Controllers
 {
-    public class AdminController : Controller
+    [Area("Admin")]
+    public class HomeController : Controller
     {
         private readonly AppDBContext _db;
 
-        public AdminController(AppDBContext db)
+        public HomeController(AppDBContext db)
         {
             _db = db;
         }

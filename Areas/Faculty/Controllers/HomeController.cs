@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Attendance.Controllers
+namespace Attendance.Areas.Faculty.Controllers
 {
-    public class FacultyController : Controller
+    [Area("Faculty")]
+    public class HomeController : Controller
     {
         public IActionResult Index()
         {
