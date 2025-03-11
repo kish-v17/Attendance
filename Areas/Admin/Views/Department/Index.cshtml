@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Departments";
+}
+<div class="main-content">
+    <div class="row py-3">
+        <div class="col-6">
+            <h1>Departments</h1>
+        </div>
+        <div class="col-6 text-end">
+            <a  asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add New Deparment</a>
+        </div>
+    </div>
+    <table id="departmentTbl" class="table table-striped">
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadDepartmentData();
+        });
+
+        var departmentDataTable;
+
+        function loadDepartmentData() {
+            departmentDataTable = $('#departmentTbl').DataTable({
+                processing: true,
+                ajax: {
+                    url: '/Admin/Department/GetAll',
+                },
+                columns: [
+                    { data: 'departmentId', title: 'ID', width: "10%" },
+                    { data: 'departmentName', title: 'Department Name', width: "50%" },
+                    {
+                        data: 'departmentId',
+                        render: function (data) {
+                            return `
+                                <a href="/Admin/Department/Edit/${data}" class="btn btn-warning">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            `;
+                        },
+                        title: 'Action',
+                        width: "40%"
+                    },
+                ]
+            });
+        }
+    </script>
+}

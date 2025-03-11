@@ -87,6 +87,12 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/aspnetmvc/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/aspnetmvc/jquery.validate.unobtrusive.min.js"></script>
+    <!-- Add inside <head> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

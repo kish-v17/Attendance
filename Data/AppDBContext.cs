@@ -11,6 +11,7 @@ namespace Attendance.Data
 
         }
         public DbSet<UserModel> UserTbl {  get; set; }
+        public DbSet<DepartmentModel> DepartmentTbl { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>().HasData(
@@ -22,7 +23,7 @@ namespace Attendance.Data
                     Role = UserRole.Admin,
                     CreatedAt = DateTime.UtcNow
                 }
-                );
+            );
         }
     }
 }
