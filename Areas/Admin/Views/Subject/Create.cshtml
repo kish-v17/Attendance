@@ -1,0 +1,26 @@
+﻿@model Attendance.Models.SubjectModel
+
+@{
+    ViewData["Title"] = "Create Subject";
+}
+
+<div class="main-content">
+    <div class="row py-3">
+        <div class="col-6">
+            <h2>Create Subject</h2>
+        </div>
+    </div>
+    <form method="post" asp-action="Create" id="subjectForm">
+        <div class="mb-3">
+            <label class="form-label">Subject Name</label>
+            <input type="text" class="form-control" asp-for="SubjectName" id="subjectName" />
+            <span class="text-danger" asp-validation-for="SubjectName"></span>
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

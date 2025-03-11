@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Subjects";
+}
+<div class="card">
+    <div class="row p-3">
+        <div class="col-6">
+            <h5 class="card-header">Subjects</h5>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+            <a asp-controller="Subject" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add New Subject</a>
+        </div>
+    </div>
+    <hr class="my-0">
+    <div class="table-responsive p-5">
+        <table class="table table-bordered" id="subjectTbl">
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadSubjectData();
+        });
+
+        var subjectDataTable;
+
+        function loadSubjectData() {
+            subjectDataTable = $('#subjectTbl').DataTable({
+                processing: true,
+                ajax: {
+                    url: '/Admin/Subject/GetAll',
+                },
+                columns: [
+                    { data: 'subjectId', title: 'ID', width: "10%" },
+                    { data: 'subjectName', title: 'Subject Name', width: "70%" },
+                    {
+                        data: 'subjectId',
+                        render: function (data) {
+                            return `
+                                <a href="/Admin/Subject/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
+                                    <i class="ri-pencil-line me-2"></i>
+                                </a>
+                            `;
+                        },
+                        title: 'Action',
+                        width: "20%"
+                    },
+                ]
+            });
+        }
+    </script>
+}
