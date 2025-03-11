@@ -1,9 +1,12 @@
 ﻿using Attendance.Data;
 using Attendance.Models;
+using Attendance.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CourseController : Controller
     {
         private readonly AppDBContext _context;
@@ -17,32 +20,51 @@ namespace Attendance.Areas.Admin.Controllers
         {
             return View();
         }
+
         public IActionResult GetAll()
         {
-            var courses = _context.CourseTbl.Select(d => new
-            {
-                d.CourseId,
-                d.CourseName,
-                d.DepartmentId
-            }).ToList();
+            var courses = _context.CourseTbl.Include("Department")
+                .Select(c => new
+                {
+                    c.CourseId,
+                    c.CourseName,
+                    c.DepartmentId,
+                    DepartmentName = c.Department.DepartmentName // Fetch Department Name directly
+                }).ToList();
 
             return Json(new { data = courses });
         }
+
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new CourseViewModel
+            {
+                Departments = _context.DepartmentTbl.ToList() // Fetching departments from DB
+            };
+            return View(viewModel);
         }
+
         [HttpPost]
-        public IActionResult Create(CourseModel course)
+        public IActionResult Create(CourseViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var course = new CourseModel
+                {
+                    CourseName = model.CourseName,
+                    DepartmentId = model.DepartmentId
+                };
+
                 _context.CourseTbl.Add(course);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(course);
+
+            // If validation fails, reload the department list
+            model.Departments = _context.DepartmentTbl.ToList();
+            return View(model);
         }
+
         public IActionResult Edit(int id)
         {
             var course = _context.CourseTbl.Find(id);
@@ -50,18 +72,41 @@ namespace Attendance.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View(course);
+
+            var viewModel = new CourseViewModel
+            {
+                CourseId = course.CourseId,
+                CourseName = course.CourseName,
+                DepartmentId = course.DepartmentId,
+                Departments = _context.DepartmentTbl.ToList() // Fetch departments from DB
+            };
+
+            return View(viewModel);
         }
+
         [HttpPost]
-        public IActionResult Edit(CourseModel course)
+        public IActionResult Edit(CourseViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var course = _context.CourseTbl.Find(model.CourseId);
+                if (course == null)
+                {
+                    return NotFound();
+                }
+
+                course.CourseName = model.CourseName;
+                course.DepartmentId = model.DepartmentId;
+
                 _context.CourseTbl.Update(course);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(course);
+
+            // If validation fails, reload the department list
+            model.Departments = _context.DepartmentTbl.ToList();
+            return View(model);
         }
+
     }
 }

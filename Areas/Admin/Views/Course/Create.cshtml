@@ -1,5 +1,36 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CourseViewModel
+
 @{
+    ViewData["Title"] = "Create Course";
+}
+
+<div class="main-content">
+    <div class="row py-3">
+        <div class="col-6">
+            <h2>Create Course</h2>
+        </div>
+    </div>
+    <form method="post" asp-action="Create" id="courseForm">
+        <div class="mb-3">
+            <label class="form-label">Course Name</label>
+            <input type="text" class="form-control" asp-for="CourseName" id="courseName" />
+            <span class="text-danger" asp-validation-for="CourseName"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Department</label>
+            <select class="form-control" asp-for="DepartmentId" asp-items="@(new SelectList(Model.Departments, "DepartmentId", "DepartmentName"))">
+                <option value="">-- Select Department --</option>
+            </select>
+            <span class="text-danger" asp-validation-for="DepartmentId"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
 }

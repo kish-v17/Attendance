@@ -1,26 +1,26 @@
 ﻿@{
     ViewData["Title"] = "Courses";
 }
+
 <div class="card">
     <div class="row p-3">
         <div class="col-6">
             <h5 class="card-header">Courses</h5>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
-            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add New Deparment</a>
+            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add New Course</a>
         </div>
     </div>
     <hr class="my-0">
-    <div class=" table-responsive p-5">
-        <table class=" table table-bordered " id="coursesTbl">
-        </table>
+    <div class="table-responsive p-5">
+        <table class="table table-bordered" id="coursesTbl"></table>
     </div>
 </div>
 
 @section Scripts {
     <script>
         $(document).ready(function () {
-            loadCoursetData();
+            loadCourseData();
         });
 
         var courseDataTable;
@@ -32,10 +32,11 @@
                     url: '/Admin/Course/GetAll',
                 },
                 columns: [
-                    { data: 'CourseId', title: 'ID', width: "10%" },
-                    { data: 'CourseName', title: 'Department Name', width: "70%" },
+                    { data: 'courseId', title: 'ID', width: "10%" },
+                    { data: 'courseName', title: 'Course Name', width: "40%" },
+                    { data: 'departmentName', title: 'Department', width: "30%" }, // Display Department Name
                     {
-                        data: 'CourseId',
+                        data: 'courseId',
                         render: function (data) {
                             return `
                                 <a href="/Admin/Course/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">

@@ -66,7 +66,7 @@ namespace Attendance.Migrations
                         new
                         {
                             CourseId = 4,
-                            CourseName = "Bachelor of Technology",
+                            CourseName = "Master of Technology",
                             DepartmentId = 2
                         });
                 });
@@ -164,7 +164,7 @@ namespace Attendance.Migrations
                         new
                         {
                             UserId = 1,
-                            CreatedAt = new DateTime(2025, 3, 11, 5, 41, 45, 613, DateTimeKind.Utc).AddTicks(7383),
+                            CreatedAt = new DateTime(2025, 3, 11, 15, 58, 18, 815, DateTimeKind.Utc).AddTicks(5245),
                             Email = "kish.v07@gmail.com",
                             Fullname = "Kishan Patel",
                             Password = "Admin",

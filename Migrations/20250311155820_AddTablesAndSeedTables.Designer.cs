@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250311132538_AddTableSubject")]
-    partial class AddTableSubject
+    [Migration("20250311155820_AddTablesAndSeedTables")]
+    partial class AddTablesAndSeedTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,55 @@ namespace Attendance.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Attendance.Models.CourseModel", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"));
+
+                    b.Property<string>("CourseName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CourseId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("CourseTbl");
+
+                    b.HasData(
+                        new
+                        {
+                            CourseId = 1,
+                            CourseName = "Master of Computer Application",
+                            DepartmentId = 1
+                        },
+                        new
+                        {
+                            CourseId = 2,
+                            CourseName = "Bachelor of Computer Applicatiion",
+                            DepartmentId = 1
+                        },
+                        new
+                        {
+                            CourseId = 3,
+                            CourseName = "Bachelor of Technology",
+                            DepartmentId = 1
+                        },
+                        new
+                        {
+                            CourseId = 4,
+                            CourseName = "Master of Technology",
+                            DepartmentId = 2
+                        });
+                });
 
             modelBuilder.Entity("Attendance.Models.DepartmentModel", b =>
                 {
@@ -41,6 +90,28 @@ namespace Attendance.Migrations
                     b.HasKey("DepartmentId");
 
                     b.ToTable("DepartmentTbl");
+
+                    b.HasData(
+                        new
+                        {
+                            DepartmentId = 1,
+                            DepartmentName = "Computer Science"
+                        },
+                        new
+                        {
+                            DepartmentId = 2,
+                            DepartmentName = "Information Technology"
+                        },
+                        new
+                        {
+                            DepartmentId = 3,
+                            DepartmentName = "Diploma Studies"
+                        },
+                        new
+                        {
+                            DepartmentId = 4,
+                            DepartmentName = "Management"
+                        });
                 });
 
             modelBuilder.Entity("Attendance.Models.SubjectModel", b =>
@@ -96,12 +167,23 @@ namespace Attendance.Migrations
                         new
                         {
                             UserId = 1,
-                            CreatedAt = new DateTime(2025, 3, 11, 13, 25, 36, 362, DateTimeKind.Utc).AddTicks(4499),
+                            CreatedAt = new DateTime(2025, 3, 11, 15, 58, 18, 815, DateTimeKind.Utc).AddTicks(5245),
                             Email = "kish.v07@gmail.com",
                             Fullname = "Kishan Patel",
                             Password = "Admin",
                             Role = 0
                         });
+                });
+
+            modelBuilder.Entity("Attendance.Models.CourseModel", b =>
+                {
+                    b.HasOne("Attendance.Models.DepartmentModel", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 #pragma warning restore 612, 618
         }

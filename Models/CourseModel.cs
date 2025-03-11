@@ -11,8 +11,8 @@ namespace Attendance.Models
         [Required, MaxLength(100)]
         public string CourseName { get; set; }
 
-        [ForeignKey("Department")]
         public int DepartmentId { get; set; }
+        [ForeignKey("DepartmentId")]
         public DepartmentModel Department { get; set; }
     }
 }
