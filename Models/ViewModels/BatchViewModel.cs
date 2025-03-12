@@ -15,6 +15,9 @@ namespace Attendance.Models.ViewModels
         [Required(ErrorMessage = "Semester is required.")]
         public int Semester { get; set; } // Changed from int to string
 
+
+        [Required(ErrorMessage = "Year is required.")]
+        public int Year { get; set; }
         [Required(ErrorMessage = "Start date is required.")]
         public DateOnly StartDate { get; set; }
 

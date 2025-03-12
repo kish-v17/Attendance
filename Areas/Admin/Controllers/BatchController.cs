@@ -32,6 +32,7 @@ namespace Attendance.Areas.Admin.Controllers
                     b.StartDate,
                     b.EndDate,
                     b.ClassNames, // Added ClassName
+                    b.Year, // Added Year
                     CourseName = b.Course.CourseName
                 }).ToList();
 
@@ -58,6 +59,7 @@ namespace Attendance.Areas.Admin.Controllers
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
                     ClassNames = model.ClassNames, // Added ClassName
+                    Year = model.Year, // Added Year
                     CourseId = model.CourseId
                 };
 
@@ -86,6 +88,7 @@ namespace Attendance.Areas.Admin.Controllers
                 StartDate = batch.StartDate,
                 EndDate = batch.EndDate,
                 ClassNames = batch.ClassNames, // Added ClassName
+                Year = batch.Year, // Added Year
                 CourseId = batch.CourseId,
                 Courses = _context.CourseTbl.ToList()
             };
@@ -108,6 +111,7 @@ namespace Attendance.Areas.Admin.Controllers
                 batch.StartDate = model.StartDate;
                 batch.EndDate = model.EndDate;
                 batch.ClassNames = model.ClassNames; // Added ClassName
+                batch.Year = model.Year; // Added Year
                 batch.CourseId = model.CourseId;
 
                 _context.BatchTbl.Update(batch);

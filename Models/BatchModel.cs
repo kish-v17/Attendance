@@ -18,6 +18,9 @@ namespace Attendance.Models
         [Required(ErrorMessage = "Semester is required.")]
         public int Semester { get; set; }
 
+        [Required(ErrorMessage = "Year is required.")]
+        public int Year { get; set; }
+
         [Required(ErrorMessage = "Start Date is required.")]
         public DateOnly StartDate { get; set; }
 

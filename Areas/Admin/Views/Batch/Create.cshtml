@@ -32,6 +32,12 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Year</label>
+            <input type="number" class="form-control" asp-for="Year" id="year" />
+            <span class="text-danger" asp-validation-for="Year"></span>
+        </div>
+
+        <div class="mb-3">
             <label class="form-label">Start Date</label>
             <input type="date" class="form-control" asp-for="StartDate" id="startDate" />
             <span class="text-danger" asp-validation-for="StartDate"></span>
