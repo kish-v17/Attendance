@@ -14,6 +14,7 @@ namespace Attendance.Data
         public DbSet<DepartmentModel> DepartmentTbl { get; set; }
         public DbSet<CourseModel> CourseTbl { get; set; }
         public DbSet<SubjectModel> SubjectTbl { get; set; }
+        public DbSet<BatchModel> BatchTbl{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>().HasData(

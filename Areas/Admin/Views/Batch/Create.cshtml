@@ -1,0 +1,52 @@
+﻿@model BatchViewModel
+
+@{
+    ViewData["Title"] = "Add New Batch";
+}
+
+<div class="main-content">
+    <div class="row py-3">
+        <div class="col-6">
+            <h2>Add New Batch</h2>
+        </div>
+    </div>
+    <form method="post" asp-action="Create" id="batchForm">
+        <div class="mb-3">
+            <label class="form-label">Course</label>
+            <select class="form-control" asp-for="CourseId" asp-items="@(new SelectList(Model.Courses, "CourseId", "CourseName"))">
+                <option value="">-- Select Course --</option>
+            </select>
+            <span class="text-danger" asp-validation-for="CourseId"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Semester</label>
+            <input type="text" class="form-control" asp-for="Semester" id="semester" />
+            <span class="text-danger" asp-validation-for="Semester"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Class Name</label>
+            <input type="text" class="form-control" asp-for="ClassNames" id="className" />
+            <span class="text-danger" asp-validation-for="ClassNames"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Start Date</label>
+            <input type="date" class="form-control" asp-for="StartDate" id="startDate" />
+            <span class="text-danger" asp-validation-for="StartDate"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">End Date</label>
+            <input type="date" class="form-control" asp-for="EndDate" id="endDate" />
+            <span class="text-danger" asp-validation-for="EndDate"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
