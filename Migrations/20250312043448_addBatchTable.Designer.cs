@@ -4,6 +4,7 @@ using Attendance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250312043448_addBatchTable")]
+    partial class addBatchTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,11 +33,6 @@ namespace Attendance.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ClassNames")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
@@ -46,9 +44,6 @@ namespace Attendance.Migrations
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -101,7 +96,7 @@ namespace Attendance.Migrations
                         new
                         {
                             CourseId = 4,
-                            CourseName = "Bachelor of Technology",
+                            CourseName = "Master of Technology",
                             DepartmentId = 2
                         });
                 });
@@ -162,23 +157,6 @@ namespace Attendance.Migrations
                     b.HasKey("SubjectId");
 
                     b.ToTable("SubjectTbl");
-
-                    b.HasData(
-                        new
-                        {
-                            SubjectId = 1,
-                            SubjectName = "Database Management System"
-                        },
-                        new
-                        {
-                            SubjectId = 2,
-                            SubjectName = "Data Structures"
-                        },
-                        new
-                        {
-                            SubjectId = 3,
-                            SubjectName = "Programing With Java"
-                        });
                 });
 
             modelBuilder.Entity("Attendance.Models.UserModel", b =>
@@ -216,7 +194,7 @@ namespace Attendance.Migrations
                         new
                         {
                             UserId = 1,
-                            CreatedAt = new DateTime(2025, 3, 11, 15, 58, 18, 815, DateTimeKind.Utc).AddTicks(5245),
+                            CreatedAt = new DateTime(2025, 3, 12, 4, 34, 45, 769, DateTimeKind.Utc).AddTicks(6106),
                             Email = "kish.v07@gmail.com",
                             Fullname = "Kishan Patel",
                             Password = "Admin",

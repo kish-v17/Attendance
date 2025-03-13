@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Batches";
+}
+
+<div class="card">
+    <div class="row p-3">
+        <div class="col-6">
+            <h5 class="card-header">Batches</h5>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add New Batch</a>
+        </div>
+    </div>
+    <hr class="my-0">
+    <div class="table-responsive p-5">
+        <table class="table table-bordered" id="batchesTbl"></table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadBatchData();
+        });
+
+        var batchDataTable;
+
+        function loadBatchData() {
+            batchDataTable = $('#batchesTbl').DataTable({
+                processing: true,
+                ajax: {
+                    url: '/Admin/Batch/GetAll',
+                },
+                columns: [
+                    { data: 'id', title: 'ID', width: "5%" },
+                    { data: 'courseName', title: 'Course', width: "20%" },
+                    { data: 'semester', title: 'Semester', width: "10%" },
+                    { data: 'classNames', title: 'Class Name', width: "15%" },
+                    { data: 'year', title: 'Year', width: "10%" }, // Added Year column
+                    { data: 'startDate', title: 'Start Date', width: "15%" },
+                    { data: 'endDate', title: 'End Date', width: "15%" },
+                    {
+                        data: 'id',
+                        render: function (data) {
+                            return `
+                                <a href="/Admin/Batch/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
+                                    <i class="ri-pencil-line me-2"></i>
+                                </a>
+                            `;
+                        },
+                        title: 'Action',
+                        width: "10%"
+                    },
+                ]
+            });
+        }
+    </script>
+}
