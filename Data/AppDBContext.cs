@@ -29,43 +29,58 @@ namespace Attendance.Data
             modelBuilder.Entity<DepartmentModel>().HasData(
                 new DepartmentModel {
                     DepartmentId = 1,
-                    DepartmentName= "Computer Science"
+                    DepartmentName = "Computer Science"
                 },
                 new DepartmentModel {
                     DepartmentId = 2,
-                    DepartmentName= "Information Technology"
+                    DepartmentName = "Information Technology"
                 },
                 new DepartmentModel {
                     DepartmentId = 3,
-                    DepartmentName= "Diploma Studies"
+                    DepartmentName = "Diploma Studies"
                 },
                 new DepartmentModel {
                     DepartmentId = 4,
-                    DepartmentName= "Management"
+                    DepartmentName = "Management"
                 }
             );
             modelBuilder.Entity<CourseModel>().HasData(
                 new CourseModel
                 {
                     CourseId = 1,
-                    CourseName="Master of Computer Application",
-                    DepartmentId=1
-                },new CourseModel
+                    CourseName = "Master of Computer Application",
+                    DepartmentId = 1
+                }, new CourseModel
                 {
                     CourseId = 2,
-                    CourseName="Bachelor of Computer Applicatiion",
-                    DepartmentId=1
-                },new CourseModel
+                    CourseName = "Bachelor of Computer Applicatiion",
+                    DepartmentId = 1
+                }, new CourseModel
                 {
                     CourseId = 3,
-                    CourseName="Bachelor of Technology",
-                    DepartmentId=1
-                },new CourseModel
+                    CourseName = "Bachelor of Technology",
+                    DepartmentId = 1
+                }, new CourseModel
                 {
                     CourseId = 4,
-                    CourseName= "Master of Technology",
-                    DepartmentId=2
+                    CourseName = "Bachelor of Technology",
+                    DepartmentId = 2
                 }
+            );
+            modelBuilder.Entity<SubjectModel>().HasData(
+               new SubjectModel
+               {
+                   SubjectId = 1,
+                   SubjectName = "Database Management System"
+               },new SubjectModel
+               {
+                   SubjectId = 2,
+                   SubjectName = "Data Structures"
+               },new SubjectModel
+               {
+                   SubjectId = 3,
+                   SubjectName = "Programing With Java"
+               }
             );
         }
     }

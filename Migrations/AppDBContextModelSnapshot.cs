@@ -66,7 +66,7 @@ namespace Attendance.Migrations
                         new
                         {
                             CourseId = 4,
-                            CourseName = "Master of Technology",
+                            CourseName = "Bachelor of Technology",
                             DepartmentId = 2
                         });
                 });
@@ -127,6 +127,23 @@ namespace Attendance.Migrations
                     b.HasKey("SubjectId");
 
                     b.ToTable("SubjectTbl");
+
+                    b.HasData(
+                        new
+                        {
+                            SubjectId = 1,
+                            SubjectName = "Database Management System"
+                        },
+                        new
+                        {
+                            SubjectId = 2,
+                            SubjectName = "Data Structures"
+                        },
+                        new
+                        {
+                            SubjectId = 3,
+                            SubjectName = "Programing With Java"
+                        });
                 });
 
             modelBuilder.Entity("Attendance.Models.UserModel", b =>
@@ -164,7 +181,7 @@ namespace Attendance.Migrations
                         new
                         {
                             UserId = 1,
-                            CreatedAt = new DateTime(2025, 3, 11, 15, 58, 18, 815, DateTimeKind.Utc).AddTicks(5245),
+                            CreatedAt = new DateTime(2025, 3, 12, 2, 20, 22, 589, DateTimeKind.Utc).AddTicks(603),
                             Email = "kish.v07@gmail.com",
                             Fullname = "Kishan Patel",
                             Password = "Admin",

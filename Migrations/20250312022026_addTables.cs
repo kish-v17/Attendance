@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Attendance.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTablesAndSeedTables : Migration
+    public partial class addTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -88,9 +88,19 @@ namespace Attendance.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "SubjectTbl",
+                columns: new[] { "SubjectId", "SubjectName" },
+                values: new object[,]
+                {
+                    { 1, "Database Management System" },
+                    { 2, "Data Structures" },
+                    { 3, "Programing With Java" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "UserTbl",
                 columns: new[] { "UserId", "CreatedAt", "Email", "Fullname", "Password", "Role" },
-                values: new object[] { 1, new DateTime(2025, 3, 11, 15, 58, 18, 815, DateTimeKind.Utc).AddTicks(5245), "kish.v07@gmail.com", "Kishan Patel", "Admin", 0 });
+                values: new object[] { 1, new DateTime(2025, 3, 12, 2, 20, 22, 589, DateTimeKind.Utc).AddTicks(603), "kish.v07@gmail.com", "Kishan Patel", "Admin", 0 });
 
             migrationBuilder.InsertData(
                 table: "CourseTbl",
@@ -100,7 +110,7 @@ namespace Attendance.Migrations
                     { 1, "Master of Computer Application", 1 },
                     { 2, "Bachelor of Computer Applicatiion", 1 },
                     { 3, "Bachelor of Technology", 1 },
-                    { 4, "Master of Technology", 2 }
+                    { 4, "Bachelor of Technology", 2 }
                 });
 
             migrationBuilder.CreateIndex(
