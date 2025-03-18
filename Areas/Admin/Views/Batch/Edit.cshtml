@@ -1,4 +1,4 @@
-﻿@model BatchViewModel
+﻿@model BatchModel
 
 @{
     ViewData["Title"] = "Edit Batch";
@@ -11,7 +11,7 @@
         </div>
     </div>
     <form method="post" asp-action="Edit" id="batchForm">
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="BatchId" />
 
         <div class="mb-3">
             <label class="form-label">Course</label>
@@ -28,9 +28,9 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Class Name</label>
-            <input type="text" class="form-control" asp-for="ClassNames" id="className" />
-            <span class="text-danger" asp-validation-for="ClassNames"></span>
+            <label class="form-label">No of Class</label>
+            <input type="text" class="form-control" asp-for="NumberOfClasses" id="numberofclasses" />
+            <span class="text-danger" asp-validation-for="NumberOfClasses"></span>
         </div>
 
         <div class="mb-3">

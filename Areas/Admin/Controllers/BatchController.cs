@@ -27,12 +27,11 @@ namespace Attendance.Areas.Admin.Controllers
             var batches = _context.BatchTbl.Include(b => b.Course)
                 .Select(b => new
                 {
-                    b.Id,
+                    b.BatchId,
                     b.Semester,
                     b.StartDate,
                     b.EndDate,
-                    b.ClassNames, // Added ClassName
-                    b.Year, // Added Year
+                    b.Year,
                     CourseName = b.Course.CourseName
                 }).ToList();
 
@@ -41,7 +40,7 @@ namespace Attendance.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-            var viewModel = new BatchViewModel
+            var viewModel = new BatchModel
             {
                 Courses = _context.CourseTbl.ToList() // Fetch courses from DB
             };
@@ -49,7 +48,7 @@ namespace Attendance.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(BatchViewModel model)
+        public IActionResult Create(BatchModel model)
         {
             if (ModelState.IsValid)
             {
@@ -58,7 +57,6 @@ namespace Attendance.Areas.Admin.Controllers
                     Semester = model.Semester,
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
-                    ClassNames = model.ClassNames, // Added ClassName
                     Year = model.Year, // Added Year
                     CourseId = model.CourseId
                 };
@@ -81,27 +79,27 @@ namespace Attendance.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var viewModel = new BatchViewModel
+            var viewModel = new BatchModel
             {
-                Id = batch.Id,
+                BatchId = batch.BatchId,
                 Semester = batch.Semester,
                 StartDate = batch.StartDate,
                 EndDate = batch.EndDate,
-                ClassNames = batch.ClassNames, // Added ClassName
-                Year = batch.Year, // Added Year
+                Year = batch.Year, 
                 CourseId = batch.CourseId,
                 Courses = _context.CourseTbl.ToList()
+
             };
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit(BatchViewModel model)
+        public IActionResult Edit(BatchModel model)
         {
             if (ModelState.IsValid)
             {
-                var batch = _context.BatchTbl.Find(model.Id);
+                var batch = _context.BatchTbl.Find(model.BatchId);
                 if (batch == null)
                 {
                     return NotFound();
@@ -109,8 +107,7 @@ namespace Attendance.Areas.Admin.Controllers
 
                 batch.Semester = model.Semester;
                 batch.StartDate = model.StartDate;
-                batch.EndDate = model.EndDate;
-                batch.ClassNames = model.ClassNames; // Added ClassName
+                batch.EndDate = model.EndDate; // Added ClassName
                 batch.Year = model.Year; // Added Year
                 batch.CourseId = model.CourseId;
 

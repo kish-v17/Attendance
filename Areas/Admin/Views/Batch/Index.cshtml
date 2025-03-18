@@ -13,7 +13,7 @@
     </div>
     <hr class="my-0">
     <div class="table-responsive p-5">
-        <table class="table table-bordered" id="batchesTbl"></table>
+        <table class="table table-bordered" id="batchTbl"></table>
     </div>
 </div>
 
@@ -26,21 +26,20 @@
         var batchDataTable;
 
         function loadBatchData() {
-            batchDataTable = $('#batchesTbl').DataTable({
+            batchDataTable = $('#batchTbl').DataTable({
                 processing: true,
                 ajax: {
                     url: '/Admin/Batch/GetAll',
                 },
                 columns: [
-                    { data: 'id', title: 'ID', width: "5%" },
-                    { data: 'courseName', title: 'Course', width: "20%" },
+                    { data: 'batchId', title: 'ID', width: "5%" },
                     { data: 'semester', title: 'Semester', width: "10%" },
-                    { data: 'classNames', title: 'Class Name', width: "15%" },
-                    { data: 'year', title: 'Year', width: "10%" }, // Added Year column
+                    { data: 'year', title: 'Year', width: "10%" },
                     { data: 'startDate', title: 'Start Date', width: "15%" },
                     { data: 'endDate', title: 'End Date', width: "15%" },
+                    { data:'courseName', title:'Course Name', width: "20%"},
                     {
-                        data: 'id',
+                        data: 'batchId',
                         render: function (data) {
                             return `
                                 <a href="/Admin/Batch/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">

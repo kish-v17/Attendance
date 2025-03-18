@@ -13,6 +13,10 @@ namespace Attendance.Models
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 100 characters.")]
         public string Fullname { get; set; }
 
+        [Required(ErrorMessage = "Mobile Number is required.")]
+        [StringLength(15, ErrorMessage = "Invalid Mobile Number.")]
+        public string MobileNo { get; set; }
+
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address.")]
         public string Email { get; set; }
@@ -24,10 +28,6 @@ namespace Attendance.Models
         [Required(ErrorMessage = "Role is required.")]
         [EnumDataType(typeof(UserRole), ErrorMessage = "Invalid role selected.")]
         public UserRole Role { get; set; }
-
-        [Required]
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 
     public enum UserRole

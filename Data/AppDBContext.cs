@@ -15,6 +15,7 @@ namespace Attendance.Data
         public DbSet<CourseModel> CourseTbl { get; set; }
         public DbSet<SubjectModel> SubjectTbl { get; set; }
         public DbSet<BatchModel> BatchTbl{ get; set; }
+        public DbSet<StudentModel> StudentTbl{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>().HasData(
@@ -22,9 +23,17 @@ namespace Attendance.Data
                     UserId = 1,
                     Fullname = "Kishan Patel",
                     Email = "kish.v07@gmail.com",
-                    Password = "Admin",
+                    Password = "Admin@123",
                     Role = UserRole.Admin,
-                    CreatedAt = DateTime.UtcNow
+                    MobileNo = "9925323126"
+                },
+                new UserModel {
+                    UserId = 2,
+                    Fullname = "Abhi Patel",
+                    Email = "busyman2561@gmail.com",
+                    Password = "Abhi@123",
+                    Role = UserRole.Faculty,
+                    MobileNo = "7383835015"
                 }
             );
             modelBuilder.Entity<DepartmentModel>().HasData(
@@ -81,6 +90,88 @@ namespace Attendance.Data
                {
                    SubjectId = 3,
                    SubjectName = "Programing With Java"
+               }
+            );
+            modelBuilder.Entity<ClassModel>().HasData(
+               new ClassModel
+               {
+                   ClassId = 1,
+                   BatchId=1,
+                   Class = "A"
+               }, new ClassModel
+               {
+                   ClassId = 2,
+                   BatchId = 1,
+                   Class = "B"
+               }, new ClassModel
+               {
+                   ClassId = 3,
+                   BatchId = 2,
+                   Class = "A"
+               }
+            );
+            modelBuilder.Entity<BatchModel>().HasData(
+               new BatchModel
+               {
+                   BatchId = 1,
+                   CourseId = 1,
+                   Semester = 2,
+                   Year = 2024,
+                   StartDate = new DateOnly(2025, 01, 07),
+                   EndDate= new DateOnly(2025,05,31)
+               }, new BatchModel
+               {
+                   BatchId = 2,
+                   CourseId = 2,
+                   Semester = 6,
+                   Year = 2022,
+                   StartDate = new DateOnly(2025, 01, 16),
+                   EndDate = new DateOnly(2025, 06, 05)
+               }
+            );
+            modelBuilder.Entity<StudentModel>().HasData(
+               new StudentModel
+               {
+                   StudentId= 1,
+                   FullName="Jay Jerambhai Gorfad",
+                   FatherName="Jerambhai Gorfad",
+                   AadharCardNumber="947598246540",
+                   Address="Gokul Park,Nr. Kothariya Chowkdi",
+                   BloodGroup=BloodGroup.A_Positive,
+                   Category=Category.OBC,
+                   City="Rajkot",
+                   ClassId=1,
+                   State="Gujarat",
+                   EnrollmentNumber= "2024CSṂCA00001",
+                   MobileNo="7689468909",
+                   ParentMobileNo="9925323126",
+                   Email="jgorfad223@rku.ac.in",
+                   DateOfBirth= new DateOnly(2004, 5, 15),
+                   Country="India",
+                   MotherName="Lilaben Jerambhai Gorfad",
+                   PinCode="360002",
+                   Gender=Gender.Male
+               }, new StudentModel
+               {
+                   StudentId = 2,
+                   FullName = "Abhi Ashwinbhai Dudhagara",
+                   FatherName = "Ashwinbhai Dudhagara",
+                   AadharCardNumber = "879865450987",
+                   Address = "Sundaram Park, Nr. Bhaktinagar Road",
+                   BloodGroup = BloodGroup.B_Positive,
+                   Category = Category.OPEN,
+                   City = "Rajkot",
+                   ClassId =3,
+                   State = "Gujarat",
+                   EnrollmentNumber = "24CSBCA0001",
+                   MobileNo = "9823484848",
+                   ParentMobileNo = "9925323126",
+                   Email = "adudhagara353@rku.ac.in",
+                   DateOfBirth = new DateOnly(2004, 4, 25),
+                   Country = "India",
+                   MotherName = "Pramilaben Jerambhai Gorfad",
+                   PinCode = "360002",
+                   Gender = Gender.Male
                }
             );
         }

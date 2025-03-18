@@ -37,7 +37,7 @@ namespace Attendance.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-            var viewModel = new CourseViewModel
+            var viewModel = new CourseModel
             {
                 Departments = _context.DepartmentTbl.ToList() // Fetching departments from DB
             };
@@ -45,7 +45,7 @@ namespace Attendance.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CourseViewModel model)
+        public IActionResult Create(CourseModel model)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace Attendance.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var viewModel = new CourseViewModel
+            var viewModel = new CourseModel
             {
                 CourseId = course.CourseId,
                 CourseName = course.CourseName,
@@ -85,7 +85,7 @@ namespace Attendance.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(CourseViewModel model)
+        public IActionResult Edit(CourseModel model)
         {
             if (ModelState.IsValid)
             {
