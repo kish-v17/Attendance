@@ -29,7 +29,7 @@ namespace Attendance.Areas.Admin.Controllers
                     c.CourseId,
                     c.CourseName,
                     c.DepartmentId,
-                    DepartmentName = c.Department.DepartmentName // Fetch Department Name directly
+                    DepartmentName = c.Department.DepartmentName
                 }).ToList();
 
             return Json(new { data = courses });
@@ -60,7 +60,6 @@ namespace Attendance.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            // If validation fails, reload the department list
             model.Departments = _context.DepartmentTbl.ToList();
             return View(model);
         }
@@ -78,7 +77,7 @@ namespace Attendance.Areas.Admin.Controllers
                 CourseId = course.CourseId,
                 CourseName = course.CourseName,
                 DepartmentId = course.DepartmentId,
-                Departments = _context.DepartmentTbl.ToList() // Fetch departments from DB
+                Departments = _context.DepartmentTbl.ToList() 
             };
 
             return View(viewModel);
@@ -103,7 +102,6 @@ namespace Attendance.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            // If validation fails, reload the department list
             model.Departments = _context.DepartmentTbl.ToList();
             return View(model);
         }

@@ -16,6 +16,7 @@ namespace Attendance.Data
         public DbSet<SubjectModel> SubjectTbl { get; set; }
         public DbSet<BatchModel> BatchTbl{ get; set; }
         public DbSet<StudentModel> StudentTbl{ get; set; }
+        public DbSet<ClassModel> ClassTbl { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>().HasData(
@@ -132,45 +133,45 @@ namespace Attendance.Data
             modelBuilder.Entity<StudentModel>().HasData(
                new StudentModel
                {
-                   StudentId= 1,
-                   FullName="Jay Jerambhai Gorfad",
-                   FatherName="Jerambhai Gorfad",
-                   AadharCardNumber="947598246540",
-                   Address="Gokul Park,Nr. Kothariya Chowkdi",
-                   BloodGroup=BloodGroup.A_Positive,
-                   Category=Category.OBC,
-                   City="Rajkot",
-                   ClassId=1,
-                   State="Gujarat",
-                   EnrollmentNumber= "2024CSṂCA00001",
-                   MobileNo="7689468909",
-                   ParentMobileNo="9925323126",
-                   Email="jgorfad223@rku.ac.in",
-                   DateOfBirth= new DateOnly(2004, 5, 15),
-                   Country="India",
-                   MotherName="Lilaben Jerambhai Gorfad",
-                   PinCode="360002",
-                   Gender=Gender.Male
+                   StudentId = 1,
+                   FullName = "Dhruv Hiteshbhai Patel",
+                   FatherName = "Hiteshbhai Patel",
+                   AadharCardNumber = "789654123012",
+                   Address = "Satellite Road, Nr. Shivalik Plaza",
+                   BloodGroup = BloodGroup.B_Positive,
+                   Category = Category.OPEN,
+                   City = "Ahmedabad",
+                   ClassId = 2,
+                   State = "Gujarat",
+                   EnrollmentNumber = "24CSMCA00001",
+                   MobileNo = "9876543210",
+                   ParentMobileNo = "9825034567",
+                   Email = "dpatel32@rku.ac.in",
+                   DateOfBirth = new DateOnly(2003, 8, 21),
+                   Country = "India",
+                   MotherName = "Bhavnaben Hiteshbhai Patel",
+                   PinCode = "380015",
+                   Gender = Gender.Male
                }, new StudentModel
                {
                    StudentId = 2,
-                   FullName = "Abhi Ashwinbhai Dudhagara",
-                   FatherName = "Ashwinbhai Dudhagara",
-                   AadharCardNumber = "879865450987",
-                   Address = "Sundaram Park, Nr. Bhaktinagar Road",
-                   BloodGroup = BloodGroup.B_Positive,
+                   FullName = "Harsh Jitubhai Savani",
+                   FatherName = "Jitubhai Savani",
+                   AadharCardNumber = "854796321045",
+                   Address = "150 Feet Ring Road, Nr. Indira Circle",
+                   BloodGroup = BloodGroup.O_Positive,
                    Category = Category.OPEN,
                    City = "Rajkot",
-                   ClassId =3,
+                   ClassId = 3,
                    State = "Gujarat",
-                   EnrollmentNumber = "24CSBCA0001",
-                   MobileNo = "9823484848",
-                   ParentMobileNo = "9925323126",
-                   Email = "adudhagara353@rku.ac.in",
-                   DateOfBirth = new DateOnly(2004, 4, 25),
+                   EnrollmentNumber = "24CSBCA00001",
+                   MobileNo = "7984563210",
+                   ParentMobileNo = "9825098745",
+                   Email = "hsavani456@rku.ac.in",
+                   DateOfBirth = new DateOnly(2002, 11, 12),
                    Country = "India",
-                   MotherName = "Pramilaben Jerambhai Gorfad",
-                   PinCode = "360002",
+                   MotherName = "Meenaben Jitubhai Savani",
+                   PinCode = "360005",
                    Gender = Gender.Male
                }
             );

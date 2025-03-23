@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Students";
+}
+
+<div class="card">
+    <div class="row p-3">
+        <div class="col-6">
+            <h5 class="card-header">Students</h5>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add New Student</a>
+        </div>
+    </div>
+    <hr class="my-0">
+    <div class="table-responsive p-5">
+        <table class="table table-bordered" id="studentTbl"></table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadStudentData();
+        });
+
+        var studentDataTbl;
+
+        function loadStudentData() {
+            studentDataTbl = $('#studentTbl').DataTable({
+                processing: true,
+                ajax: {
+                    url: '/Admin/Student/GetAll',
+                },
+                columns: [
+                    { data: 'studentId', title: 'ID', width: "5%" },
+                    { data: 'fullName', title: 'Full Name' },
+                    { data: 'enrollmentNumber', title: 'Enrollment No' },
+                    { data: 'fatherName', title: "Father's Name" },
+                    { data: 'motherName', title: "Mother's Name" },
+                    { data: 'gender', title: 'Gender' },
+                    { data: 'dateOfBirth', title: 'Date of Birth', render: function (data) { return new Date(data).toLocaleDateString(); } },
+                    { data: 'aadharCardNumber', title: 'Aadhar Card No' },
+                    { data: 'bloodGroup', title: 'Blood Group' },
+                    { data: 'email', title: 'Email' },
+                    { data: 'mobileNo', title: 'Mobile No' },
+                    { data: 'parentMobileNo', title: 'Parent Mobile No' },
+                    { data: 'category', title: 'Category' },
+                    { data: 'class.className', title: 'Class' },
+                    { data: 'address', title: 'Address' },
+                    { data: 'city', title: 'City' },
+                    { data: 'state', title: 'State' },
+                    { data: 'country', title: 'Country' },
+                    { data: 'pinCode', title: 'Pin Code' },
+                    {
+                        data: 'studentId',
+                        render: function (data) {
+                            return `
+                                <a href="/Admin/Student/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
+                                    <i class="ri-pencil-line me-2"></i>
+                                </a>
+                            `;
+                        },
+                        title: 'Action',
+                        width: "10%"
+                    },
+                ]
+            });
+        }
+    </script>
+}

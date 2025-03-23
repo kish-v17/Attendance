@@ -106,7 +106,7 @@ namespace Attendance.Migrations
 
                     b.HasIndex("StudentModelStudentId");
 
-                    b.ToTable("ClassModel");
+                    b.ToTable("ClassTbl");
 
                     b.HasData(
                         new
@@ -329,45 +329,45 @@ namespace Attendance.Migrations
                         new
                         {
                             StudentId = 1,
-                            AadharCardNumber = "947598246540",
-                            Address = "Gokul Park,Nr. Kothariya Chowkdi",
-                            BloodGroup = 0,
-                            Category = 1,
-                            City = "Rajkot",
-                            ClassId = 1,
+                            AadharCardNumber = "789654123012",
+                            Address = "Satellite Road, Nr. Shivalik Plaza",
+                            BloodGroup = 2,
+                            Category = 0,
+                            City = "Ahmedabad",
+                            ClassId = 2,
                             Country = "India",
-                            DateOfBirth = new DateOnly(2004, 5, 15),
-                            Email = "jgorfad223@rku.ac.in",
-                            EnrollmentNumber = "2024CSṂCA00001",
-                            FatherName = "Jerambhai Gorfad",
-                            FullName = "Jay Jerambhai Gorfad",
+                            DateOfBirth = new DateOnly(2003, 8, 21),
+                            Email = "dpatel32@rku.ac.in",
+                            EnrollmentNumber = "24CSMCA00001",
+                            FatherName = "Hiteshbhai Patel",
+                            FullName = "Dhruv Hiteshbhai Patel",
                             Gender = 0,
-                            MobileNo = "7689468909",
-                            MotherName = "Lilaben Jerambhai Gorfad",
-                            ParentMobileNo = "9925323126",
-                            PinCode = "360002",
+                            MobileNo = "9876543210",
+                            MotherName = "Bhavnaben Hiteshbhai Patel",
+                            ParentMobileNo = "9825034567",
+                            PinCode = "380015",
                             State = "Gujarat"
                         },
                         new
                         {
                             StudentId = 2,
-                            AadharCardNumber = "879865450987",
-                            Address = "Sundaram Park, Nr. Bhaktinagar Road",
-                            BloodGroup = 2,
+                            AadharCardNumber = "854796321045",
+                            Address = "150 Feet Ring Road, Nr. Indira Circle",
+                            BloodGroup = 6,
                             Category = 0,
                             City = "Rajkot",
                             ClassId = 3,
                             Country = "India",
-                            DateOfBirth = new DateOnly(2004, 4, 25),
-                            Email = "adudhagara353@rku.ac.in",
-                            EnrollmentNumber = "24CSBCA0001",
-                            FatherName = "Ashwinbhai Dudhagara",
-                            FullName = "Abhi Ashwinbhai Dudhagara",
+                            DateOfBirth = new DateOnly(2002, 11, 12),
+                            Email = "hsavani456@rku.ac.in",
+                            EnrollmentNumber = "24CSBCA00001",
+                            FatherName = "Jitubhai Savani",
+                            FullName = "Harsh Jitubhai Savani",
                             Gender = 0,
-                            MobileNo = "9823484848",
-                            MotherName = "Pramilaben Jerambhai Gorfad",
-                            ParentMobileNo = "9925323126",
-                            PinCode = "360002",
+                            MobileNo = "7984563210",
+                            MotherName = "Meenaben Jitubhai Savani",
+                            ParentMobileNo = "9825098745",
+                            PinCode = "360005",
                             State = "Gujarat"
                         });
                 });

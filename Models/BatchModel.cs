@@ -15,6 +15,7 @@ namespace Attendance.Models
         public int CourseId { get; set; }
 
         [ForeignKey("CourseId")]
+        [ValidateNever]
         public CourseModel Course { get; set; }
 
         [Required(ErrorMessage = "Semester is required.")]
@@ -38,7 +39,6 @@ namespace Attendance.Models
         [DateGreaterThan(nameof(StartDate), ErrorMessage = "End Date must be after Start Date.")]
         public DateOnly EndDate { get; set; }
         [ValidateNever]
-        public List<CourseModel>? Courses { get; set; } 
-
+        public List<CourseModel>? Courses { get; set; }
     }
 }

@@ -32,19 +32,27 @@ namespace Attendance.Areas.Admin.Controllers
                     b.StartDate,
                     b.EndDate,
                     b.Year,
+                    b.NumberOfClasses,
                     CourseName = b.Course.CourseName
                 }).ToList();
 
             return Json(new { data = batches });
         }
-
         public IActionResult Create()
         {
-            var viewModel = new BatchModel
+            var batch = new BatchModel
             {
-                Courses = _context.CourseTbl.ToList() // Fetch courses from DB
+                Courses = _context.CourseTbl
+                .Include(c => c.Department)
+                .AsEnumerable()
+                .Select(c => new CourseModel
+                {
+                    CourseId = c.CourseId,
+                    CourseName = c.CourseName + " - " + new string(c.Department.DepartmentName.Where(char.IsUpper).ToArray())
+                })
+                .ToList()
             };
-            return View(viewModel);
+            return View(batch);
         }
 
         [HttpPost]
@@ -57,16 +65,28 @@ namespace Attendance.Areas.Admin.Controllers
                     Semester = model.Semester,
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
-                    Year = model.Year, // Added Year
+                    Year = model.Year, 
+                    NumberOfClasses= model.NumberOfClasses,
                     CourseId = model.CourseId
                 };
 
                 _context.BatchTbl.Add(batch);
                 _context.SaveChanges();
+
+                List<ClassModel> classList = new List<ClassModel>();
+                for (int i = 0; i < model.NumberOfClasses; i++)
+                {
+                    classList.Add(new ClassModel
+                    {
+                        BatchId = model.BatchId, 
+                        Class = ((char)('A' + i)).ToString()
+                    });
+                }
+                _context.ClassTbl.AddRange(classList);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            // If validation fails, reload the course list
             model.Courses = _context.CourseTbl.ToList();
             return View(model);
         }
@@ -86,8 +106,17 @@ namespace Attendance.Areas.Admin.Controllers
                 StartDate = batch.StartDate,
                 EndDate = batch.EndDate,
                 Year = batch.Year, 
+                NumberOfClasses= batch.NumberOfClasses,
                 CourseId = batch.CourseId,
-                Courses = _context.CourseTbl.ToList()
+                Courses = _context.CourseTbl
+                .Include(c => c.Department)
+                .AsEnumerable()
+                .Select(c => new CourseModel
+                {
+                    CourseId = c.CourseId,
+                    CourseName = c.CourseName + " - " + new string(c.Department.DepartmentName.Where(char.IsUpper).ToArray())
+                })
+                .ToList()
 
             };
 
@@ -110,7 +139,7 @@ namespace Attendance.Areas.Admin.Controllers
                 batch.EndDate = model.EndDate; // Added ClassName
                 batch.Year = model.Year; // Added Year
                 batch.CourseId = model.CourseId;
-
+                batch.NumberOfClasses  = model.NumberOfClasses;
                 _context.BatchTbl.Update(batch);
                 _context.SaveChanges();
                 return RedirectToAction("Index");

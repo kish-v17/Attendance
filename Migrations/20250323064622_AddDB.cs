@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Attendance.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTBLstoDB : Migration
+    public partial class AddDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,7 +63,7 @@ namespace Attendance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClassModel",
+                name: "ClassTbl",
                 columns: table => new
                 {
                     ClassId = table.Column<int>(type: "int", nullable: false)
@@ -74,9 +74,9 @@ namespace Attendance.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassModel", x => x.ClassId);
+                    table.PrimaryKey("PK_ClassTbl", x => x.ClassId);
                     table.ForeignKey(
-                        name: "FK_ClassModel_BatchTbl_BatchId",
+                        name: "FK_ClassTbl_BatchTbl_BatchId",
                         column: x => x.BatchId,
                         principalTable: "BatchTbl",
                         principalColumn: "BatchId",
@@ -112,9 +112,9 @@ namespace Attendance.Migrations
                 {
                     table.PrimaryKey("PK_StudentTbl", x => x.StudentId);
                     table.ForeignKey(
-                        name: "FK_StudentTbl_ClassModel_ClassId",
+                        name: "FK_StudentTbl_ClassTbl_ClassId",
                         column: x => x.ClassId,
-                        principalTable: "ClassModel",
+                        principalTable: "ClassTbl",
                         principalColumn: "ClassId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -209,7 +209,7 @@ namespace Attendance.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ClassModel",
+                table: "ClassTbl",
                 columns: new[] { "ClassId", "BatchId", "Class", "StudentModelStudentId" },
                 values: new object[,]
                 {
@@ -223,8 +223,8 @@ namespace Attendance.Migrations
                 columns: new[] { "StudentId", "AadharCardNumber", "Address", "BloodGroup", "Category", "City", "ClassId", "Country", "DateOfBirth", "Email", "EnrollmentNumber", "FatherName", "FullName", "Gender", "MobileNo", "MotherName", "ParentMobileNo", "PinCode", "State" },
                 values: new object[,]
                 {
-                    { 1, "947598246540", "Gokul Park,Nr. Kothariya Chowkdi", 0, 1, "Rajkot", 1, "India", new DateOnly(2004, 5, 15), "jgorfad223@rku.ac.in", "2024CSṂCA00001", "Jerambhai Gorfad", "Jay Jerambhai Gorfad", 0, "7689468909", "Lilaben Jerambhai Gorfad", "9925323126", "360002", "Gujarat" },
-                    { 2, "879865450987", "Sundaram Park, Nr. Bhaktinagar Road", 2, 0, "Rajkot", 3, "India", new DateOnly(2004, 4, 25), "adudhagara353@rku.ac.in", "24CSBCA0001", "Ashwinbhai Dudhagara", "Abhi Ashwinbhai Dudhagara", 0, "9823484848", "Pramilaben Jerambhai Gorfad", "9925323126", "360002", "Gujarat" }
+                    { 1, "789654123012", "Satellite Road, Nr. Shivalik Plaza", 2, 0, "Ahmedabad", 2, "India", new DateOnly(2003, 8, 21), "dpatel32@rku.ac.in", "24CSMCA00001", "Hiteshbhai Patel", "Dhruv Hiteshbhai Patel", 0, "9876543210", "Bhavnaben Hiteshbhai Patel", "9825034567", "380015", "Gujarat" },
+                    { 2, "854796321045", "150 Feet Ring Road, Nr. Indira Circle", 6, 0, "Rajkot", 3, "India", new DateOnly(2002, 11, 12), "hsavani456@rku.ac.in", "24CSBCA00001", "Jitubhai Savani", "Harsh Jitubhai Savani", 0, "7984563210", "Meenaben Jitubhai Savani", "9825098745", "360005", "Gujarat" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -238,13 +238,13 @@ namespace Attendance.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClassModel_BatchId",
-                table: "ClassModel",
+                name: "IX_ClassTbl_BatchId",
+                table: "ClassTbl",
                 column: "BatchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClassModel_StudentModelStudentId",
-                table: "ClassModel",
+                name: "IX_ClassTbl_StudentModelStudentId",
+                table: "ClassTbl",
                 column: "StudentModelStudentId");
 
             migrationBuilder.CreateIndex(
@@ -274,10 +274,10 @@ namespace Attendance.Migrations
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_BatchTbl_ClassModel_ClassModelClassId",
+                name: "FK_BatchTbl_ClassTbl_ClassModelClassId",
                 table: "BatchTbl",
                 column: "ClassModelClassId",
-                principalTable: "ClassModel",
+                principalTable: "ClassTbl",
                 principalColumn: "ClassId");
 
             migrationBuilder.AddForeignKey(
@@ -289,8 +289,8 @@ namespace Attendance.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ClassModel_StudentTbl_StudentModelStudentId",
-                table: "ClassModel",
+                name: "FK_ClassTbl_StudentTbl_StudentModelStudentId",
+                table: "ClassTbl",
                 column: "StudentModelStudentId",
                 principalTable: "StudentTbl",
                 principalColumn: "StudentId");
@@ -308,11 +308,11 @@ namespace Attendance.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_BatchTbl_ClassModel_ClassModelClassId",
+                name: "FK_BatchTbl_ClassTbl_ClassModelClassId",
                 table: "BatchTbl");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_StudentTbl_ClassModel_ClassId",
+                name: "FK_StudentTbl_ClassTbl_ClassId",
                 table: "StudentTbl");
 
             migrationBuilder.DropForeignKey(
@@ -330,7 +330,7 @@ namespace Attendance.Migrations
                 name: "UserTbl");
 
             migrationBuilder.DropTable(
-                name: "ClassModel");
+                name: "ClassTbl");
 
             migrationBuilder.DropTable(
                 name: "StudentTbl");
