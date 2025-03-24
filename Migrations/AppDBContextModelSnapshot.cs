@@ -65,7 +65,7 @@ namespace Attendance.Migrations
                             BatchId = 1,
                             CourseId = 1,
                             EndDate = new DateOnly(2025, 5, 31),
-                            NumberOfClasses = 0,
+                            NumberOfClasses = 2,
                             Semester = 2,
                             StartDate = new DateOnly(2025, 1, 7),
                             Year = 2024
@@ -75,7 +75,7 @@ namespace Attendance.Migrations
                             BatchId = 2,
                             CourseId = 2,
                             EndDate = new DateOnly(2025, 6, 5),
-                            NumberOfClasses = 0,
+                            NumberOfClasses = 3,
                             Semester = 6,
                             StartDate = new DateOnly(2025, 1, 16),
                             Year = 2022
@@ -126,6 +126,18 @@ namespace Attendance.Migrations
                             ClassId = 3,
                             BatchId = 2,
                             Class = "A"
+                        },
+                        new
+                        {
+                            ClassId = 4,
+                            BatchId = 2,
+                            Class = "B"
+                        },
+                        new
+                        {
+                            ClassId = 5,
+                            BatchId = 2,
+                            Class = "C"
                         });
                 });
 
@@ -172,13 +184,13 @@ namespace Attendance.Migrations
                         new
                         {
                             CourseId = 3,
-                            CourseName = "Bachelor of Technology",
+                            CourseName = "Bachelor of TECHnology",
                             DepartmentId = 1
                         },
                         new
                         {
                             CourseId = 4,
-                            CourseName = "Bachelor of Technology",
+                            CourseName = "Bachelor of TECHnology",
                             DepartmentId = 2
                         });
                 });
@@ -275,8 +287,7 @@ namespace Attendance.Migrations
 
                     b.Property<string>("EnrollmentNumber")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FatherName")
                         .IsRequired()
@@ -331,17 +342,17 @@ namespace Attendance.Migrations
                             StudentId = 1,
                             AadharCardNumber = "789654123012",
                             Address = "Satellite Road, Nr. Shivalik Plaza",
-                            BloodGroup = 2,
-                            Category = 0,
+                            BloodGroup = 3,
+                            Category = 1,
                             City = "Ahmedabad",
                             ClassId = 2,
                             Country = "India",
                             DateOfBirth = new DateOnly(2003, 8, 21),
                             Email = "dpatel32@rku.ac.in",
-                            EnrollmentNumber = "24CSMCA00001",
+                            EnrollmentNumber = "24CSMCA0001",
                             FatherName = "Hiteshbhai Patel",
                             FullName = "Dhruv Hiteshbhai Patel",
-                            Gender = 0,
+                            Gender = 1,
                             MobileNo = "9876543210",
                             MotherName = "Bhavnaben Hiteshbhai Patel",
                             ParentMobileNo = "9825034567",
@@ -353,17 +364,17 @@ namespace Attendance.Migrations
                             StudentId = 2,
                             AadharCardNumber = "854796321045",
                             Address = "150 Feet Ring Road, Nr. Indira Circle",
-                            BloodGroup = 6,
-                            Category = 0,
+                            BloodGroup = 7,
+                            Category = 1,
                             City = "Rajkot",
                             ClassId = 3,
                             Country = "India",
                             DateOfBirth = new DateOnly(2002, 11, 12),
                             Email = "hsavani456@rku.ac.in",
-                            EnrollmentNumber = "24CSBCA00001",
+                            EnrollmentNumber = "24CSBCA0001",
                             FatherName = "Jitubhai Savani",
                             FullName = "Harsh Jitubhai Savani",
-                            Gender = 0,
+                            Gender = 1,
                             MobileNo = "7984563210",
                             MotherName = "Meenaben Jitubhai Savani",
                             ParentMobileNo = "9825098745",
@@ -403,7 +414,7 @@ namespace Attendance.Migrations
                         new
                         {
                             SubjectId = 3,
-                            SubjectName = "Programing With Java"
+                            SubjectName = "Programing with Java"
                         });
                 });
 
@@ -485,7 +496,7 @@ namespace Attendance.Migrations
                         .IsRequired();
 
                     b.HasOne("Attendance.Models.StudentModel", null)
-                        .WithMany("ClassModels")
+                        .WithMany("ClassList")
                         .HasForeignKey("StudentModelStudentId");
 
                     b.Navigation("Batch");
@@ -541,7 +552,7 @@ namespace Attendance.Migrations
 
             modelBuilder.Entity("Attendance.Models.StudentModel", b =>
                 {
-                    b.Navigation("ClassModels");
+                    b.Navigation("ClassList");
                 });
 #pragma warning restore 612, 618
         }

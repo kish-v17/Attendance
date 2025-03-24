@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using Attendance.Data;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +17,7 @@ namespace Attendance.Models
         [Required(ErrorMessage = "Full Name is required.")]
         [StringLength(100, ErrorMessage = "Full Name cannot exceed 100 characters.")]
         public string FullName { get; set; }
-
-        [Required(ErrorMessage = "Enrollment Number is required.")]
-        [StringLength(50)]
+        [ValidateNever]
         public string EnrollmentNumber { get; set; }
 
         [Required(ErrorMessage = "Father's Name is required.")]
@@ -30,7 +29,7 @@ namespace Attendance.Models
         public string MotherName { get; set; }
 
         [Required(ErrorMessage = "Gender is required.")]
-        public Gender Gender { get; set; }
+        public Genders Gender { get; set; }
 
         [Required(ErrorMessage = "Date of Birth is required.")]
         [DataType(DataType.Date)]
@@ -41,7 +40,7 @@ namespace Attendance.Models
         public string AadharCardNumber { get; set; }
 
         [Required(ErrorMessage = "Blood Group is required.")]
-        public BloodGroup BloodGroup { get; set; }
+        public BloodGroups BloodGroup { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid Email format.")]
@@ -57,12 +56,12 @@ namespace Attendance.Models
         public string ParentMobileNo { get; set; }
 
         [Required(ErrorMessage = "Category is required.")]
-        public Category Category { get; set; }
+        public Categories Category { get; set; }
 
         [Required(ErrorMessage = "Class is required.")]
         [ForeignKey("Class")]
         public int ClassId { get; set; }
-
+        [ValidateNever]
         public ClassModel Class { get; set; }
         
 
@@ -87,24 +86,7 @@ namespace Attendance.Models
         public string PinCode { get; set; }
 
         [ValidateNever]
-        public List<ClassModel> ClassModels { get; set; }
-
-        //public void GenerateEnrollmentNumber(AppDBContext context)
-        //{
-        //    var studentClass = context.ClassTbl
-        //        .Include(c => c.Batch) // Include Batch to access Year
-        //        .ThenInclude(b => b.Course) // Include Course to access CourseName
-        //        .FirstOrDefault(c => c.ClassId == this.ClassId);
-
-        //    if (studentClass == null || studentClass.Batch == null || studentClass.Batch.Course == null)
-        //        throw new Exception("Class, Batch, or Course not found!");
-
-        //    string year = studentClass.Batch.Year.ToString(); // Fetch year from BatchModel
-        //    string courseCode = studentClass.BatchTbl.Course.CourseName.Substring(0, 3).ToUpper(); // First 3 letters of CourseName
-        //    int count = context.StudentTbl.Count(s => s.ClassId == this.ClassId) + 1; // Get student count in this class
-
-        //    this.EnrollmentNumber = $"{year}-{courseCode}-{count:D5}"; // Example: 2024-CSE-00001
-        //}
+        public List<ClassModel> ClassList{ get; set; }
 
         public static ValidationResult ValidateAgeLimit(DateTime dateOfBirth, ValidationContext context)
         {
@@ -120,14 +102,14 @@ namespace Attendance.Models
 
 }
 
-public enum Gender
+public enum Genders
 {
     Male =1,
     Female=2,
     Other=3
 }
 
-public enum BloodGroup
+public enum BloodGroups
 {
     A_Positive=1,
     A_Negative=2,
@@ -139,7 +121,7 @@ public enum BloodGroup
     O_Negative=8
 }
 
-public enum Category
+public enum Categories
 {
     OPEN=1,
     OBC=2,

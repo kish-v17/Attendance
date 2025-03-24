@@ -1,0 +1,127 @@
+﻿@model StudentModel
+
+@{
+    ViewData["Title"] = "Add Student";
+}
+<div class="main-content">
+    <div class="row py-3">
+        <div class="col-6">
+            <h2>Add Student</h2>
+        </div>
+    </div>
+    <form method="post" asp-action="Create" id="studentForm">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label" for="fullName">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" asp-for="FullName" placeholder="Full Name" />
+                    <span class="text-danger" asp-validation-for="FullName"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="enrollmentNumber">Enrollment Number</label>
+                    <input type="text" class="form-control" id="enrollmentNumber" asp-for="EnrollmentNumber" placeholder="Auto Generated" disabled />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="fatherName">Father's Name</label>
+                    <input type="text" class="form-control" id="fatherName" asp-for="FatherName" placeholder="Father's Name" />
+                    <span class="text-danger" asp-validation-for="FatherName"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="motherName">Mother's Name</label>
+                    <input type="text" class="form-control" id="motherName" asp-for="MotherName" placeholder="Mother's Name" />
+                    <span class="text-danger" asp-validation-for="MotherName"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" class="form-control" id="email" asp-for="Email" placeholder="Email" />
+                    <span class="text-danger" asp-validation-for="Email"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="gender">Gender</label>
+                    <select class="form-control" id="gender" asp-for="Gender" asp-items="Html.GetEnumSelectList<Genders>()">
+                        <option value="">Select Gender</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="Gender"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="dob">Date of Birth</label>
+                    <input type="date" class="form-control" id="dob" asp-for="DateOfBirth" />
+                    <span class="text-danger" asp-validation-for="DateOfBirth"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="aadhar">Aadhar Card Number</label>
+                    <input type="text" class="form-control" id="aadhar" asp-for="AadharCardNumber" placeholder="Aadhar Card Number" />
+                    <span class="text-danger" asp-validation-for="AadharCardNumber"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="bloodGroup">Blood Group</label>
+                    <select class="form-control" id="bloodGroup" asp-for="BloodGroup" asp-items="Html.GetEnumSelectList<BloodGroups>()">
+                        <option value="">Select BloodGroup</option>
+                    </select>                    
+                    <span class="text-danger" asp-validation-for="BloodGroup"></span>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label" for="mobileNo">Mobile No</label>
+                    <input type="text" class="form-control" id="mobileNo" asp-for="MobileNo" placeholder="Mobile No" />
+                    <span class="text-danger" asp-validation-for="MobileNo"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="parentMobileNo">Parent Mobile No</label>
+                    <input type="text" class="form-control" id="parentMobileNo" asp-for="ParentMobileNo" placeholder="Parent Mobile No" />
+                    <span class="text-danger" asp-validation-for="ParentMobileNo"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="category">Category</label>
+                    <select class="form-control" id="category" asp-for="Category" asp-items="Html.GetEnumSelectList<Categories>()">
+                        <option value="">Select Category</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="Category"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="classId">Class</label>
+                    <select class="form-control" id="classId" asp-for="ClassId" asp-items="ViewBag.ClassList">
+                        <option value="">Select Class</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="ClassId"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="address">Address</label>
+                    <textarea class="form-control" id="address" asp-for="Address" rows="2" placeholder="Address"></textarea>
+                    <span class="text-danger" asp-validation-for="Address"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="city">City</label>
+                    <input type="text" class="form-control" id="city" asp-for="City" placeholder="City" />
+                    <span class="text-danger" asp-validation-for="City"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="state">State</label>
+                    <input type="text" class="form-control" id="state" asp-for="State" placeholder="State" />
+                    <span class="text-danger" asp-validation-for="State"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="country">Country</label>
+                    <input type="text" class="form-control" id="country" asp-for="Country" placeholder="Country" />
+                    <span class="text-danger" asp-validation-for="Country"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="pinCode">Pin Code</label>
+                    <input type="text" class="form-control" id="pinCode" asp-for="PinCode" placeholder="Pin Code" />
+                    <span class="text-danger" asp-validation-for="PinCode"></span>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

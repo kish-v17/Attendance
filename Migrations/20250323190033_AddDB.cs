@@ -90,7 +90,7 @@ namespace Attendance.Migrations
                     StudentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    EnrollmentNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EnrollmentNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FatherName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     MotherName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
@@ -176,7 +176,7 @@ namespace Attendance.Migrations
                 {
                     { 1, "Database Management System" },
                     { 2, "Data Structures" },
-                    { 3, "Programing With Java" }
+                    { 3, "Programing with Java" }
                 });
 
             migrationBuilder.InsertData(
@@ -195,8 +195,8 @@ namespace Attendance.Migrations
                 {
                     { 1, null, "Master of Computer Application", 1 },
                     { 2, null, "Bachelor of Computer Applicatiion", 1 },
-                    { 3, null, "Bachelor of Technology", 1 },
-                    { 4, null, "Bachelor of Technology", 2 }
+                    { 3, null, "Bachelor of TECHnology", 1 },
+                    { 4, null, "Bachelor of TECHnology", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -204,8 +204,8 @@ namespace Attendance.Migrations
                 columns: new[] { "BatchId", "ClassModelClassId", "CourseId", "EndDate", "NumberOfClasses", "Semester", "StartDate", "Year" },
                 values: new object[,]
                 {
-                    { 1, null, 1, new DateOnly(2025, 5, 31), 0, 2, new DateOnly(2025, 1, 7), 2024 },
-                    { 2, null, 2, new DateOnly(2025, 6, 5), 0, 6, new DateOnly(2025, 1, 16), 2022 }
+                    { 1, null, 1, new DateOnly(2025, 5, 31), 2, 2, new DateOnly(2025, 1, 7), 2024 },
+                    { 2, null, 2, new DateOnly(2025, 6, 5), 3, 6, new DateOnly(2025, 1, 16), 2022 }
                 });
 
             migrationBuilder.InsertData(
@@ -215,7 +215,9 @@ namespace Attendance.Migrations
                 {
                     { 1, 1, "A", null },
                     { 2, 1, "B", null },
-                    { 3, 2, "A", null }
+                    { 3, 2, "A", null },
+                    { 4, 2, "B", null },
+                    { 5, 2, "C", null }
                 });
 
             migrationBuilder.InsertData(
@@ -223,8 +225,8 @@ namespace Attendance.Migrations
                 columns: new[] { "StudentId", "AadharCardNumber", "Address", "BloodGroup", "Category", "City", "ClassId", "Country", "DateOfBirth", "Email", "EnrollmentNumber", "FatherName", "FullName", "Gender", "MobileNo", "MotherName", "ParentMobileNo", "PinCode", "State" },
                 values: new object[,]
                 {
-                    { 1, "789654123012", "Satellite Road, Nr. Shivalik Plaza", 2, 0, "Ahmedabad", 2, "India", new DateOnly(2003, 8, 21), "dpatel32@rku.ac.in", "24CSMCA00001", "Hiteshbhai Patel", "Dhruv Hiteshbhai Patel", 0, "9876543210", "Bhavnaben Hiteshbhai Patel", "9825034567", "380015", "Gujarat" },
-                    { 2, "854796321045", "150 Feet Ring Road, Nr. Indira Circle", 6, 0, "Rajkot", 3, "India", new DateOnly(2002, 11, 12), "hsavani456@rku.ac.in", "24CSBCA00001", "Jitubhai Savani", "Harsh Jitubhai Savani", 0, "7984563210", "Meenaben Jitubhai Savani", "9825098745", "360005", "Gujarat" }
+                    { 1, "789654123012", "Satellite Road, Nr. Shivalik Plaza", 3, 1, "Ahmedabad", 2, "India", new DateOnly(2003, 8, 21), "dpatel32@rku.ac.in", "24CSMCA0001", "Hiteshbhai Patel", "Dhruv Hiteshbhai Patel", 1, "9876543210", "Bhavnaben Hiteshbhai Patel", "9825034567", "380015", "Gujarat" },
+                    { 2, "854796321045", "150 Feet Ring Road, Nr. Indira Circle", 7, 1, "Rajkot", 3, "India", new DateOnly(2002, 11, 12), "hsavani456@rku.ac.in", "24CSBCA0001", "Jitubhai Savani", "Harsh Jitubhai Savani", 1, "7984563210", "Meenaben Jitubhai Savani", "9825098745", "360005", "Gujarat" }
                 });
 
             migrationBuilder.CreateIndex(

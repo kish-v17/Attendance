@@ -39,7 +39,7 @@ namespace Attendance.Areas.Admin.Controllers
         {
             var viewModel = new CourseModel
             {
-                Departments = _context.DepartmentTbl.ToList() // Fetching departments from DB
+                Departments = _context.DepartmentTbl.ToList()
             };
             return View(viewModel);
         }

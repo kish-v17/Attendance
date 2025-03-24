@@ -69,12 +69,12 @@ namespace Attendance.Data
                 }, new CourseModel
                 {
                     CourseId = 3,
-                    CourseName = "Bachelor of Technology",
+                    CourseName = "Bachelor of TECHnology",
                     DepartmentId = 1
                 }, new CourseModel
                 {
                     CourseId = 4,
-                    CourseName = "Bachelor of Technology",
+                    CourseName = "Bachelor of TECHnology",
                     DepartmentId = 2
                 }
             );
@@ -90,7 +90,7 @@ namespace Attendance.Data
                },new SubjectModel
                {
                    SubjectId = 3,
-                   SubjectName = "Programing With Java"
+                   SubjectName = "Programing with Java"
                }
             );
             modelBuilder.Entity<ClassModel>().HasData(
@@ -109,6 +109,16 @@ namespace Attendance.Data
                    ClassId = 3,
                    BatchId = 2,
                    Class = "A"
+               }, new ClassModel
+               {
+                   ClassId = 4,
+                   BatchId = 2,
+                   Class = "B"
+               }, new ClassModel
+               {
+                   ClassId = 5,
+                   BatchId = 2,
+                   Class = "C"
                }
             );
             modelBuilder.Entity<BatchModel>().HasData(
@@ -117,6 +127,7 @@ namespace Attendance.Data
                    BatchId = 1,
                    CourseId = 1,
                    Semester = 2,
+                   NumberOfClasses=2,
                    Year = 2024,
                    StartDate = new DateOnly(2025, 01, 07),
                    EndDate= new DateOnly(2025,05,31)
@@ -125,6 +136,7 @@ namespace Attendance.Data
                    BatchId = 2,
                    CourseId = 2,
                    Semester = 6,
+                   NumberOfClasses=3,
                    Year = 2022,
                    StartDate = new DateOnly(2025, 01, 16),
                    EndDate = new DateOnly(2025, 06, 05)
@@ -138,12 +150,12 @@ namespace Attendance.Data
                    FatherName = "Hiteshbhai Patel",
                    AadharCardNumber = "789654123012",
                    Address = "Satellite Road, Nr. Shivalik Plaza",
-                   BloodGroup = BloodGroup.B_Positive,
-                   Category = Category.OPEN,
+                   BloodGroup = BloodGroups.B_Positive,
+                   Category = Categories.OPEN,
                    City = "Ahmedabad",
                    ClassId = 2,
                    State = "Gujarat",
-                   EnrollmentNumber = "24CSMCA00001",
+                   EnrollmentNumber = "24CSMCA0001",
                    MobileNo = "9876543210",
                    ParentMobileNo = "9825034567",
                    Email = "dpatel32@rku.ac.in",
@@ -151,7 +163,7 @@ namespace Attendance.Data
                    Country = "India",
                    MotherName = "Bhavnaben Hiteshbhai Patel",
                    PinCode = "380015",
-                   Gender = Gender.Male
+                   Gender = Genders.Male
                }, new StudentModel
                {
                    StudentId = 2,
@@ -159,12 +171,12 @@ namespace Attendance.Data
                    FatherName = "Jitubhai Savani",
                    AadharCardNumber = "854796321045",
                    Address = "150 Feet Ring Road, Nr. Indira Circle",
-                   BloodGroup = BloodGroup.O_Positive,
-                   Category = Category.OPEN,
+                   BloodGroup = BloodGroups.O_Positive,
+                   Category = Categories.OPEN,
                    City = "Rajkot",
                    ClassId = 3,
                    State = "Gujarat",
-                   EnrollmentNumber = "24CSBCA00001",
+                   EnrollmentNumber = "24CSBCA0001",
                    MobileNo = "7984563210",
                    ParentMobileNo = "9825098745",
                    Email = "hsavani456@rku.ac.in",
@@ -172,7 +184,7 @@ namespace Attendance.Data
                    Country = "India",
                    MotherName = "Meenaben Jitubhai Savani",
                    PinCode = "360005",
-                   Gender = Gender.Male
+                   Gender = Genders.Male
                }
             );
         }
