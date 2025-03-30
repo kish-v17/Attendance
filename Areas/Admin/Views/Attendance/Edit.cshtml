@@ -1,0 +1,46 @@
+﻿@model AttendanceViewModel
+
+<h2>Edit Attendance</h2>
+
+<form method="post" asp-action="Edit">
+    <input type="hidden" asp-for="AttendanceId" />
+
+    <div class="mb-3">
+        <label class="form-label">Enrolment No</label>
+        <input type="text" class="form-control" asp-for="Enrolment" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="FullName" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Department</label>
+        <input type="text" class="form-control" asp-for="Department" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Class</label>
+        <input type="text" class="form-control" asp-for="ClassName" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Duration</label>
+        <input type="text" class="form-control" asp-for="Duration" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Attendance Date</label>
+        <input type="text" class="form-control" asp-for="AttendanceDate" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select class="form-control" asp-for="Status" asp-items="Html.GetEnumSelectList<AttendanceStatus>()"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Attendance</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+

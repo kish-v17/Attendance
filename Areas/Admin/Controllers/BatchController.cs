@@ -79,7 +79,7 @@ namespace Attendance.Areas.Admin.Controllers
                     classList.Add(new ClassModel
                     {
                         BatchId = model.BatchId, 
-                        Class = ((char)('A' + i)).ToString()
+                        ClassName = ((char)('A' + i)).ToString()
                     });
                 }
                 _context.ClassTbl.AddRange(classList);

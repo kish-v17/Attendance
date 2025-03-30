@@ -28,9 +28,9 @@
         function loadScheduleData() {
             scheduleDataTable = $('#scheduleTbl').DataTable({
                 processing: true,
-                serverSide: false,  // Set to `true` if handling pagination on the server
+                serverSide: false, 
                     ajax: {
-                        url: '/Admin/Schedule/GetAll',  // Change to '/Admin/Schedule/GetAll' only if it exists
+                        url: '/Admin/Schedule/GetAll',
                         type: 'GET',
                         dataType: 'json',
                         error: function (xhr, error, thrown) {

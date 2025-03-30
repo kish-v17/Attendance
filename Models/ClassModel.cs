@@ -18,7 +18,7 @@ namespace Attendance.Models
 
         [Required(ErrorMessage = "Class letter is required.")]
         [RegularExpression("^[A-Z]$", ErrorMessage = "Class must be a single uppercase letter (A-Z).")]
-        public string Class { get; set; }
+        public string ClassName { get; set; }
 
         [ValidateNever]
         public List<BatchModel>? Batches { get; set; }

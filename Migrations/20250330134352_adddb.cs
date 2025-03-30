@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Attendance.Migrations
 {
     /// <inheritdoc />
-    public partial class Adddb : Migration
+    public partial class adddb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -44,6 +44,22 @@ namespace Attendance.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AttendanceTbl",
+                columns: table => new
+                {
+                    AttendanceId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ScheduleId = table.Column<int>(type: "int", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    AttendanceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AttendanceTbl", x => x.AttendanceId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BatchTbl",
                 columns: table => new
                 {
@@ -69,7 +85,7 @@ namespace Attendance.Migrations
                     ClassId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BatchId = table.Column<int>(type: "int", nullable: false),
-                    Class = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClassName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentModelStudentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -247,7 +263,7 @@ namespace Attendance.Migrations
 
             migrationBuilder.InsertData(
                 table: "ClassTbl",
-                columns: new[] { "ClassId", "BatchId", "Class", "StudentModelStudentId" },
+                columns: new[] { "ClassId", "BatchId", "ClassName", "StudentModelStudentId" },
                 values: new object[,]
                 {
                     { 1, 1, "A", null },
@@ -274,6 +290,25 @@ namespace Attendance.Migrations
                     { 1, "789654123012", "Satellite Road, Nr. Shivalik Plaza", 3, 1, "Ahmedabad", 2, "India", new DateOnly(2003, 8, 21), "dpatel32@rku.ac.in", "24CSMCA0001", "Hiteshbhai Patel", "Dhruv Hiteshbhai Patel", 1, "9876543210", "Bhavnaben Hiteshbhai Patel", "9825034567", "380015", "Gujarat" },
                     { 2, "854796321045", "150 Feet Ring Road, Nr. Indira Circle", 7, 1, "Rajkot", 3, "India", new DateOnly(2002, 11, 12), "hsavani456@rku.ac.in", "24CSBCA0001", "Jitubhai Savani", "Harsh Jitubhai Savani", 1, "7984563210", "Meenaben Jitubhai Savani", "9825098745", "360005", "Gujarat" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "AttendanceTbl",
+                columns: new[] { "AttendanceId", "AttendanceDate", "ScheduleId", "Status", "StudentId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 3, 30, 19, 13, 48, 963, DateTimeKind.Local).AddTicks(2371), 1, 1, 1 },
+                    { 2, new DateTime(2025, 3, 30, 19, 13, 48, 963, DateTimeKind.Local).AddTicks(2396), 2, 2, 1 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AttendanceTbl_ScheduleId",
+                table: "AttendanceTbl",
+                column: "ScheduleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AttendanceTbl_StudentId",
+                table: "AttendanceTbl",
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BatchTbl_ClassModelClassId",
@@ -337,6 +372,22 @@ namespace Attendance.Migrations
                 unique: true);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_AttendanceTbl_ScheduleTbl_ScheduleId",
+                table: "AttendanceTbl",
+                column: "ScheduleId",
+                principalTable: "ScheduleTbl",
+                principalColumn: "ScheduleId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AttendanceTbl_StudentTbl_StudentId",
+                table: "AttendanceTbl",
+                column: "StudentId",
+                principalTable: "StudentTbl",
+                principalColumn: "StudentId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_BatchTbl_ClassTbl_ClassModelClassId",
                 table: "BatchTbl",
                 column: "ClassModelClassId",
@@ -371,12 +422,12 @@ namespace Attendance.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_BatchTbl_ClassTbl_ClassModelClassId",
-                table: "BatchTbl");
+                name: "FK_ClassTbl_StudentTbl_StudentModelStudentId",
+                table: "ClassTbl");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_StudentTbl_ClassTbl_ClassId",
-                table: "StudentTbl");
+                name: "FK_BatchTbl_ClassTbl_ClassModelClassId",
+                table: "BatchTbl");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_BatchTbl_CourseTbl_CourseId",
@@ -385,6 +436,9 @@ namespace Attendance.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_DepartmentTbl_CourseTbl_CourseModelCourseId",
                 table: "DepartmentTbl");
+
+            migrationBuilder.DropTable(
+                name: "AttendanceTbl");
 
             migrationBuilder.DropTable(
                 name: "ScheduleTbl");
@@ -396,10 +450,10 @@ namespace Attendance.Migrations
                 name: "UserTbl");
 
             migrationBuilder.DropTable(
-                name: "ClassTbl");
+                name: "StudentTbl");
 
             migrationBuilder.DropTable(
-                name: "StudentTbl");
+                name: "ClassTbl");
 
             migrationBuilder.DropTable(
                 name: "CourseTbl");

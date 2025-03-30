@@ -39,7 +39,7 @@ namespace Attendance.Areas.Admin.Controllers
                 Faculty = s.User.Fullname,
                 Subject = s.Subject.SubjectName,
                 ClassName = s.Class != null && s.Class.Batch != null && s.Class.Batch.Course != null
-                    ? $"{s.Class.Batch.Year} - {GetShortName(s.Class.Batch.Course.CourseName)} - {s.Class.Batch.Semester} - {s.Class.Class}"
+                    ? $"{s.Class.Batch.Year} - {GetShortName(s.Class.Batch.Course.CourseName)} - {s.Class.Batch.Semester} - {s.Class.ClassName}"
                     : "N/A"
             }).ToList();
 
@@ -123,7 +123,7 @@ namespace Attendance.Areas.Admin.Controllers
             {
                 Value = c.ClassId.ToString(),
                 Text = c.Batch != null && c.Batch.Course != null
-                    ? $"{c.Batch.Year} - {GetShortName(c.Batch.Course.CourseName)} - {c.Batch.Semester} - {c.Class}"
+                    ? $"{c.Batch.Year} - {GetShortName(c.Batch.Course.CourseName)} - {c.Batch.Semester} - {c.ClassName}"
                     : "N/A"
             })
             .Distinct()

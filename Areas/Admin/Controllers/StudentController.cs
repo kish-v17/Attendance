@@ -32,7 +32,7 @@ namespace Attendance.Areas.Admin.Controllers
             {
                 Value = c.ClassId.ToString(),
                 Text = c.Batch != null && c.Batch.Course != null
-                    ? $"{c.Batch.Year} - {GetShortName(c.Batch.Course.CourseName)} - {c.Batch.Semester} - {c.Class}"
+                    ? $"{c.Batch.Year} - {GetShortName(c.Batch.Course.CourseName)} - {c.Batch.Semester} - {c.ClassName}"
                     : "N/A"
             })
             .Distinct()
@@ -114,7 +114,7 @@ namespace Attendance.Areas.Admin.Controllers
          {
              Value = c.ClassId.ToString(),
              Text = c.Batch != null && c.Batch.Course != null
-                 ? $"{c.Batch.Year}-{GetShortName(c.Batch.Course.CourseName)} - {c.Batch.Semester} - {c.Class}"
+                 ? $"{c.Batch.Year}-{GetShortName(c.Batch.Course.CourseName)} - {c.Batch.Semester} - {c.ClassName}"
                  : "N/A",
              Selected = (c.ClassId == student.ClassId)
          })
@@ -188,7 +188,7 @@ namespace Attendance.Areas.Admin.Controllers
                 b.PinCode,
 
                 ClassName = b.Class != null && b.Class.Batch != null && b.Class.Batch.Course != null
-                    ? $"{b.Class.Batch.Year}-{GetShortName(b.Class.Batch.Course.CourseName)} - {b.Class.Batch.Semester} - {b.Class.Class}"
+                    ? $"{b.Class.Batch.Year}-{GetShortName(b.Class.Batch.Course.CourseName)} - {b.Class.Batch.Semester} - {b.Class.ClassName}"
                     : "N/A"
             }).ToList(); 
 

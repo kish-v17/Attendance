@@ -1,4 +1,5 @@
-﻿<div class="main-content">
+﻿@model dynamic
+<div class="main-content">
     <h2 class="fw-bold">Admin Dashboard</h2>
 
     <!-- Statistics Cards -->
@@ -8,9 +9,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h5>Total Students</h5>
-                        <h2>450</h2>
+                        <h2>@Model.TotalStudents</h2>
                     </div>
-                    <i class="fas fa-user-graduate"></i>
+                    <i class="menu-icon tf-icons fas fa-user-graduate"></i>
                 </div>
             </div>
         </div>
@@ -19,9 +20,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h5>Total Faculties</h5>
-                        <h2>25</h2>
+                        <h2>@Model.TotalFaculties</h2>
                     </div>
-                    <i class="fas fa-chalkboard-teacher"></i>
+                    <i class="menu-icon tf-icons fas fa-chalkboard-teacher"></i>
                 </div>
             </div>
         </div>
@@ -30,9 +31,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h5>Classes</h5>
-                        <h2>10</h2>
+                        <h2>@Model.TotalClasses</h2>
                     </div>
-                    <i class="fas fa-school"></i>
+                    <i class="menu-icon tf-icons fas fa-school"></i>
                 </div>
             </div>
         </div>
@@ -41,9 +42,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h5>Today's Attendance</h5>
-                        <h2>320</h2>
+                        <h2>@Model.TodayAttendance</h2>
                     </div>
-                    <i class="fas fa-clipboard-list"></i>
+                    <i class="menu-icon tf-icons fas fa-clipboard-list"></i>
                 </div>
             </div>
         </div>
@@ -69,27 +70,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Rahul Sharma</td>
-                                <td>BCA</td>
-                                <td>A</td>
-                                <td><span class="badge bg-success">Present</span></td>
-                                <td>9:00 AM</td>
-                            </tr>
-                            <tr>
-                                <td>Priya Mehta</td>
-                                <td>BBA</td>
-                                <td>B</td>
-                                <td><span class="badge bg-danger">Absent</span></td>
-                                <td>9:10 AM</td>
-                            </tr>
-                            <tr>
-                                <td>Sameer Khan</td>
-                                <td>BCA</td>
-                                <td>C</td>
-                                <td><span class="badge bg-success">Present</span></td>
-                                <td>9:15 AM</td>
-                            </tr>
+                            @foreach (var log in Model.RecentLogs)
+                            {
+                                <tr>
+                                    <td>@log.StudentName</td>
+                                    <td>@log.Branch</td>
+                                    <td>@log.ClassName</td>
+                                    <td>
+                                        <span class="badge @(log.Status == "Present" ? "bg-success" : "bg-danger")">
+                                            @log.Status
+                                        </span>
+                                    </td>
+                                    <td>@log.Time</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -104,18 +98,19 @@
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            BCA - Database Management
-                            <span class="badge bg-primary">10:30 AM</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            BBA - Marketing Strategy
-                            <span class="badge bg-primary">11:00 AM</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            B.Tech - Computer Networks
-                            <span class="badge bg-primary">12:00 PM</span>
-                        </li>
+                        @if (Model.UpcomingClasses.Count != 0){
+                        @foreach (var schedule in Model.UpcomingClasses)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                @schedule.Course
+                                <span class="badge bg-primary">@schedule.Time</span>
+                            </li>
+                        }
+                        }
+                        else
+                        {
+                            <p class="text-center mt-5 text-muted">No upcoming classes for today.</p>
+                        }
                     </ul>
                 </div>
             </div>
@@ -123,3 +118,131 @@
     </div>
 
 </div>
+
+
+
+@* <div class="main-content"> *@
+@*     <h2 class="fw-bold">Admin Dashboard</h2> *@
+
+@*     <!-- Statistics Cards --> *@
+@*     <div class="row g-4 mt-3"> *@
+@*         <div class="col-md-3"> *@
+@*             <div class="card bg-primary text-white p-3"> *@
+@*                 <div class="d-flex justify-content-between align-items-center"> *@
+@*                     <div> *@
+@*                         <h5>Total Students</h5> *@
+@*                         <h2>450</h2> *@
+@*                     </div> *@
+@*                     <i class="menu-icon tf-icons fas fa-user-graduate"></i> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="col-md-3"> *@
+@*             <div class="card bg-secondary text-white p-3"> *@
+@*                 <div class="d-flex justify-content-between align-items-center"> *@
+@*                     <div> *@
+@*                         <h5>Total Faculties</h5> *@
+@*                         <h2>25</h2> *@
+@*                     </div> *@
+@*                     <i class="menu-icon tf-icons fas fa-chalkboard-teacher"></i> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="col-md-3"> *@
+@*             <div class="card bg-warning text-dark p-3"> *@
+@*                 <div class="d-flex justify-content-between align-items-center"> *@
+@*                     <div> *@
+@*                         <h5>Classes</h5> *@
+@*                         <h2>10</h2> *@
+@*                     </div> *@
+@*                     <i class="menu-icon tf-icons fas fa-school"></i> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="col-md-3"> *@
+@*             <div class="card bg-success text-white p-3"> *@
+@*                 <div class="d-flex justify-content-between align-items-center"> *@
+@*                     <div> *@
+@*                         <h5>Today's Attendance</h5> *@
+@*                         <h2>320</h2> *@
+@*                     </div> *@
+@*                     <i class="menu-icon tf-icons fas fa-clipboard-list"></i> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+
+@*     <!-- Attendance Logs & Upcoming Classes --> *@
+@*     <div class="row mt-4"> *@
+@*         <!-- Recent Attendance Logs --> *@
+@*         <div class="col-md-7"> *@
+@*             <div class="card shadow-sm"> *@
+@*                 <div class="card-header bg-primary text-white"> *@
+@*                     <h5>Recent Attendance Logs</h5> *@
+@*                 </div> *@
+@*                 <div class="card-body"> *@
+@*                     <table class="table table-striped"> *@
+@*                         <thead> *@
+@*                             <tr> *@
+@*                                 <th>Student</th> *@
+@*                                 <th>Branch</th> *@
+@*                                 <th>Class</th> *@
+@*                                 <th>Status</th> *@
+@*                                 <th>Time</th> *@
+@*                             </tr> *@
+@*                         </thead> *@
+@*                         <tbody> *@
+@*                             <tr> *@
+@*                                 <td>Rahul Sharma</td> *@
+@*                                 <td>BCA</td> *@
+@*                                 <td>A</td> *@
+@*                                 <td><span class="badge bg-success">Present</span></td> *@
+@*                                 <td>9:00 AM</td> *@
+@*                             </tr> *@
+@*                             <tr> *@
+@*                                 <td>Priya Mehta</td> *@
+@*                                 <td>BBA</td> *@
+@*                                 <td>B</td> *@
+@*                                 <td><span class="badge bg-danger">Absent</span></td> *@
+@*                                 <td>9:10 AM</td> *@
+@*                             </tr> *@
+@*                             <tr> *@
+@*                                 <td>Sameer Khan</td> *@
+@*                                 <td>BCA</td> *@
+@*                                 <td>C</td> *@
+@*                                 <td><span class="badge bg-success">Present</span></td> *@
+@*                                 <td>9:15 AM</td> *@
+@*                             </tr> *@
+@*                         </tbody> *@
+@*                     </table> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+
+@*         <!-- Upcoming Schedules --> *@
+@*         <div class="col-md-5"> *@
+@*             <div class="card shadow-sm"> *@
+@*                 <div class="card-header bg-secondary text-white"> *@
+@*                     <h5>Upcoming Classes</h5> *@
+@*                 </div> *@
+@*                 <div class="card-body"> *@
+@*                     <ul class="list-group"> *@
+@*                         <li class="list-group-item d-flex justify-content-between align-items-center"> *@
+@*                             BCA - Database Management *@
+@*                             <span class="badge bg-primary">10:30 AM</span> *@
+@*                         </li> *@
+@*                         <li class="list-group-item d-flex justify-content-between align-items-center"> *@
+@*                             BBA - Marketing Strategy *@
+@*                             <span class="badge bg-primary">11:00 AM</span> *@
+@*                         </li> *@
+@*                         <li class="list-group-item d-flex justify-content-between align-items-center"> *@
+@*                             B.Tech - Computer Networks *@
+@*                             <span class="badge bg-primary">12:00 PM</span> *@
+@*                         </li> *@
+@*                     </ul> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+
+@* </div> *@

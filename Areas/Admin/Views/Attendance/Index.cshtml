@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Attendance";
+}
+
+<div class="card">
+    <div class="row p-3">
+        <div class="col-6">
+            <h5 class="card-header">Attendance</h5>
+        </div>
+    </div>
+    <hr class="my-0">
+    <div class="table-responsive p-5">
+        <table class="table table-bordered" id="attendanceTbl"></table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadAttendanceData();
+        });
+
+        var attendanceDataTable;
+
+        function loadAttendanceData() {
+            attendanceDataTable = $('#attendanceTbl').DataTable({
+                processing: true,
+                ajax: {
+                    url: '/Admin/Attendance/GetAll',
+                },
+                columns: [
+                    { data: 'attendanceId', title: 'ID', width: "5%" },
+                    { data:'enrolment', title:'Enrolment no', width: "18%"},
+                    { data:'fullName', title:'Name', width: "22%"},
+                    { data:'subjectName', title:'Subject', width: "22%"},
+                    { data:'faculty', title:'Faculty', width: "22%"},
+                    { data: 'department', title: 'Department', width: "6%" },
+                    {data:'className',title:'Class', width:"20%"},
+                    { data: 'duration', title: 'Duration', width: "20%" },
+                    { data: 'date', title: 'Date', width: "10%" },
+                    { data: 'status', title: 'Status', width: "15%" },
+                    {
+                        data: 'attendanceId',
+                        render: function (data) {
+                            return `
+                                <a href="/Admin/Attendance/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
+                                    <i class="ri-pencil-line me-2"></i>
+                                </a>
+                            `;
+                        },
+                        title: 'Action',
+                        width: "10%"
+                    },
+                ]
+            });
+        }
+    </script>
+}

@@ -18,6 +18,7 @@ namespace Attendance.Data
         public DbSet<StudentModel> StudentTbl{ get; set; }
         public DbSet<ClassModel> ClassTbl { get; set; }
         public DbSet<ScheduleModel> ScheduleTbl { get; set; }
+        public DbSet<AttendanceModel> AttendanceTbl { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>().HasData(
@@ -107,27 +108,27 @@ namespace Attendance.Data
                {
                    ClassId = 1,
                    BatchId=1,
-                   Class = "A"
+                   ClassName = "A"
                }, new ClassModel
                {
                    ClassId = 2,
                    BatchId = 1,
-                   Class = "B"
+                   ClassName = "B"
                }, new ClassModel
                {
                    ClassId = 3,
                    BatchId = 2,
-                   Class = "A"
+                   ClassName = "A"
                }, new ClassModel
                {
                    ClassId = 4,
                    BatchId = 2,
-                   Class = "B"
+                   ClassName = "B"
                }, new ClassModel
                {
                    ClassId = 5,
                    BatchId = 2,
-                   Class = "C"
+                   ClassName = "C"
                }
             );
             modelBuilder.Entity<BatchModel>().HasData(
@@ -218,6 +219,22 @@ namespace Attendance.Data
                     Day = DaysOfWeek.Monday
                 }
             );
+            modelBuilder.Entity<AttendanceModel>()
+            .HasOne(a => a.Student)
+            .WithMany()
+            .HasForeignKey(a => a.StudentId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevents cascade delete
+
+            modelBuilder.Entity<AttendanceModel>()
+                .HasOne(a => a.Schedule)
+                .WithMany()
+                .HasForeignKey(a => a.ScheduleId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AttendanceModel>().HasData(
+               new AttendanceModel { AttendanceId = 1, ScheduleId = 1, StudentId = 1, Status = AttendanceStatus.Present },
+               new AttendanceModel { AttendanceId = 2, ScheduleId = 2, StudentId = 1, Status = AttendanceStatus.Absent }
+            );
+            
         }
     }
 }

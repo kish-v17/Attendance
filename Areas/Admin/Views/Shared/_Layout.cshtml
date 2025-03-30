@@ -27,6 +27,7 @@
           rel="stylesheet" />
 
     <link rel="stylesheet" href="~/assets/vendor/fonts/remixicon/remixicon.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Menu waves for no-customizer fix -->
     <link rel="stylesheet" href="~/assets/vendor/libs/node-waves/node-waves.css" />
@@ -121,47 +122,47 @@
                 <ul class="menu-inner py-1">
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="menu-link">
-                            <i class="menu-icon tf-icons ri-dashboard-line"></i>
+                            <i class="menu-icon tf-icons ri-dashboard-fill"></i>
                             <div data-i18n="Dashboard">Dashboard</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
                         <a asp-area="Admin"  asp-controller="Department" asp-action="Index" class="menu-link">
-                            <i class="menu-icon tf-icons ri-building-line"></i>
+                            <i class="menu-icon tf-icons ri-building-fill"></i>
                             <div data-i18n="Department">Department</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Subject" asp-action="Index" class="menu-link">
-                            <i class="menu-icon tf-icons ri-book-line"></i>
+                            <i class="menu-icon tf-icons ri-book-fill"></i>
                             <div data-i18n="Subject">Subject</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Course" asp-action="Index" class="menu-link">
-                            <i class="menu-icon tf-icons ri-graduation-cap-line"></i>
+                            <i class="menu-icon tf-icons ri-graduation-cap-fill"></i>
                             <div data-i18n="Course">Course</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Batch" asp-action="Index" class="menu-link">
-                            <i class="menu-icon tf-icons ri-group-line"></i>
+                            <i class="menu-icon tf-icons ri-group-fill"></i>
                             <div data-i18n="Batch">Batch</div>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Student" asp-action="Index" class="menu-link">
-                            <i class="menu-icon tf-icons ri-group-fill"></i>
+                            <i class="menu-icon tf-icons fa-solid fa-user-graduate"></i>
                             <div data-i18n="Student">Student</div>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Faculty" asp-action="Index" class="menu-link">
-                            <i class="menu-icon tf-icons ri-team-fill"></i>
+                            <i class="menu-icon tf-icons fa-solid fa-chalkboard-user"></i>
                             <div data-i18n="Faculty">Faculty</div>
                         </a>
                     </li>
@@ -169,6 +170,12 @@
                         <a asp-area="Admin" asp-controller="Schedule" asp-action="Index" class="menu-link">
                             <i class="menu-icon tf-icons ri-calendar-todo-fill"></i>
                             <div data-i18n="Schedule">Schedule</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a asp-area="Admin" asp-controller="Attendance" asp-action="Index" class="menu-link">
+                            <i class="menu-icon tf-icons ri-user-star-fill"></i>
+                            <div data-i18n="Attendance">Attendance</div>
                         </a>
                     </li>
                 </ul>

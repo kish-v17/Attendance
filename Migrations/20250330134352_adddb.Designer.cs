@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250329070755_Add-db")]
-    partial class Adddb
+    [Migration("20250330134352_adddb")]
+    partial class adddb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,53 @@ namespace Attendance.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Attendance.Models.AttendanceModel", b =>
+                {
+                    b.Property<int>("AttendanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AttendanceId"));
+
+                    b.Property<DateTime>("AttendanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AttendanceId");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("AttendanceTbl");
+
+                    b.HasData(
+                        new
+                        {
+                            AttendanceId = 1,
+                            AttendanceDate = new DateTime(2025, 3, 30, 19, 13, 48, 963, DateTimeKind.Local).AddTicks(2371),
+                            ScheduleId = 1,
+                            Status = 1,
+                            StudentId = 1
+                        },
+                        new
+                        {
+                            AttendanceId = 2,
+                            AttendanceDate = new DateTime(2025, 3, 30, 19, 13, 48, 963, DateTimeKind.Local).AddTicks(2396),
+                            ScheduleId = 2,
+                            Status = 2,
+                            StudentId = 1
+                        });
+                });
 
             modelBuilder.Entity("Attendance.Models.BatchModel", b =>
                 {
@@ -96,7 +143,7 @@ namespace Attendance.Migrations
                     b.Property<int>("BatchId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Class")
+                    b.Property<string>("ClassName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -116,31 +163,31 @@ namespace Attendance.Migrations
                         {
                             ClassId = 1,
                             BatchId = 1,
-                            Class = "A"
+                            ClassName = "A"
                         },
                         new
                         {
                             ClassId = 2,
                             BatchId = 1,
-                            Class = "B"
+                            ClassName = "B"
                         },
                         new
                         {
                             ClassId = 3,
                             BatchId = 2,
-                            Class = "A"
+                            ClassName = "A"
                         },
                         new
                         {
                             ClassId = 4,
                             BatchId = 2,
-                            Class = "B"
+                            ClassName = "B"
                         },
                         new
                         {
                             ClassId = 5,
                             BatchId = 2,
-                            Class = "C"
+                            ClassName = "C"
                         });
                 });
 
@@ -541,6 +588,25 @@ namespace Attendance.Migrations
                             Password = "Jay@1234",
                             Role = 1
                         });
+                });
+
+            modelBuilder.Entity("Attendance.Models.AttendanceModel", b =>
+                {
+                    b.HasOne("Attendance.Models.ScheduleModel", "Schedule")
+                        .WithMany()
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Attendance.Models.StudentModel", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Schedule");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Attendance.Models.BatchModel", b =>

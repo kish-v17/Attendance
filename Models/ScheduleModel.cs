@@ -31,7 +31,7 @@ namespace Attendance.Models
         public int ClassId { get; set; }
         [ForeignKey("ClassId")]
         [ValidateNever]
-        public ClassModel Class { get; set; }
+        public ClassModel? Class { get; set; }
 
         [Required(ErrorMessage = "Start Time is required.")]
         [DataType(DataType.Time)]
