@@ -1,5 +1,4 @@
-﻿using Attendance.Attributes;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -36,7 +35,6 @@ namespace Attendance.Models
 
         [Required(ErrorMessage = "End Date is required.")]
         [DataType(DataType.Date)]
-        [DateGreaterThan(nameof(StartDate), ErrorMessage = "End Date must be after Start Date.")]
         public DateOnly EndDate { get; set; }
         [ValidateNever]
         public List<CourseModel>? Courses { get; set; }

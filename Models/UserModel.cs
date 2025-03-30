@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Attendance.Models
@@ -9,7 +10,7 @@ namespace Attendance.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
 
-        [Required(ErrorMessage = "Username is required.")]
+        [Required(ErrorMessage = "Name is required.")]
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 100 characters.")]
         public string Fullname { get; set; }
 
@@ -21,13 +22,13 @@ namespace Attendance.Models
         [EmailAddress(ErrorMessage = "Invalid email address.")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required.")]
+        [ValidateNever]
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Role is required.")]
         [EnumDataType(typeof(UserRole), ErrorMessage = "Invalid role selected.")]
-        public UserRole Role { get; set; }
+        public UserRole Role { get; set; } = UserRole.Faculty;
     }
 
     public enum UserRole

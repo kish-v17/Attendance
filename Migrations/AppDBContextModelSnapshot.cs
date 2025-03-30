@@ -240,6 +240,65 @@ namespace Attendance.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Attendance.Models.ScheduleModel", b =>
+                {
+                    b.Property<int>("ScheduleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"));
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Day")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("FacultyId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ScheduleId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("FacultyId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("ScheduleTbl");
+
+                    b.HasData(
+                        new
+                        {
+                            ScheduleId = 1,
+                            ClassId = 1,
+                            Day = 1,
+                            EndTime = new TimeSpan(0, 9, 45, 0, 0),
+                            FacultyId = 2,
+                            StartTime = new TimeSpan(0, 8, 0, 0, 0),
+                            SubjectId = 1
+                        },
+                        new
+                        {
+                            ScheduleId = 2,
+                            ClassId = 1,
+                            Day = 1,
+                            EndTime = new TimeSpan(0, 12, 30, 0, 0),
+                            FacultyId = 3,
+                            StartTime = new TimeSpan(0, 10, 0, 0, 0),
+                            SubjectId = 2
+                        });
+                });
+
             modelBuilder.Entity("Attendance.Models.StudentModel", b =>
                 {
                     b.Property<int>("StudentId")
@@ -469,6 +528,15 @@ namespace Attendance.Migrations
                             MobileNo = "7383835015",
                             Password = "Abhi@123",
                             Role = 1
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            Email = "jgorfad223@rku.ac.in",
+                            Fullname = "Jay Gorfad",
+                            MobileNo = "9925323126",
+                            Password = "Jay@1234",
+                            Role = 1
                         });
                 });
 
@@ -522,6 +590,33 @@ namespace Attendance.Migrations
                     b.HasOne("Attendance.Models.CourseModel", null)
                         .WithMany("Departments")
                         .HasForeignKey("CourseModelCourseId");
+                });
+
+            modelBuilder.Entity("Attendance.Models.ScheduleModel", b =>
+                {
+                    b.HasOne("Attendance.Models.ClassModel", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Attendance.Models.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Attendance.Models.SubjectModel", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Attendance.Models.StudentModel", b =>

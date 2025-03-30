@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Faculties";
+}
+
+<div class="card">
+    <div class="row p-3">
+        <div class="col-6">
+            <h5 class="card-header">Faculties</h5>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add Faculty</a>
+        </div>
+    </div>
+    <hr class="my-0">
+    <div class="table-responsive p-5">
+        <table class="table table-bordered" id="FacultyTbl"></table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadFacultyData();
+        });
+
+        var FacultyDataTable;
+
+        function loadFacultyData() {
+            FacultyDataTable = $('#FacultyTbl').DataTable({
+                processing: true,
+                serverSide: false, 
+                    ajax: {
+                        url: '/Admin/Faculty/GetAll', 
+                        type: 'GET',
+                        dataType: 'json',
+                        error: function (xhr, error, thrown) {
+                            console.log("Error: ", xhr.responseText);
+                        }
+                    },
+                columns: [
+                    { data: 'userId', title: 'ID', width: "5%" },
+                    { data: 'fullname', title: 'Faculty Name', width: "15%"},
+                    { data: 'email', title: 'Email', width: "15%"},
+                    { data: 'mobileNo', title: 'Phone', width: "10%" },
+                    {
+                        data: 'userId',
+                        render: function (data) {
+                            return `<a href="/Admin/Faculty/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
+                                        <i class="ri-pencil-line me-2"></i>
+                                    </a>`;
+                        },
+                        title: 'Action',
+                        width: "10%"
+                    },
+                ]
+            });
+        }
+    </script>
+}

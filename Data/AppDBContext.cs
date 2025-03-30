@@ -17,6 +17,7 @@ namespace Attendance.Data
         public DbSet<BatchModel> BatchTbl{ get; set; }
         public DbSet<StudentModel> StudentTbl{ get; set; }
         public DbSet<ClassModel> ClassTbl { get; set; }
+        public DbSet<ScheduleModel> ScheduleTbl { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>().HasData(
@@ -35,6 +36,14 @@ namespace Attendance.Data
                     Password = "Abhi@123",
                     Role = UserRole.Faculty,
                     MobileNo = "7383835015"
+                },
+                new UserModel {
+                    UserId = 3,
+                    Fullname = "Jay Gorfad",
+                    Email = "jgorfad223@rku.ac.in",
+                    Password = "Jay@1234",
+                    Role = UserRole.Faculty,
+                    MobileNo = "9925323126"
                 }
             );
             modelBuilder.Entity<DepartmentModel>().HasData(
@@ -186,6 +195,28 @@ namespace Attendance.Data
                    PinCode = "360005",
                    Gender = Genders.Male
                }
+            );
+            modelBuilder.Entity<ScheduleModel>().HasData(
+                new ScheduleModel
+                {
+                    ScheduleId = 1,
+                    SubjectId = 1,
+                    FacultyId = 2,
+                    ClassId = 1,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(9, 45, 0),
+                    Day = DaysOfWeek.Monday
+                },
+                new ScheduleModel
+                {
+                    ScheduleId = 2,
+                    SubjectId = 2,
+                    FacultyId = 3,
+                    ClassId = 1,
+                    StartTime = new TimeSpan(10, 0, 0),
+                    EndTime = new TimeSpan(12, 30, 0),
+                    Day = DaysOfWeek.Monday
+                }
             );
         }
     }

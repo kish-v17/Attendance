@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Schedule";
+}
+
+<div class="card">
+    <div class="row p-3">
+        <div class="col-6">
+            <h5 class="card-header">Schedule</h5>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add Schedule</a>
+        </div>
+    </div>
+    <hr class="my-0">
+    <div class="table-responsive p-5">
+        <table class="table table-bordered" id="scheduleTbl"></table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadScheduleData();
+        });
+
+        var scheduleDataTable;
+
+        function loadScheduleData() {
+            scheduleDataTable = $('#scheduleTbl').DataTable({
+                processing: true,
+                serverSide: false,  // Set to `true` if handling pagination on the server
+                    ajax: {
+                        url: '/Admin/Schedule/GetAll',  // Change to '/Admin/Schedule/GetAll' only if it exists
+                        type: 'GET',
+                        dataType: 'json',
+                        error: function (xhr, error, thrown) {
+                            console.log("Error: ", xhr.responseText);
+                        }
+                    },
+                columns: [
+                    { data: 'scheduleId', title: 'ID', width: "5%" },
+                    { data: 'subject', title: 'Subject', width: "20%"},
+                    { data: 'faculty', title: 'Faculty', width: "10%" },
+                    { data: 'className', title: 'Class', width: "18%"},
+                    { data: 'day', title: 'Day', width: "10%"},
+                    { data: 'startTime', title: 'Start Time', width: "15%" },
+                    { data: 'endTime', title: 'End Time', width: "15%" },
+                    {
+                        data: 'scheduleId',
+                        render: function (data) {
+                            return `<a href="/Admin/Schedule/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
+                                        <i class="ri-pencil-line me-2"></i>
+                                    </a>`;
+                        },
+                        title: 'Action',
+                        width: "10%"
+                    },
+                ]
+            });
+        }
+    </script>
+}

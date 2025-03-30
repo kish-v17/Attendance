@@ -1,0 +1,41 @@
+﻿@model UserModel
+
+@{
+    ViewData["Title"] = "Add Faculty";
+}
+
+<div class="main-content">
+    <div class="row py-3">
+        <div class="col-6">
+            <h2>Add Faculty</h2>
+        </div>
+    </div>
+    <form method="post" asp-action="Create" id="facultyForm">
+        <div class="mb-3">
+            <label class="form-label">Faculty Name</label>
+            <input type="text" class="form-control" asp-for="Fullname" id="fullName" placeholder="Faculty name" />
+            <span class="text-danger" asp-validation-for="Fullname"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" asp-for="Email" id="email" placeholder="Email" />
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mobile No</label>
+            <input type="text" class="form-control" asp-for="MobileNo" id="phone" placeholder="Mobile no" />
+            <span class="text-danger" asp-validation-for="MobileNo"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

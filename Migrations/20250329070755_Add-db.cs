@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Attendance.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDB : Migration
+    public partial class Adddb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -80,6 +80,42 @@ namespace Attendance.Migrations
                         column: x => x.BatchId,
                         principalTable: "BatchTbl",
                         principalColumn: "BatchId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ScheduleTbl",
+                columns: table => new
+                {
+                    ScheduleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SubjectId = table.Column<int>(type: "int", nullable: false),
+                    FacultyId = table.Column<int>(type: "int", nullable: false),
+                    ClassId = table.Column<int>(type: "int", nullable: false),
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Day = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduleTbl", x => x.ScheduleId);
+                    table.ForeignKey(
+                        name: "FK_ScheduleTbl_ClassTbl_ClassId",
+                        column: x => x.ClassId,
+                        principalTable: "ClassTbl",
+                        principalColumn: "ClassId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ScheduleTbl_SubjectTbl_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "SubjectTbl",
+                        principalColumn: "SubjectId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ScheduleTbl_UserTbl_FacultyId",
+                        column: x => x.FacultyId,
+                        principalTable: "UserTbl",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -185,7 +221,8 @@ namespace Attendance.Migrations
                 values: new object[,]
                 {
                     { 1, "kish.v07@gmail.com", "Kishan Patel", "9925323126", "Admin@123", 0 },
-                    { 2, "busyman2561@gmail.com", "Abhi Patel", "7383835015", "Abhi@123", 1 }
+                    { 2, "busyman2561@gmail.com", "Abhi Patel", "7383835015", "Abhi@123", 1 },
+                    { 3, "jgorfad223@rku.ac.in", "Jay Gorfad", "9925323126", "Jay@1234", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -218,6 +255,15 @@ namespace Attendance.Migrations
                     { 3, 2, "A", null },
                     { 4, 2, "B", null },
                     { 5, 2, "C", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ScheduleTbl",
+                columns: new[] { "ScheduleId", "ClassId", "Day", "EndTime", "FacultyId", "StartTime", "SubjectId" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, new TimeSpan(0, 9, 45, 0, 0), 2, new TimeSpan(0, 8, 0, 0, 0), 1 },
+                    { 2, 1, 1, new TimeSpan(0, 12, 30, 0, 0), 3, new TimeSpan(0, 10, 0, 0, 0), 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -263,6 +309,21 @@ namespace Attendance.Migrations
                 name: "IX_DepartmentTbl_CourseModelCourseId",
                 table: "DepartmentTbl",
                 column: "CourseModelCourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduleTbl_ClassId",
+                table: "ScheduleTbl",
+                column: "ClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduleTbl_FacultyId",
+                table: "ScheduleTbl",
+                column: "FacultyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduleTbl_SubjectId",
+                table: "ScheduleTbl",
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentTbl_ClassId",
@@ -324,6 +385,9 @@ namespace Attendance.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_DepartmentTbl_CourseTbl_CourseModelCourseId",
                 table: "DepartmentTbl");
+
+            migrationBuilder.DropTable(
+                name: "ScheduleTbl");
 
             migrationBuilder.DropTable(
                 name: "SubjectTbl");
