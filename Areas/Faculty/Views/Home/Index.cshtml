@@ -1,1 +1,74 @@
-﻿<h1>Faculty</h1>
+﻿@{
+    var timetable = ViewBag.Timetable as Dictionary<string, Dictionary<string, string>>;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Faculty Timetable</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 0px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #9D70FF;
+            color: white;
+            font-weight:700;
+            font-size:medium;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .break {
+            background-color: #f4f4f4;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .empty {
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center;">Faculty Weekly Timetable</h2>
+
+    <table>
+        <tr>
+            <th>Time Slot</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+        </tr>
+
+        @foreach (var slot in timetable.First().Value.Keys)
+        {
+            <tr>
+                <td><strong>@slot</strong></td>
+                @foreach (var day in timetable.Keys)
+                {
+                    var value = timetable[day][slot];
+
+                    <td class="@(!value.Contains("Break") ? "break" : (value == "-" ? "empty" : ""))">
+                        @Html.Raw(value)
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+</body>
+</html>

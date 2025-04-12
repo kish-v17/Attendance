@@ -1,11 +1,13 @@
 ﻿using Attendance.Data;
 using Attendance.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 
 namespace Attendance.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class HomeController : Controller
     {
@@ -25,6 +27,7 @@ namespace Attendance.Areas.Admin.Controllers
 
             // Get today's attendance count
             var today = DateTime.Today;
+            var todayEnum = (DaysOfWeek)((int)today.DayOfWeek);
             var todayAttendance = _db.AttendanceTbl.Count(a => a.AttendanceDate.Date == today);
 
             // Fetch recent attendance logs (latest 5)
@@ -43,13 +46,13 @@ namespace Attendance.Areas.Admin.Controllers
 
             // Fetch upcoming classes for today
             var upcomingClasses = _db.ScheduleTbl
-               .Where(s => s.Day == (DaysOfWeek)today.DayOfWeek)
+               .Where(s => s.Day == todayEnum)
                .OrderBy(s => s.StartTime)
                .Take(5)
                .Select(s => new
                {
                    Course = s.Subject.SubjectName,
-                   Time = s.StartTime.ToString(@"hh\:mm tt")
+                   Time = s.StartTime.ToString("hh:mm tt")
                })
                .ToList();
 

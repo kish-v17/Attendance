@@ -1,5 +1,6 @@
 ﻿using Attendance.Data;
 using Attendance.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
@@ -9,6 +10,7 @@ using System.Net;
 
 namespace Attendance.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class StudentController : Controller
     {

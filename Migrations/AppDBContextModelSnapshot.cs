@@ -54,7 +54,7 @@ namespace Attendance.Migrations
                         new
                         {
                             AttendanceId = 1,
-                            AttendanceDate = new DateTime(2025, 3, 30, 19, 13, 48, 963, DateTimeKind.Local).AddTicks(2371),
+                            AttendanceDate = new DateTime(2025, 4, 12, 14, 4, 37, 98, DateTimeKind.Local).AddTicks(5145),
                             ScheduleId = 1,
                             Status = 1,
                             StudentId = 1
@@ -62,7 +62,7 @@ namespace Attendance.Migrations
                         new
                         {
                             AttendanceId = 2,
-                            AttendanceDate = new DateTime(2025, 3, 30, 19, 13, 48, 963, DateTimeKind.Local).AddTicks(2396),
+                            AttendanceDate = new DateTime(2025, 4, 12, 14, 4, 37, 98, DateTimeKind.Local).AddTicks(5162),
                             ScheduleId = 2,
                             Status = 2,
                             StudentId = 1
@@ -112,7 +112,7 @@ namespace Attendance.Migrations
                             BatchId = 1,
                             CourseId = 1,
                             EndDate = new DateOnly(2025, 5, 31),
-                            NumberOfClasses = 2,
+                            NumberOfClasses = 1,
                             Semester = 2,
                             StartDate = new DateOnly(2025, 1, 7),
                             Year = 2024
@@ -122,7 +122,7 @@ namespace Attendance.Migrations
                             BatchId = 2,
                             CourseId = 2,
                             EndDate = new DateOnly(2025, 6, 5),
-                            NumberOfClasses = 3,
+                            NumberOfClasses = 2,
                             Semester = 6,
                             StartDate = new DateOnly(2025, 1, 16),
                             Year = 2022
@@ -165,26 +165,14 @@ namespace Attendance.Migrations
                         new
                         {
                             ClassId = 2,
-                            BatchId = 1,
-                            ClassName = "B"
-                        },
-                        new
-                        {
-                            ClassId = 3,
                             BatchId = 2,
                             ClassName = "A"
                         },
                         new
                         {
-                            ClassId = 4,
+                            ClassId = 3,
                             BatchId = 2,
                             ClassName = "B"
-                        },
-                        new
-                        {
-                            ClassId = 5,
-                            BatchId = 2,
-                            ClassName = "C"
                         });
                 });
 
@@ -339,7 +327,7 @@ namespace Attendance.Migrations
                             ScheduleId = 2,
                             ClassId = 1,
                             Day = 1,
-                            EndTime = new TimeSpan(0, 12, 30, 0, 0),
+                            EndTime = new TimeSpan(0, 11, 40, 0, 0),
                             FacultyId = 3,
                             StartTime = new TimeSpan(0, 10, 0, 0, 0),
                             SubjectId = 2
@@ -570,7 +558,7 @@ namespace Attendance.Migrations
                         new
                         {
                             UserId = 2,
-                            Email = "busyman2561@gmail.com",
+                            Email = "adudhagara353@rku.ac.com",
                             Fullname = "Abhi Patel",
                             MobileNo = "7383835015",
                             Password = "Abhi@123",

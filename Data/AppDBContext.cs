@@ -33,7 +33,7 @@ namespace Attendance.Data
                 new UserModel {
                     UserId = 2,
                     Fullname = "Abhi Patel",
-                    Email = "busyman2561@gmail.com",
+                    Email = "adudhagara353@rku.ac.com",
                     Password = "Abhi@123",
                     Role = UserRole.Faculty,
                     MobileNo = "7383835015"
@@ -88,6 +88,27 @@ namespace Attendance.Data
                     DepartmentId = 2
                 }
             );
+            modelBuilder.Entity<BatchModel>().HasData(
+               new BatchModel
+               {
+                   BatchId = 1,
+                   CourseId = 1,
+                   Semester = 2,
+                   NumberOfClasses = 1,
+                   Year = 2024,
+                   StartDate = new DateOnly(2025, 01, 07),
+                   EndDate = new DateOnly(2025, 05, 31)
+               }, new BatchModel
+               {
+                   BatchId = 2,
+                   CourseId = 2,
+                   Semester = 6,
+                   NumberOfClasses = 2,
+                   Year = 2022,
+                   StartDate = new DateOnly(2025, 01, 16),
+                   EndDate = new DateOnly(2025, 06, 05)
+               }
+            );
             modelBuilder.Entity<SubjectModel>().HasData(
                new SubjectModel
                {
@@ -112,46 +133,16 @@ namespace Attendance.Data
                }, new ClassModel
                {
                    ClassId = 2,
-                   BatchId = 1,
-                   ClassName = "B"
-               }, new ClassModel
-               {
-                   ClassId = 3,
                    BatchId = 2,
                    ClassName = "A"
                }, new ClassModel
                {
-                   ClassId = 4,
+                   ClassId = 3,
                    BatchId = 2,
                    ClassName = "B"
-               }, new ClassModel
-               {
-                   ClassId = 5,
-                   BatchId = 2,
-                   ClassName = "C"
                }
             );
-            modelBuilder.Entity<BatchModel>().HasData(
-               new BatchModel
-               {
-                   BatchId = 1,
-                   CourseId = 1,
-                   Semester = 2,
-                   NumberOfClasses=2,
-                   Year = 2024,
-                   StartDate = new DateOnly(2025, 01, 07),
-                   EndDate= new DateOnly(2025,05,31)
-               }, new BatchModel
-               {
-                   BatchId = 2,
-                   CourseId = 2,
-                   Semester = 6,
-                   NumberOfClasses=3,
-                   Year = 2022,
-                   StartDate = new DateOnly(2025, 01, 16),
-                   EndDate = new DateOnly(2025, 06, 05)
-               }
-            );
+            
             modelBuilder.Entity<StudentModel>().HasData(
                new StudentModel
                {
@@ -215,7 +206,7 @@ namespace Attendance.Data
                     FacultyId = 3,
                     ClassId = 1,
                     StartTime = new TimeSpan(10, 0, 0),
-                    EndTime = new TimeSpan(12, 30, 0),
+                    EndTime = new TimeSpan(11, 40, 0),
                     Day = DaysOfWeek.Monday
                 }
             );

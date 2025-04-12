@@ -1,9 +1,12 @@
 ﻿using Attendance.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Attendance.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
+    [Area("Admin")]
     public class ClassController : Controller
     {
         private readonly AppDBContext _context;

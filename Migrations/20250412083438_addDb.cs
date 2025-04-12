@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Attendance.Migrations
 {
     /// <inheritdoc />
-    public partial class adddb : Migration
+    public partial class addDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -237,7 +237,7 @@ namespace Attendance.Migrations
                 values: new object[,]
                 {
                     { 1, "kish.v07@gmail.com", "Kishan Patel", "9925323126", "Admin@123", 0 },
-                    { 2, "busyman2561@gmail.com", "Abhi Patel", "7383835015", "Abhi@123", 1 },
+                    { 2, "adudhagara353@rku.ac.com", "Abhi Patel", "7383835015", "Abhi@123", 1 },
                     { 3, "jgorfad223@rku.ac.in", "Jay Gorfad", "9925323126", "Jay@1234", 1 }
                 });
 
@@ -257,8 +257,8 @@ namespace Attendance.Migrations
                 columns: new[] { "BatchId", "ClassModelClassId", "CourseId", "EndDate", "NumberOfClasses", "Semester", "StartDate", "Year" },
                 values: new object[,]
                 {
-                    { 1, null, 1, new DateOnly(2025, 5, 31), 2, 2, new DateOnly(2025, 1, 7), 2024 },
-                    { 2, null, 2, new DateOnly(2025, 6, 5), 3, 6, new DateOnly(2025, 1, 16), 2022 }
+                    { 1, null, 1, new DateOnly(2025, 5, 31), 1, 2, new DateOnly(2025, 1, 7), 2024 },
+                    { 2, null, 2, new DateOnly(2025, 6, 5), 2, 6, new DateOnly(2025, 1, 16), 2022 }
                 });
 
             migrationBuilder.InsertData(
@@ -267,10 +267,8 @@ namespace Attendance.Migrations
                 values: new object[,]
                 {
                     { 1, 1, "A", null },
-                    { 2, 1, "B", null },
-                    { 3, 2, "A", null },
-                    { 4, 2, "B", null },
-                    { 5, 2, "C", null }
+                    { 2, 2, "A", null },
+                    { 3, 2, "B", null }
                 });
 
             migrationBuilder.InsertData(
@@ -279,7 +277,7 @@ namespace Attendance.Migrations
                 values: new object[,]
                 {
                     { 1, 1, 1, new TimeSpan(0, 9, 45, 0, 0), 2, new TimeSpan(0, 8, 0, 0, 0), 1 },
-                    { 2, 1, 1, new TimeSpan(0, 12, 30, 0, 0), 3, new TimeSpan(0, 10, 0, 0, 0), 2 }
+                    { 2, 1, 1, new TimeSpan(0, 11, 40, 0, 0), 3, new TimeSpan(0, 10, 0, 0, 0), 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -296,8 +294,8 @@ namespace Attendance.Migrations
                 columns: new[] { "AttendanceId", "AttendanceDate", "ScheduleId", "Status", "StudentId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 3, 30, 19, 13, 48, 963, DateTimeKind.Local).AddTicks(2371), 1, 1, 1 },
-                    { 2, new DateTime(2025, 3, 30, 19, 13, 48, 963, DateTimeKind.Local).AddTicks(2396), 2, 2, 1 }
+                    { 1, new DateTime(2025, 4, 12, 14, 4, 37, 98, DateTimeKind.Local).AddTicks(5145), 1, 1, 1 },
+                    { 2, new DateTime(2025, 4, 12, 14, 4, 37, 98, DateTimeKind.Local).AddTicks(5162), 2, 2, 1 }
                 });
 
             migrationBuilder.CreateIndex(

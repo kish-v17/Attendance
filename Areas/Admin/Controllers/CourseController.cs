@@ -1,11 +1,13 @@
 ﻿using Attendance.Data;
 using Attendance.Models;
 using Attendance.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Attendance.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class CourseController : Controller
     {

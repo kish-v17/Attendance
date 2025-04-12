@@ -11,6 +11,9 @@
     <meta charset="utf-8" />
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 
     <title>@ViewData["Title"]</title>
 
@@ -227,17 +230,18 @@
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end mt-3 py-2">
+                                    @using System.Security.Claims
                                     <li>
                                         <a class="dropdown-item" href="#">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-shrink-0 me-2">
                                                     <div class="avatar avatar-online">
-                                                        <img src="~/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                                        <img src="~/assets/img/avatars/1.png" alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <h6 class="mb-0 small">John Doe</h6>
-                                                    <small class="text-muted">Admin</small>
+                                                    <h6 class="mb-0 small">@User.FindFirst(ClaimTypes.Name)?.Value</h6>
+                                                    <small class="text-muted">@User.FindFirst(ClaimTypes.Role)?.Value</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -271,7 +275,7 @@
                                     </li>
                                     <li>
                                         <div class="d-grid px-4 pt-2 pb-1">
-                                            <a class="btn btn-danger d-flex" href="javascript:void(0);">
+                                            <a class="btn btn-danger d-flex" asp-area="" asp-controller="Auth" asp-action="Logout">
                                                 <small class="align-middle">Logout</small>
                                                 <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
                                             </a>
