@@ -1,15 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Schedule";
+    var classId = ViewData["ClassId"];
 }
 
 <div class="card">
     <div class="row p-3">
         <div class="col-6">
-            <h5 class="card-header">Schedule</h5>
+            <h3 class="ps-5 mb-0">Schedule</h3>
+            <h5 class="ps-5 mt-0">(@ViewData["ClassName"])</h5>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
-            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add Schedule</a>
+            <a asp-action="Create" asp-route-classId="@ViewData["ClassId"]" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add Schedule</a>
         </div>
+        <input type="hidden" id="classId" value="@ViewData["ClassId"]" />
     </div>
     <hr class="my-0">
     <div class="table-responsive p-5">
@@ -19,6 +22,7 @@
 
 @section Scripts {
     <script>
+        
         $(document).ready(function () {
             loadScheduleData();
         });
@@ -26,11 +30,12 @@
         var scheduleDataTable;
 
         function loadScheduleData() {
+             var classId = $('#classId').val();
             scheduleDataTable = $('#scheduleTbl').DataTable({
                 processing: true,
                 serverSide: false, 
                     ajax: {
-                        url: '/Admin/Schedule/GetAll',
+                        url: '/Admin/Schedule/GetAll?classId=' + classId,
                         type: 'GET',
                         dataType: 'json',
                         error: function (xhr, error, thrown) {

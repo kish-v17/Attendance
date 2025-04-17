@@ -21,7 +21,6 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="~/assets/img/favicon/favicon.ico" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -45,6 +44,8 @@
     
     <!-- Page CSS -->
     <!-- Helpers -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <script src="~/assets/vendor/js/helpers.js"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
@@ -158,9 +159,9 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a asp-area="Admin" asp-controller="Student" asp-action="Index" class="menu-link">
-                            <i class="menu-icon tf-icons fa-solid fa-user-graduate"></i>
-                            <div data-i18n="Student">Student</div>
+                        <a asp-area="Admin" asp-controller="Class" asp-action="Index" asp-route-context="Students" class="menu-link">
+                            <i class="menu-icon tf-icons fa-solid fa-web-awesome"></i>
+                            <div data-i18n="Class">Students</div>
                         </a>
                     </li>
                     <li class="menu-item">
@@ -170,9 +171,9 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a asp-area="Admin" asp-controller="Schedule" asp-action="Index" class="menu-link">
+                        <a asp-area="Admin" asp-controller="Class" asp-action="Index" asp-route-context="Schedule" class="menu-link">
                             <i class="menu-icon tf-icons ri-calendar-todo-fill"></i>
-                            <div data-i18n="Schedule">Schedule</div>
+                            <div data-i18n="Class">Schedule</div>
                         </a>
                     </li>
                     <li class="menu-item">
@@ -253,6 +254,12 @@
                                         <a class="dropdown-item" href="#">
                                             <i class="ri-user-3-line ri-22px me-2"></i>
                                             <span class="align-middle">My Profile</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <i class="ri-lock-password-line ri-22px me-2"></i>
+                                            <span class="align-middle">Change Password</span>
                                         </a>
                                     </li>
                                     <li>
@@ -345,6 +352,47 @@
     <script src="https://ajax.aspnetcdn.com/ajax/aspnetmvc/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/aspnetmvc/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        toastr.options = {
+            "closeButton": true,  // Optional: add a close button
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",  // You can adjust this position
+            "preventDuplicates": true,
+            "showDuration": "300", // Toast show duration in ms
+            "hideDuration": "1000", // Toast hide duration in ms
+            "timeOut": "5000", // Time for which toast remains visible
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn", // Show animation method
+            "hideMethod": "fadeOut" // Hide animation method
+        };
+        $(document).ready(function () {
+            var msg = '@TempData["ToastMessage"]';
+            var type = '@TempData["ToastType"]';
+
+            if (msg && type) {
+                switch (type) {
+                    case 'success':
+                        toastr.success(msg);
+                        break;
+                    case 'error':
+                        toastr.error(msg);
+                        break;
+                    case 'warning':
+                        toastr.warning(msg);
+                        break;
+                    case 'info':
+                        toastr.info(msg);
+                        break;
+                }
+            }
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 
     <script async defer src="https://buttons.github.io/buttons.js"></script>

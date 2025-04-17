@@ -54,7 +54,7 @@ namespace Attendance.Migrations
                         new
                         {
                             AttendanceId = 1,
-                            AttendanceDate = new DateTime(2025, 4, 12, 14, 4, 37, 98, DateTimeKind.Local).AddTicks(5145),
+                            AttendanceDate = new DateTime(2025, 4, 13, 21, 31, 6, 558, DateTimeKind.Local).AddTicks(1945),
                             ScheduleId = 1,
                             Status = 1,
                             StudentId = 1
@@ -62,7 +62,7 @@ namespace Attendance.Migrations
                         new
                         {
                             AttendanceId = 2,
-                            AttendanceDate = new DateTime(2025, 4, 12, 14, 4, 37, 98, DateTimeKind.Local).AddTicks(5162),
+                            AttendanceDate = new DateTime(2025, 4, 13, 21, 31, 6, 558, DateTimeKind.Local).AddTicks(1962),
                             ScheduleId = 2,
                             Status = 2,
                             StudentId = 1
@@ -192,6 +192,11 @@ namespace Attendance.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("CourseShortName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
@@ -208,24 +213,28 @@ namespace Attendance.Migrations
                         {
                             CourseId = 1,
                             CourseName = "Master of Computer Application",
+                            CourseShortName = "MCA",
                             DepartmentId = 1
                         },
                         new
                         {
                             CourseId = 2,
                             CourseName = "Bachelor of Computer Applicatiion",
+                            CourseShortName = "BCA",
                             DepartmentId = 1
                         },
                         new
                         {
                             CourseId = 3,
                             CourseName = "Bachelor of TECHnology",
+                            CourseShortName = "B.Tech",
                             DepartmentId = 1
                         },
                         new
                         {
                             CourseId = 4,
                             CourseName = "Bachelor of TECHnology",
+                            CourseShortName = "B.Tech",
                             DepartmentId = 2
                         });
                 });
@@ -246,6 +255,10 @@ namespace Attendance.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("DepartmentShortName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("DepartmentId");
 
                     b.HasIndex("CourseModelCourseId");
@@ -256,22 +269,26 @@ namespace Attendance.Migrations
                         new
                         {
                             DepartmentId = 1,
-                            DepartmentName = "Computer Science"
+                            DepartmentName = "Computer Science",
+                            DepartmentShortName = "CS"
                         },
                         new
                         {
                             DepartmentId = 2,
-                            DepartmentName = "Information Technology"
+                            DepartmentName = "Information Technology",
+                            DepartmentShortName = "IT"
                         },
                         new
                         {
                             DepartmentId = 3,
-                            DepartmentName = "Diploma Studies"
+                            DepartmentName = "Diploma Studies",
+                            DepartmentShortName = "SDS"
                         },
                         new
                         {
                             DepartmentId = 4,
-                            DepartmentName = "Management"
+                            DepartmentName = "Management",
+                            DepartmentShortName = "SOM"
                         });
                 });
 
@@ -490,6 +507,10 @@ namespace Attendance.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("SubjectShortName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("SubjectId");
 
                     b.ToTable("SubjectTbl");
@@ -498,17 +519,20 @@ namespace Attendance.Migrations
                         new
                         {
                             SubjectId = 1,
-                            SubjectName = "Database Management System"
+                            SubjectName = "Database Management System",
+                            SubjectShortName = "DBMS"
                         },
                         new
                         {
                             SubjectId = 2,
-                            SubjectName = "Data Structures"
+                            SubjectName = "Data Structures Algorithms",
+                            SubjectShortName = "DSA"
                         },
                         new
                         {
                             SubjectId = 3,
-                            SubjectName = "Programing with Java"
+                            SubjectName = "Programing with Java",
+                            SubjectShortName = "JAVA"
                         });
                 });
 
@@ -558,7 +582,7 @@ namespace Attendance.Migrations
                         new
                         {
                             UserId = 2,
-                            Email = "adudhagara353@rku.ac.com",
+                            Email = "adudhagara353@rku.ac.in",
                             Fullname = "Abhi Patel",
                             MobileNo = "7383835015",
                             Password = "Abhi@123",

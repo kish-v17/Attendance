@@ -16,6 +16,11 @@
             <input type="text" class="form-control" asp-for="DepartmentName" />
             <span class="text-danger" asp-validation-for="DepartmentName"></span>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Department Short Name</label>
+            <input type="text" class="form-control" asp-for="DepartmentShortName" />
+            <span class="text-danger" asp-validation-for="DepartmentShortName"></span>
+        </div>
         <button type="submit" class="btn btn-primary">Update</button>
         <a asp-action="Index" class="btn btn-secondary">Back</a>
     </form>

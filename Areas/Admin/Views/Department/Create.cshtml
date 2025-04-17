@@ -12,8 +12,13 @@
     <form method="post" asp-action="Create">
         <div class="mb-3">
             <label class="form-label">Department Name</label>
-            <input type="text" class="form-control" asp-for="DepartmentName"/>
+            <input type="text" class="form-control" asp-for="DepartmentName" placeholder="Department Name" />
             <span class="text-danger" asp-validation-for="DepartmentName"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Department Short Name</label>
+            <input type="text" class="form-control" asp-for="DepartmentShortName" placeholder="Short Name" />
+            <span class="text-danger" asp-validation-for="DepartmentShortName"></span>
         </div>
         <button type="submit" class="btn btn-success">Save</button>
         <a asp-action="Index" class="btn btn-secondary">Back</a>

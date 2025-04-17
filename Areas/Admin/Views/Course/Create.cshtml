@@ -18,6 +18,12 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Course Short Name</label>
+            <input type="text" class="form-control" asp-for="CourseShortName" id="courseShortName" placeholder="Course Short name" />
+            <span class="text-danger" asp-validation-for="CourseShortName"></span>
+        </div>
+
+        <div class="mb-3">
             <label class="form-label">Department</label>
             <select class="form-control" asp-for="DepartmentId" asp-items="@(new SelectList(Model.Departments, "DepartmentId", "DepartmentName"))">
                 <option value="">-- Select Department --</option>

@@ -33,7 +33,7 @@ namespace Attendance.Data
                 new UserModel {
                     UserId = 2,
                     Fullname = "Abhi Patel",
-                    Email = "adudhagara353@rku.ac.com",
+                    Email = "adudhagara353@rku.ac.in",
                     Password = "Abhi@123",
                     Role = UserRole.Faculty,
                     MobileNo = "7383835015"
@@ -50,19 +50,18 @@ namespace Attendance.Data
             modelBuilder.Entity<DepartmentModel>().HasData(
                 new DepartmentModel {
                     DepartmentId = 1,
-                    DepartmentName = "Computer Science"
+                    DepartmentName = "Computer Science",
+                    DepartmentShortName="CS"             
                 },
                 new DepartmentModel {
                     DepartmentId = 2,
-                    DepartmentName = "Information Technology"
+                    DepartmentName = "Information Technology",
+                    DepartmentShortName="IT"
                 },
                 new DepartmentModel {
                     DepartmentId = 3,
-                    DepartmentName = "Diploma Studies"
-                },
-                new DepartmentModel {
-                    DepartmentId = 4,
-                    DepartmentName = "Management"
+                    DepartmentName = "Diploma Studies",
+                    DepartmentShortName = "SDS"
                 }
             );
             modelBuilder.Entity<CourseModel>().HasData(
@@ -70,21 +69,25 @@ namespace Attendance.Data
                 {
                     CourseId = 1,
                     CourseName = "Master of Computer Application",
+                    CourseShortName="MCA",
                     DepartmentId = 1
                 }, new CourseModel
                 {
                     CourseId = 2,
                     CourseName = "Bachelor of Computer Applicatiion",
+                    CourseShortName="BCA",
                     DepartmentId = 1
                 }, new CourseModel
                 {
                     CourseId = 3,
                     CourseName = "Bachelor of TECHnology",
+                    CourseShortName="B.Tech",
                     DepartmentId = 1
                 }, new CourseModel
                 {
                     CourseId = 4,
                     CourseName = "Bachelor of TECHnology",
+                    CourseShortName="B.Tech",
                     DepartmentId = 2
                 }
             );
@@ -113,15 +116,18 @@ namespace Attendance.Data
                new SubjectModel
                {
                    SubjectId = 1,
-                   SubjectName = "Database Management System"
+                   SubjectName = "Database Management System",
+                   SubjectShortName="DBMS"
                },new SubjectModel
                {
                    SubjectId = 2,
-                   SubjectName = "Data Structures"
+                   SubjectName = "Data Structures Algorithms",
+                   SubjectShortName="DSA"
                },new SubjectModel
                {
                    SubjectId = 3,
-                   SubjectName = "Programing with Java"
+                   SubjectName = "Programing with Java",
+                   SubjectShortName="JAVA"
                }
             );
             modelBuilder.Entity<ClassModel>().HasData(

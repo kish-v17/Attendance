@@ -17,12 +17,24 @@ namespace Attendance.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+
+        public IActionResult Index(int id)
         {
+            var classInfo = _context.ClassTbl
+                .Include(c => c.Batch)
+                    .ThenInclude(b => b.Course)
+                .FirstOrDefault(c => c.ClassId == id);
+
+            if (classInfo != null)
+            {
+                ViewData["ClassId"] = id;
+                ViewData["ClassName"] = $"{classInfo.Batch.Course.CourseShortName} -  {classInfo.Batch.Semester} - {classInfo.ClassName}";
+            }
+
             return View();
         }
-
-        public IActionResult GetAll()
+        [HttpGet]
+        public IActionResult GetAll(int classId)
         {
             var schedule = _context.ScheduleTbl
                 .Include(s => s.Class)
@@ -30,28 +42,36 @@ namespace Attendance.Areas.Admin.Controllers
                 .ThenInclude(b => b.Course)
                 .Include(sub => sub.Subject)
                 .Include(f => f.User)
+                .Where(s => s.ClassId == classId)  // filter class-wise
                 .ToList();
 
             var transformedSchedules = schedule.Select(s => new
             {
                 s.ScheduleId,
-                Day = s.Day.ToString(),
-                StartTime = s.StartTime.ToString(@"hh\:mm\:ss"), 
+                StartTime = s.StartTime.ToString(@"hh\:mm\:ss"),
                 EndTime = s.EndTime.ToString(@"hh\:mm\:ss"),
                 Faculty = s.User.Fullname,
+                Day=s.Day.ToString(),
                 Subject = s.Subject.SubjectName,
                 ClassName = s.Class != null && s.Class.Batch != null && s.Class.Batch.Course != null
-                    ? $"{s.Class.Batch.Year} - {GetShortName(s.Class.Batch.Course.CourseName)} - {s.Class.Batch.Semester} - {s.Class.ClassName}"
+                    ? $"{s.Class.Batch.Year} - {s.Class.Batch.Course.CourseShortName} - {s.Class.Batch.Semester} - {s.Class.ClassName}"
                     : "N/A"
             }).ToList();
 
             return Json(new { data = transformedSchedules });
         }
 
-        public IActionResult Create()
+        public IActionResult Create(int? classId)
         {
             fetchList();
-            return View();
+
+            var model = new ScheduleModel();
+            if (classId != null)
+            {
+                model.ClassId = classId.Value;
+            }
+
+            return View(model);
         }
 
         [HttpPost]
@@ -59,10 +79,47 @@ namespace Attendance.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var conflictExists = _context.ScheduleTbl.Any(s =>(
+                    s.ClassId == schedule.ClassId &&
+                    s.Day == schedule.Day &&
+                    (
+                        (schedule.StartTime >= s.StartTime && schedule.StartTime < s.EndTime) || 
+                        (schedule.EndTime > s.StartTime && schedule.EndTime <= s.EndTime) ||    
+                        (schedule.StartTime <= s.StartTime && schedule.EndTime >= s.EndTime)    
+                    )
+                ) ||
+                    (
+                        s.FacultyId == schedule.FacultyId &&
+                        s.Day == schedule.Day &&
+                        (
+                            (schedule.StartTime >= s.StartTime && schedule.StartTime < s.EndTime) ||
+                            (schedule.EndTime > s.StartTime && schedule.EndTime <= s.EndTime) ||
+                            (schedule.StartTime <= s.StartTime && schedule.EndTime >= s.EndTime)
+                        )
+                    )
+                );
+
+                if (conflictExists)
+                {
+                    TempData["ToastMessage"] = "Schedule conflict: Another schedule exists for this class on the same day and time.";
+                    TempData["ToastType"] = "error";
+
+                    fetchList();
+                    return View(schedule);
+                }
+
                 _context.ScheduleTbl.Add(schedule);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+
+                TempData["ToastMessage"] = "Schedule created successfully!";
+                TempData["ToastType"] = "success";
+
+                return RedirectToAction("Index", new { id = schedule.ClassId });
             }
+
+            TempData["ToastMessage"] = "Failed to create schedule. Please check the form.";
+            TempData["ToastType"] = "error";
+
             fetchList();
             return View(schedule);
         }
@@ -72,21 +129,26 @@ namespace Attendance.Areas.Admin.Controllers
             var schedule = _context.ScheduleTbl.Find(id);
             if (schedule == null)
             {
+                TempData["ToastMessage"] = "Schedule not found.";
+                TempData["ToastType"] = "error";
                 return NotFound();
             }
+
             var model = new ScheduleModel
             {
                 ScheduleId = schedule.ScheduleId,
                 SubjectId = schedule.SubjectId,
                 ClassId = schedule.ClassId,
-                FacultyId= schedule.FacultyId,
+                FacultyId = schedule.FacultyId,
                 StartTime = schedule.StartTime,
                 EndTime = schedule.EndTime,
                 Day = schedule.Day,
             };
+
             fetchList();
             return View(model);
         }
+
         [HttpPost]
         public IActionResult Edit(ScheduleModel model)
         {
@@ -95,63 +157,70 @@ namespace Attendance.Areas.Admin.Controllers
                 var schedule = _context.ScheduleTbl.Find(model.ScheduleId);
                 if (schedule == null)
                 {
+                    TempData["ToastMessage"] = "Schedule not found.";
+                    TempData["ToastType"] = "error";
                     return NotFound();
                 }
+
                 schedule.FacultyId = model.FacultyId;
                 schedule.SubjectId = model.SubjectId;
                 schedule.ClassId = model.ClassId;
                 schedule.StartTime = model.StartTime;
                 schedule.EndTime = model.EndTime;
                 schedule.Day = model.Day;
+
                 _context.ScheduleTbl.Update(schedule);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+
+                TempData["ToastMessage"] = "Schedule updated successfully!";
+                TempData["ToastType"] = "success";
+
+                return RedirectToAction("Index", new { id = schedule.ClassId });
             }
+
+            TempData["ToastMessage"] = "Failed to update schedule. Please check the form.";
+            TempData["ToastType"] = "error";
+
             fetchList();
             return View(model);
         }
-        private static string GetShortName(string courseName)
-        {
-            if (string.IsNullOrWhiteSpace(courseName)) return "N/A";
 
-            return new string(courseName.Where(char.IsUpper).ToArray());
-        }
         private void fetchList()
         {
             var classList = _context.ClassTbl
-            .Include(c => c.Batch)
-            .ThenInclude(b => b.Course)
-            .Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-            {
-                Value = c.ClassId.ToString(),
-                Text = c.Batch != null && c.Batch.Course != null
-                    ? $"{c.Batch.Year} - {GetShortName(c.Batch.Course.CourseName)} - {c.Batch.Semester} - {c.ClassName}"
-                    : "N/A"
-            })
-            .Distinct()
-            .ToList();
+                .Include(c => c.Batch)
+                .ThenInclude(b => b.Course)
+                .Select(c => new SelectListItem
+                {
+                    Value = c.ClassId.ToString(),
+                    Text = c.Batch != null && c.Batch.Course != null
+                        ? $"{c.Batch.Year} - {c.Batch.Course.CourseShortName} - {c.Batch.Semester} - {c.ClassName}"
+                        : "N/A"
+                })
+                .Distinct()
+                .ToList();
 
             ViewBag.ClassList = classList;
 
             var subjectList = _context.SubjectTbl
-            .Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-            {
-                Value = c.SubjectId.ToString(),
-                Text = c.SubjectName
-            })
-            .Distinct()
-            .ToList();
+                .Select(c => new SelectListItem
+                {
+                    Value = c.SubjectId.ToString(),
+                    Text = c.SubjectName
+                })
+                .Distinct()
+                .ToList();
 
             ViewBag.SubjectList = subjectList;
 
             var userList = _context.UserTbl.Where(c => c.UserId != 1)
-           .Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-           {
-               Value = c.UserId.ToString(),
-               Text = "Pro. " + c.Fullname.ToString()
-           })
-           .Distinct()
-           .ToList();
+                .Select(c => new SelectListItem
+                {
+                    Value = c.UserId.ToString(),
+                    Text = "Pro. " + c.Fullname
+                })
+                .Distinct()
+                .ToList();
 
             ViewBag.FacultyList = userList;
         }

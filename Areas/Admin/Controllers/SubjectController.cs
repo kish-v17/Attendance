@@ -27,7 +27,8 @@ namespace Attendance.Areas.Admin.Controllers
             var subjects = _context.SubjectTbl.Select(s => new
             {
                 s.SubjectId,
-                s.SubjectName
+                s.SubjectName,
+                s.SubjectShortName
             }).ToList();
 
             return Json(new { data = subjects });
@@ -45,8 +46,16 @@ namespace Attendance.Areas.Admin.Controllers
             {
                 _context.SubjectTbl.Add(subject);
                 _context.SaveChanges();
+
+                TempData["ToastMessage"] = "Subject created successfully!";
+                TempData["ToastType"] = "success";
+
                 return RedirectToAction("Index");
             }
+
+            TempData["ToastMessage"] = "Failed to create subject. Please check the input.";
+            TempData["ToastType"] = "error";
+
             return View(subject);
         }
 
@@ -55,8 +64,12 @@ namespace Attendance.Areas.Admin.Controllers
             var subject = _context.SubjectTbl.Find(id);
             if (subject == null)
             {
-                return NotFound();
+                TempData["ToastMessage"] = "Subject not found!";
+                TempData["ToastType"] = "error";
+
+                return RedirectToAction("Index");
             }
+
             return View(subject);
         }
 
@@ -67,8 +80,16 @@ namespace Attendance.Areas.Admin.Controllers
             {
                 _context.SubjectTbl.Update(subject);
                 _context.SaveChanges();
+
+                TempData["ToastMessage"] = "Subject updated successfully!";
+                TempData["ToastType"] = "success";
+
                 return RedirectToAction("Index");
             }
+
+            TempData["ToastMessage"] = "Failed to update subject. Please check the input.";
+            TempData["ToastType"] = "error";
+
             return View(subject);
         }
     }

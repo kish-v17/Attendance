@@ -2,6 +2,7 @@
 using Attendance.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Mono.TextTemplating;
@@ -20,31 +21,41 @@ namespace Attendance.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            return View();
-        }
+            var classInfo = _context.ClassTbl
+                .Include(c => c.Batch)
+                    .ThenInclude(b => b.Course)
+                .FirstOrDefault(c => c.ClassId == id);
 
-        public IActionResult Create()
-        {
-            var classList = _context.ClassTbl
-            .Include(c => c.Batch)
-            .ThenInclude(b => b.Course)
-            .Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            if (classInfo != null)
             {
-                Value = c.ClassId.ToString(),
-                Text = c.Batch != null && c.Batch.Course != null
-                    ? $"{c.Batch.Year} - {GetShortName(c.Batch.Course.CourseName)} - {c.Batch.Semester} - {c.ClassName}"
-                    : "N/A"
-            })
-            .Distinct()
-            .ToList();
-
-            ViewBag.ClassList = classList;
+                ViewData["ClassId"] = id;
+                ViewData["ClassName"] = $"{classInfo.Batch.Course.CourseShortName} -  {classInfo.Batch.Semester} - {classInfo.ClassName}";
+            }
 
             return View();
-
         }
+        public IActionResult Create(int? classId)
+        {
+            ViewBag.ClassList = _context.ClassTbl
+                .Select(c => new SelectListItem
+                {
+                    Value = c.ClassId.ToString(),
+                    Text = c.Batch.Course.CourseShortName + " - Sem " + c.Batch.Semester + " - " + c.ClassName,
+                    Selected = (classId != null && c.ClassId == classId)
+                })
+                .ToList();
+
+            var model = new StudentModel();
+            if (classId != null)
+            {
+                model.ClassId = classId.Value;
+            }
+
+            return View(model);
+        }
+
         [HttpPost]
         public IActionResult Create(StudentModel student)
         {
@@ -74,10 +85,13 @@ namespace Attendance.Areas.Admin.Controllers
                 };
                 _context.StudentTbl.Add(model);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
-            }return View(student);
+                TempData["ToastMessage"] = "Student added successfully!";
+                TempData["ToastType"] = "success";
+                return RedirectToAction("Index", new { id = student.ClassId });
+            }
+            return View(student);
         }
-        
+
         public IActionResult Edit(int id)
         {
             var student = _context.StudentTbl.Find(id);
@@ -115,9 +129,7 @@ namespace Attendance.Areas.Admin.Controllers
          .Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
          {
              Value = c.ClassId.ToString(),
-             Text = c.Batch != null && c.Batch.Course != null
-                 ? $"{c.Batch.Year}-{GetShortName(c.Batch.Course.CourseName)} - {c.Batch.Semester} - {c.ClassName}"
-                 : "N/A",
+             Text = c.Batch.Course.CourseShortName + " - Sem " + c.Batch.Semester + " - " + c.ClassName,
              Selected = (c.ClassId == student.ClassId)
          })
          .Distinct()
@@ -156,17 +168,24 @@ namespace Attendance.Areas.Admin.Controllers
                 student.ClassId = model.ClassId;
                 _context.StudentTbl.Update(student);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
-            }return View(model);
+
+                TempData["ToastMessage"] = "Student updated successfully!";
+                TempData["ToastType"] = "success";
+                return RedirectToAction("Index", new { id = student.ClassId });
+            }
+            TempData["ToastMessage"] = "Student not found.";
+            TempData["ToastType"] = "error";
+            return View(model);
         }
 
-        public IActionResult GetAll()
+        public IActionResult GetAll(int classId)
         {
             var students = _context.StudentTbl
+                .Where(s => s.ClassId == classId)
                 .Include(s => s.Class)
                 .ThenInclude(c => c.Batch)
                 .ThenInclude(b => b.Course)
-                .ToList(); 
+                .ToList();
 
             var transformedStudents = students.Select(b => new
             {
@@ -190,19 +209,13 @@ namespace Attendance.Areas.Admin.Controllers
                 b.PinCode,
 
                 ClassName = b.Class != null && b.Class.Batch != null && b.Class.Batch.Course != null
-                    ? $"{b.Class.Batch.Year}-{GetShortName(b.Class.Batch.Course.CourseName)} - {b.Class.Batch.Semester} - {b.Class.ClassName}"
+                    ? $"{b.Class.Batch.Year}-{b.Class.Batch.Course.CourseShortName} - {b.Class.Batch.Semester} - {b.Class.ClassName}"
                     : "N/A"
-            }).ToList(); 
 
+            }).ToList(); 
             return Json(new { data = transformedStudents });
         }
 
-        private static string GetShortName(string courseName)
-        {
-            if (string.IsNullOrWhiteSpace(courseName)) return "N/A";
-
-            return new string(courseName.Where(char.IsUpper).ToArray());
-        }
         private string GenerateEnrollmentNumber(int classId)
         {
             var classEntity = _context.ClassTbl
@@ -216,12 +229,10 @@ namespace Attendance.Areas.Admin.Controllers
                 throw new Exception("Invalid Class Selection");
             }
 
-            // Extract required details
             string year = classEntity.Batch.Year.ToString().Substring(2, 2); // Get last 2 digits of year
             string departmentCode = GetCapitalLetters(classEntity.Batch.Course.Department.DepartmentName);
             string courseCode = GetCapitalLetters(classEntity.Batch.Course.CourseName);
 
-            // Fetch last assigned enrollment number for this year, department, and course
             string prefix = $"{year}{departmentCode}{courseCode}";
 
             var lastEnrollment = _context.StudentTbl
@@ -230,18 +241,18 @@ namespace Attendance.Areas.Admin.Controllers
                 .Select(s => s.EnrollmentNumber)
                 .FirstOrDefault();
 
-            int newNumber = 1; // Start from 0001
+            int newNumber = 1; 
 
             if (lastEnrollment != null)
             {
-                string lastDigits = lastEnrollment.Substring(prefix.Length); // Extract last 4 digits
+                string lastDigits = lastEnrollment.Substring(prefix.Length); 
                 if (int.TryParse(lastDigits, out int lastNumeric))
                 {
                     newNumber = lastNumeric + 1;
                 }
             }
 
-            return $"{prefix}{newNumber:D4}"; // Format as 4-digit number
+            return $"{prefix}{newNumber:D4}"; 
         }
         private string GetCapitalLetters(string input)
         {

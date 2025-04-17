@@ -21,7 +21,6 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="~/assets/img/favicon/favicon.ico" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,6 +41,8 @@
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="~/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
     <!-- Page CSS -->
     <!-- Helpers -->
@@ -257,6 +258,12 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a class="dropdown-item" asp-area="Faculty" asp-controller="Home" asp-action="ChangePassword">
+                                            <i class="ri-lock-password-line ri-22px me-2"></i>
+                                            <span class="align-middle">Change Password</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item" href="#">
                                             <i class="ri-settings-4-line ri-22px me-2"></i>
                                             <span class="align-middle">Settings</span>
@@ -345,6 +352,46 @@
     <script src="https://ajax.aspnetcdn.com/ajax/aspnetmvc/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/aspnetmvc/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,  // Optional: add a close button
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",  // You can adjust this position
+            "preventDuplicates": true,
+            "showDuration": "300", // Toast show duration in ms
+            "hideDuration": "1000", // Toast hide duration in ms
+            "timeOut": "5000", // Time for which toast remains visible
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn", // Show animation method
+            "hideMethod": "fadeOut" // Hide animation method
+        };
+        $(document).ready(function () {
+            var msg = '@TempData["ToastMessage"]';
+            var type = '@TempData["ToastType"]';
+
+            if (msg && type) {
+                switch (type) {
+                    case 'success':
+                        toastr.success(msg);
+                        break;
+                    case 'error':
+                        toastr.error(msg);
+                        break;
+                    case 'warning':
+                        toastr.warning(msg);
+                        break;
+                    case 'info':
+                        toastr.info(msg);
+                        break;
+                }
+            }
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 
     <script async defer src="https://buttons.github.io/buttons.js"></script>

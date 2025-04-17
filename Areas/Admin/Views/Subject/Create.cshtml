@@ -16,6 +16,11 @@
             <input type="text" class="form-control" asp-for="SubjectName" id="subjectName" />
             <span class="text-danger" asp-validation-for="SubjectName"></span>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Subject Short Name</label>
+            <input type="text" class="form-control" asp-for="SubjectShortName" id="subjectShortName" />
+            <span class="text-danger" asp-validation-for="SubjectShortName"></span>
+        </div>
         <button type="submit" class="btn btn-success">Save</button>
         <a asp-action="Index" class="btn btn-secondary">Back</a>
     </form>

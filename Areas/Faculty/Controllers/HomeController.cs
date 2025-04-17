@@ -1,4 +1,5 @@
 ﻿using Attendance.Data;
+using Attendance.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,28 +41,26 @@ namespace Attendance.Areas.Faculty.Controllers
 
             var daysOfWeek = new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
 
-            // Fetch faculty schedule from DB
             var schedule = _context.ScheduleTbl
                 .Where(s => s.FacultyId == facultyId)
                 .Include(s => s.Subject)
                 .Include(c => c.Class)
                     .ThenInclude(b => b.Batch)
                     .ThenInclude(c => c.Course)
-                .ToList() // Materialize the query
+                .ToList() 
                 .Where(s => daysOfWeek.Contains(s.Day.ToString()))
                 .Select(s => new
                 {
-                    Day = s.Day.ToString(), // Normalize Day to string
+                    Day = s.Day.ToString(),
                     s.StartTime,
                     s.EndTime,
                     ClassName = s.Class.ClassName,
                     Semester = s.Class.Batch.Semester,
-                    CourseName = GetCapitalLetters(s.Class.Batch.Course.CourseName),
-                    SubjectName = GetCapitalLetters(s.Subject.SubjectName)
+                    CourseName = s.Class.Batch.Course.CourseShortName,
+                    SubjectName = s.Subject.SubjectShortName
                 })
                 .ToList();
 
-            // Prepare timetable dictionary
             var timetable = new Dictionary<string, Dictionary<string, string>>();
 
             foreach (var day in daysOfWeek)
@@ -90,9 +89,47 @@ namespace Attendance.Areas.Faculty.Controllers
             return View();
         }
 
-        private string GetCapitalLetters(string input)
+        public IActionResult ChangePassword()
         {
-            return new string(input.Where(char.IsUpper).ToArray());
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
+        {
+
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            var user = _context.UserTbl.SingleOrDefault(u => u.UserId == userId && u.Password == currentPassword);
+            if (user != null)
+            {
+                if (newPassword != currentPassword)
+                {
+                    if (confirmPassword.Equals(newPassword))
+                    {
+                        user.Password = newPassword;
+                        _context.SaveChanges();
+                        TempData["ToastMessage"] = "Password changed successfully!";
+                        TempData["ToastType"] = "success";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        TempData["ToastMessage"] = "New password and confirm password do not match.";
+                        TempData["ToastType"] = "error";
+                    }
+                }
+                else
+                {
+                    TempData["ToastMessage"] = "New password cannot be the same as the current password.";
+                    TempData["ToastType"] = "warning";
+                }
+            }
+            else
+            {
+                TempData["ToastMessage"] = "Current password is incorrect.";
+                TempData["ToastType"] = "error";
+            }
+            return View();
         }
     }
 }

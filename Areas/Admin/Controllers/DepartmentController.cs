@@ -26,7 +26,8 @@ namespace Attendance.Areas.Admin.Controllers
             var departments = _context.DepartmentTbl.Select(d => new
             {
                 d.DepartmentId,
-                d.DepartmentName
+                d.DepartmentName,
+                d.DepartmentShortName
             }).ToList();
 
             return Json(new { data = departments });
@@ -44,8 +45,16 @@ namespace Attendance.Areas.Admin.Controllers
             {
                 _context.DepartmentTbl.Add(department);
                 _context.SaveChanges();
+
+                TempData["ToastMessage"] = "Department added successfully!";
+                TempData["ToastType"] = "success";
+
                 return RedirectToAction("Index");
             }
+
+            TempData["ToastMessage"] = "Failed to added department. Please check the input.";
+            TempData["ToastType"] = "error";
+
             return View(department);
         }
 
@@ -54,8 +63,12 @@ namespace Attendance.Areas.Admin.Controllers
             var department = _context.DepartmentTbl.Find(id);
             if (department == null)
             {
-                return NotFound();
+                TempData["ToastMessage"] = "Department not found!";
+                TempData["ToastType"] = "error";
+
+                return RedirectToAction("Index");
             }
+
             return View(department);
         }
 
@@ -66,11 +79,17 @@ namespace Attendance.Areas.Admin.Controllers
             {
                 _context.DepartmentTbl.Update(department);
                 _context.SaveChanges();
+
+                TempData["ToastMessage"] = "Department updated successfully!";
+                TempData["ToastType"] = "success";
+
                 return RedirectToAction("Index");
             }
+
+            TempData["ToastMessage"] = "Failed to update department. Please check the input.";
+            TempData["ToastType"] = "error";
+
             return View(department);
         }
-
-        
     }
 }

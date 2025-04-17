@@ -15,15 +15,28 @@ namespace Attendance.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(string context)
         {
+            ViewData["Context"] = context;
             return View();
         }
-        //public IActionResult GetAll()
-        //{
-            
+        public IActionResult GetAll()
+        {
+            var classes = _context.ClassTbl
+                .Include(b => b.Batch)
+                    .ThenInclude(c => c.Course)
+                        .ThenInclude(d => d.Department)
+                .Select(c => new
+                {
+                    c.ClassId,
+                    CourseName = c.Batch.Course.CourseName + " (" + c.Batch.Course.CourseShortName + ")",
+                    Department = c.Batch.Course.Department.DepartmentShortName,
+                    c.Batch.Semester,
+                    c.ClassName,
 
-        //    return Json(new { });
-        //}
+                }).ToList();
+
+            return Json(new { data = classes });
+        }
     }
 }

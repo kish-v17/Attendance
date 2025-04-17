@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Classes";
+    
+    var context = ViewData["Context"]?.ToString() ?? "Students"; // default to students
+}
+
+<div class="card">
+    <div class="row p-3">
+        <div class="col-6">
+            <h5 class="card-header">@context</h5>
+        </div>
+
+    </div>
+    <hr class="my-0">
+    <div class="table-responsive p-5">
+        <table class="table table-bordered" id="classesTbl"></table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const viewContext = '@context';
+        $(document).ready(function () {
+            loadClassData();
+        });
+
+        var classDataTable;
+
+        function loadClassData() {
+            
+            classDataTable = $('#classesTbl').DataTable({
+                processing: true,
+                serverSide: false,
+                ajax: {
+                    url: '/Admin/Class/GetAll',
+                },
+                columns: [
+                    { data: 'classId', title: 'ID', width: "10%" },
+                    { data: 'courseName', title: 'Course Name' },
+                    { data: 'department', title: 'Department' }, 
+                    { data: 'semester', title: 'Semester' },
+                    { data: 'className', title: 'Class Name' },
+                    {
+                        data: 'classId',
+                        render: function (data) {
+                            let targetUrl = viewContext === 'Schedule'
+                                ? `/Admin/Schedule/Index/${data}`
+                                : `/Admin/Student/Index/${data}`;
+                            return `
+                                <a href="${targetUrl}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
+                                    <i class="ri-eye-line"></i>
+                                </a>
+                            `;
+                        },
+                        title: 'Action',
+                        width: "20%"
+                    },
+                ]
+            });
+        }
+    </script>
+}
+

@@ -31,7 +31,8 @@ namespace Attendance.Areas.Admin.Controllers
                     c.CourseId,
                     c.CourseName,
                     c.DepartmentId,
-                    DepartmentName = c.Department.DepartmentName
+                    c.CourseShortName,
+                    DepartmentName = c.Department.DepartmentShortName
                 }).ToList();
 
             return Json(new { data = courses });
@@ -54,13 +55,21 @@ namespace Attendance.Areas.Admin.Controllers
                 var course = new CourseModel
                 {
                     CourseName = model.CourseName,
+                    CourseShortName = model.CourseShortName,
                     DepartmentId = model.DepartmentId
                 };
 
                 _context.CourseTbl.Add(course);
                 _context.SaveChanges();
+
+                TempData["ToastMessage"] = "Course created successfully!";
+                TempData["ToastType"] = "success";
+
                 return RedirectToAction("Index");
             }
+
+            TempData["ToastMessage"] = "Failed to create course. Please check the details.";
+            TempData["ToastType"] = "error";
 
             model.Departments = _context.DepartmentTbl.ToList();
             return View(model);
@@ -71,15 +80,18 @@ namespace Attendance.Areas.Admin.Controllers
             var course = _context.CourseTbl.Find(id);
             if (course == null)
             {
-                return NotFound();
+                TempData["ToastMessage"] = "Course not found!";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Index");
             }
 
             var viewModel = new CourseModel
             {
                 CourseId = course.CourseId,
                 CourseName = course.CourseName,
+                CourseShortName = course.CourseShortName,
                 DepartmentId = course.DepartmentId,
-                Departments = _context.DepartmentTbl.ToList() 
+                Departments = _context.DepartmentTbl.ToList()
             };
 
             return View(viewModel);
@@ -93,20 +105,29 @@ namespace Attendance.Areas.Admin.Controllers
                 var course = _context.CourseTbl.Find(model.CourseId);
                 if (course == null)
                 {
-                    return NotFound();
+                    TempData["ToastMessage"] = "Course not found!";
+                    TempData["ToastType"] = "error";
+                    return RedirectToAction("Index");
                 }
 
                 course.CourseName = model.CourseName;
+                course.CourseShortName = model.CourseShortName;
                 course.DepartmentId = model.DepartmentId;
 
                 _context.CourseTbl.Update(course);
                 _context.SaveChanges();
+
+                TempData["ToastMessage"] = "Course updated successfully!";
+                TempData["ToastType"] = "success";
+
                 return RedirectToAction("Index");
             }
+
+            TempData["ToastMessage"] = "Failed to update course. Please check the details.";
+            TempData["ToastType"] = "error";
 
             model.Departments = _context.DepartmentTbl.ToList();
             return View(model);
         }
-
     }
 }

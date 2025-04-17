@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Attendance.Migrations
 {
     /// <inheritdoc />
-    public partial class addDb : Migration
+    public partial class AddDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,8 @@ namespace Attendance.Migrations
                 {
                     SubjectId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SubjectName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    SubjectName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SubjectShortName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -178,6 +179,7 @@ namespace Attendance.Migrations
                     CourseId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CourseShortName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     BatchModelBatchId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -198,6 +200,7 @@ namespace Attendance.Migrations
                     DepartmentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DepartmentName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DepartmentShortName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseModelCourseId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -212,23 +215,23 @@ namespace Attendance.Migrations
 
             migrationBuilder.InsertData(
                 table: "DepartmentTbl",
-                columns: new[] { "DepartmentId", "CourseModelCourseId", "DepartmentName" },
+                columns: new[] { "DepartmentId", "CourseModelCourseId", "DepartmentName", "DepartmentShortName" },
                 values: new object[,]
                 {
-                    { 1, null, "Computer Science" },
-                    { 2, null, "Information Technology" },
-                    { 3, null, "Diploma Studies" },
-                    { 4, null, "Management" }
+                    { 1, null, "Computer Science", "CS" },
+                    { 2, null, "Information Technology", "IT" },
+                    { 3, null, "Diploma Studies", "SDS" },
+                    { 4, null, "Management", "SOM" }
                 });
 
             migrationBuilder.InsertData(
                 table: "SubjectTbl",
-                columns: new[] { "SubjectId", "SubjectName" },
+                columns: new[] { "SubjectId", "SubjectName", "SubjectShortName" },
                 values: new object[,]
                 {
-                    { 1, "Database Management System" },
-                    { 2, "Data Structures" },
-                    { 3, "Programing with Java" }
+                    { 1, "Database Management System", "DBMS" },
+                    { 2, "Data Structures Algorithms", "DSA" },
+                    { 3, "Programing with Java", "JAVA" }
                 });
 
             migrationBuilder.InsertData(
@@ -237,19 +240,19 @@ namespace Attendance.Migrations
                 values: new object[,]
                 {
                     { 1, "kish.v07@gmail.com", "Kishan Patel", "9925323126", "Admin@123", 0 },
-                    { 2, "adudhagara353@rku.ac.com", "Abhi Patel", "7383835015", "Abhi@123", 1 },
+                    { 2, "adudhagara353@rku.ac.in", "Abhi Patel", "7383835015", "Abhi@123", 1 },
                     { 3, "jgorfad223@rku.ac.in", "Jay Gorfad", "9925323126", "Jay@1234", 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "CourseTbl",
-                columns: new[] { "CourseId", "BatchModelBatchId", "CourseName", "DepartmentId" },
+                columns: new[] { "CourseId", "BatchModelBatchId", "CourseName", "CourseShortName", "DepartmentId" },
                 values: new object[,]
                 {
-                    { 1, null, "Master of Computer Application", 1 },
-                    { 2, null, "Bachelor of Computer Applicatiion", 1 },
-                    { 3, null, "Bachelor of TECHnology", 1 },
-                    { 4, null, "Bachelor of TECHnology", 2 }
+                    { 1, null, "Master of Computer Application", "MCA", 1 },
+                    { 2, null, "Bachelor of Computer Applicatiion", "BCA", 1 },
+                    { 3, null, "Bachelor of TECHnology", "B.Tech", 1 },
+                    { 4, null, "Bachelor of TECHnology", "B.Tech", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -294,8 +297,8 @@ namespace Attendance.Migrations
                 columns: new[] { "AttendanceId", "AttendanceDate", "ScheduleId", "Status", "StudentId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 4, 12, 14, 4, 37, 98, DateTimeKind.Local).AddTicks(5145), 1, 1, 1 },
-                    { 2, new DateTime(2025, 4, 12, 14, 4, 37, 98, DateTimeKind.Local).AddTicks(5162), 2, 2, 1 }
+                    { 1, new DateTime(2025, 4, 13, 21, 31, 6, 558, DateTimeKind.Local).AddTicks(1945), 1, 1, 1 },
+                    { 2, new DateTime(2025, 4, 13, 21, 31, 6, 558, DateTimeKind.Local).AddTicks(1962), 2, 2, 1 }
                 });
 
             migrationBuilder.CreateIndex(
