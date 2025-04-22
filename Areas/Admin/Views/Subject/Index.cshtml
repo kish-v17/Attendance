@@ -28,6 +28,7 @@
         function loadSubjectData() {
             subjectDataTable = $('#subjectTbl').DataTable({
                 processing: true,
+                pageLength: 50,
                 ajax: {
                     url: '/Admin/Subject/GetAll',
                 },

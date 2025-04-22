@@ -165,7 +165,7 @@ namespace Attendance.Areas.Admin.Controllers
                 student.State = model.State;
                 student.Country = model.Country;
                 student.PinCode = model.PinCode;
-                student.ClassId = model.ClassId;
+                //student.ClassId = model.ClassId;
                 _context.StudentTbl.Update(student);
                 _context.SaveChanges();
 

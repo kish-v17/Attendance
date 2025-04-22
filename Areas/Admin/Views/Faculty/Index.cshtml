@@ -28,7 +28,8 @@
         function loadFacultyData() {
             FacultyDataTable = $('#FacultyTbl').DataTable({
                 processing: true,
-                serverSide: false, 
+                serverSide: false,
+                pageLength: 50,
                     ajax: {
                         url: '/Admin/Faculty/GetAll', 
                         type: 'GET',

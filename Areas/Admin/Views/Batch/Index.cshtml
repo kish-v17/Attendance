@@ -28,6 +28,7 @@
         function loadBatchData() {
             batchDataTable = $('#batchTbl').DataTable({
                 processing: true,
+                pageLength: 50,
                 ajax: {
                     url: '/Admin/Batch/GetAll',
                 },
@@ -35,7 +36,7 @@
                     { data: 'batchId', title: 'ID', width: "5%" },
                     { data:'courseName', title:'Course Name', width: "20%"},
                     { data: 'semester', title: 'Semester', width: "10%" },
-                    {data:'numberOfClasses',title:'No of Classes', width:"15%"},
+                    { data:'numberOfClasses',title:'No of Classes', width:"15%"},
                     { data: 'year', title: 'Year', width: "10%" },
                     { data: 'startDate', title: 'Start Date', width: "15%" },
                     { data: 'endDate', title: 'End Date', width: "15%" },

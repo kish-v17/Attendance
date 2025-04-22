@@ -31,6 +31,7 @@
             classDataTable = $('#classesTbl').DataTable({
                 processing: true,
                 serverSide: false,
+                pageLength: 50,
                 ajax: {
                     url: '/Admin/Class/GetAll',
                 },

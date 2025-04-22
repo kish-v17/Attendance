@@ -76,7 +76,6 @@ namespace Attendance.Areas.Admin.Controllers
                 _context.BatchTbl.Add(batch);
                 _context.SaveChanges();
 
-                // Create classes A, B, C, ...
                 List<ClassModel> classList = new List<ClassModel>();
                 for (int i = 0; i < model.NumberOfClasses; i++)
                 {

@@ -84,7 +84,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="classId">Class</label>
-                    <select class="form-control" id="classId" asp-for="ClassId" asp-items="ViewBag.ClassList">
+                    <select class="form-control" id="classId" asp-for="ClassId" asp-items="ViewBag.ClassList" disabled>
                         <option value="">Select Class</option>
                     </select>
                     <span class="text-danger" asp-validation-for="ClassId"></span>

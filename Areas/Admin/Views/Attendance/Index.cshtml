@@ -25,6 +25,7 @@
         function loadAttendanceData() {
             attendanceDataTable = $('#attendanceTbl').DataTable({
                 processing: true,
+                pageLength: 50,
                 ajax: {
                     url: '/Admin/Attendance/GetAll',
                 },

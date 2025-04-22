@@ -33,7 +33,8 @@
              var classId = $('#classId').val();
             scheduleDataTable = $('#scheduleTbl').DataTable({
                 processing: true,
-                serverSide: false, 
+                serverSide: false,
+                pageLength: 50,
                     ajax: {
                         url: '/Admin/Schedule/GetAll?classId=' + classId,
                         type: 'GET',

@@ -29,6 +29,7 @@
         function loadDepartmentData() {
             departmentDataTable = $('#departmentTbl').DataTable({
                 processing: true,
+                pageLength: 50,
                 ajax: {
                     url: '/Admin/Department/GetAll',
                 },

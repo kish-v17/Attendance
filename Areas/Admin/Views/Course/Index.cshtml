@@ -28,6 +28,7 @@
         function loadCourseData() {
             courseDataTable = $('#coursesTbl').DataTable({
                 processing: true,
+                pageLength: 50,
                 ajax: {
                     url: '/Admin/Course/GetAll',
                 },
