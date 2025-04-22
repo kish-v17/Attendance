@@ -117,3 +117,30 @@
   text-align: center;
   margin-top: 1.25rem;
 }
+
+.ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5rem 1rem;
+    border-bottom-left-radius: 0.45rem;
+    border-top-right-radius: 0.45rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+    .ribbon.success {
+        background-color: #28a745;
+    }
+
+    .ribbon.danger {
+        background-color: red;
+    }
+    .ribbon.warning {
+        background-color: #ffc107;
+    }
+
+    .ribbon.secondary {
+        background-color: #6c757d;
+    }

@@ -19,6 +19,8 @@ namespace Attendance.Data
         public DbSet<ClassModel> ClassTbl { get; set; }
         public DbSet<ScheduleModel> ScheduleTbl { get; set; }
         public DbSet<AttendanceModel> AttendanceTbl { get; set; }
+        public DbSet<LectureStatusModel> LectureStatusTbl { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>().HasData(

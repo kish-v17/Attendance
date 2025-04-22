@@ -1,0 +1,128 @@
+﻿@model List<Attendance.Models.StudentModel>
+@{
+    ViewData["Title"] = "Fill Attendance";
+    var schedule = ViewBag.Schedule as Attendance.Models.ScheduleModel;
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0 text-white">Fill Attendance</h4>
+        </div>
+        <div class="card-body mt-5">
+             <form method="post" asp-action="Fill">
+                <div class="mb-3 d-flex justify-content-between">
+                    <div>
+                        <p><strong>Subject:</strong> @schedule.Subject.SubjectName</p>
+                        <p><strong>Class:</strong> @schedule.Class.ClassName</p>
+                        <p><strong>Time:</strong> @schedule.StartTime.ToString(@"hh\:mm") - @schedule.EndTime.ToString(@"hh\:mm")</p>
+                    </div>
+                    <div class="mb-3 d-flex align-items-end">
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="toggleAllBtn" onclick="toggleAllAttendance()">
+                            Mark All Present
+                        </button>
+                    </div>
+
+                </div>
+                <input type="hidden" name="scheduleId" value="@schedule.ScheduleId" />
+                <table class="table table-bordered mt-3">
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th>Enrolment No</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model)
+                        {
+                            <tr>
+                                <td>@student.EnrollmentNumber</td>
+                                <td>@student.FullName </td>
+                                <td class="text-center">
+                                    <div class="attendance-toggle-btn" data-student="@student.StudentId" data-checked="false" onclick="toggleAttendance(this)">
+                                        A
+                                    </div>
+                                    <input type="checkbox" name="presentStudentIds" value="@student.StudentId" class="d-none" id="chk_@student.StudentId" />
+                                </td>
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="mt-3 d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">
+                        Submit Attendance
+                    </button>
+                    <a href="@Url.Action("Index", "Attendance")" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleAttendance(elem) {
+            const isChecked = elem.classList.contains("present");
+            const studentId = elem.dataset.student;
+            const checkbox = document.getElementById("chk_" + studentId);
+
+            if (isChecked) {
+                elem.classList.remove("present");
+                elem.textContent = "A";
+                checkbox.checked = false;
+            } else {
+                elem.classList.add("present");
+                elem.textContent = "P";
+                checkbox.checked = true;
+            }
+        }
+    </script>
+    <script>
+        let allMarkedPresent = false;
+
+        function toggleAttendance(elem) {
+            const isChecked = elem.classList.contains("present");
+            const studentId = elem.dataset.student;
+            const checkbox = document.getElementById("chk_" + studentId);
+
+            if (isChecked) {
+                elem.classList.remove("present");
+                elem.textContent = "A";
+                checkbox.checked = false;
+            } else {
+                elem.classList.add("present");
+                elem.textContent = "P";
+                checkbox.checked = true;
+            }
+        }
+
+        function toggleAllAttendance() {
+            const toggles = document.querySelectorAll('.attendance-toggle-btn');
+            allMarkedPresent = !allMarkedPresent;
+
+            toggles.forEach(elem => {
+                const studentId = elem.dataset.student;
+                const checkbox = document.getElementById("chk_" + studentId);
+
+                if (allMarkedPresent) {
+                    elem.classList.add("present");
+                    elem.textContent = "P";
+                    checkbox.checked = true;
+                } else {
+                    elem.classList.remove("present");
+                    elem.textContent = "A";
+                    checkbox.checked = false;
+                }
+            });
+
+            document.getElementById("toggleAllBtn").textContent = allMarkedPresent ? "Mark All Absent" : "Mark All Present";
+        }
+    </script>
+}
+

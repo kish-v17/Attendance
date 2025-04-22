@@ -1,5 +1,4 @@
-﻿using Attendance.Areas.Admin.Controllers;
-using Attendance.Data;
+﻿using Attendance.Data;
 using Attendance.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +17,15 @@ namespace Attendance.Areas.Faculty.Controllers
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
             var identity = (ClaimsIdentity)User.Identity;
             var facultyIdClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
             if (facultyIdClaim == null)
             {
+                TempData["ToastMessage"] = "Unauthorized access.";
+                TempData["ToastType"] = "error";
                 return RedirectToAction("Login", "Account");
             }
 
@@ -34,24 +36,157 @@ namespace Attendance.Areas.Faculty.Controllers
             var todayLectures = _context.ScheduleTbl
                 .Include(s => s.Subject)
                 .Include(s => s.Class)
+                    .ThenInclude(c => c.Batch)
+                        .ThenInclude(b => b.Course)
                 .Where(s => s.FacultyId == facultyId && s.Day == currentDay)
-                .OrderBy(s => s.StartTime) // 🔥 Sort here
+                .OrderBy(s => s.StartTime)
                 .ToList();
 
-            var attendedScheduleIds = _context.AttendanceTbl
-                .Where(a => a.AttendanceDate == today && a.Schedule.FacultyId == facultyId)
-                .Select(a => a.ScheduleId)
+            var lectureStatuses = _context.LectureStatusTbl
+                .Where(ls => ls.Date == today)
                 .ToList();
 
             var lecturesWithStatus = todayLectures.Select(l => new
             {
                 Lecture = l,
-                AttendanceStatus = attendedScheduleIds.Contains(l.ScheduleId) ? "Filled" : "Pending"
+                AttendanceStatus = lectureStatuses.FirstOrDefault(ls => ls.ScheduleId == l.ScheduleId)?.Status.ToString() ?? "Pending",
+                FullClassName = $"{l.Class.Batch.Course.CourseShortName} - {l.Class.Batch.Semester} - {l.Class.ClassName}"
             }).ToList();
 
             return View(lecturesWithStatus);
         }
 
+        public IActionResult Fill(int id)
+        {
+            var schedule = _context.ScheduleTbl
+                .Include(s => s.Class)
+                .Include(s => s.Subject)
+                .FirstOrDefault(s => s.ScheduleId == id);
 
+            if (schedule == null)
+            {
+                TempData["ToastMessage"] = "Schedule not found.";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Index");
+            }
+
+            var today = DateTime.Today;
+            var statusExists = _context.LectureStatusTbl
+                .Any(ls => ls.ScheduleId == id && ls.Date == today && ls.Status != LectureStatusEnum.Pending);
+
+            if (statusExists)
+            {
+                TempData["ToastMessage"] = "Attendance already filled or lecture not in pending state.";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Index");
+            }
+
+            var students = _context.StudentTbl
+                .Where(st => st.ClassId == schedule.ClassId)
+                .ToList();
+
+            ViewBag.Schedule = schedule;
+            return View(students);
+        }
+
+        [HttpPost]
+        public IActionResult Fill(int scheduleId, List<int> presentStudentIds)
+        {
+            var schedule = _context.ScheduleTbl
+                .Include(s => s.Class)
+                .FirstOrDefault(s => s.ScheduleId == scheduleId);
+
+            if (schedule == null)
+            {
+                TempData["ToastMessage"] = "Schedule not found.";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Index");
+            }
+
+            var today = DateTime.Today;
+
+            var statusExists = _context.LectureStatusTbl
+                .Any(ls => ls.ScheduleId == scheduleId && ls.Date == today && ls.Status != LectureStatusEnum.Pending);
+
+            if (statusExists)
+            {
+                TempData["ToastMessage"] = "Attendance already filled or lecture not in pending state.";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Index");
+            }
+
+            var students = _context.StudentTbl
+                .Where(st => st.ClassId == schedule.ClassId)
+                .ToList();
+
+            foreach (var student in students)
+            {
+                var isPresent = presentStudentIds.Contains(student.StudentId);
+
+                var attendance = new AttendanceModel
+                {
+                    StudentId = student.StudentId,
+                    ScheduleId = scheduleId,
+                    Status = isPresent ? AttendanceStatus.Present : AttendanceStatus.Absent,
+                    AttendanceDate = today
+                };
+
+                _context.AttendanceTbl.Add(attendance);
+            }
+
+            var lectureStatus = new LectureStatusModel
+            {
+                ScheduleId = scheduleId,
+                Date = today,
+                Status = LectureStatusEnum.Filled
+            };
+            _context.LectureStatusTbl.Add(lectureStatus);
+
+            _context.SaveChanges();
+
+            TempData["ToastMessage"] = "Attendance filled successfully.";
+            TempData["ToastType"] = "success";
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult SuspendLecture(int id)
+        {
+            var schedule = _context.ScheduleTbl
+                .Include(s => s.Class)
+                .FirstOrDefault(s => s.ScheduleId == id);
+
+            if (schedule == null)
+            {
+                TempData["ToastMessage"] = "Schedule not found.";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Index");
+            }
+
+            var today = DateTime.Today;
+
+            var statusExists = _context.LectureStatusTbl
+                .Any(ls => ls.ScheduleId == id && ls.Date == today && ls.Status != LectureStatusEnum.Pending);
+
+            if (statusExists)
+            {
+                TempData["ToastMessage"] = "Lecture already processed.";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Index");
+            }
+
+            var lectureStatus = new LectureStatusModel
+            {
+                ScheduleId = id,
+                Date = today,
+                Status = LectureStatusEnum.Suspended
+            };
+
+            _context.LectureStatusTbl.Add(lectureStatus);
+            _context.SaveChanges();
+
+            TempData["ToastMessage"] = "Lecture suspended successfully.";
+            TempData["ToastType"] = "success";
+            return RedirectToAction("Index");
+        }
     }
 }

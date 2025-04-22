@@ -32,8 +32,6 @@ namespace Attendance.Models
     public enum AttendanceStatus
     {
         Present = 1,
-        Absent = 2,
-        Suspended = 3,
-        Holiday = 4,
+        Absent = 2
     }
 }
