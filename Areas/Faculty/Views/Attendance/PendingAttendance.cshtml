@@ -1,0 +1,56 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Pending Lectures";
+}
+<div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+    <h2 class="text-primary fw-bold mb-0">Pending Lectures</h2>
+
+    <form method="get" asp-action="PendingAttendance" class="d-flex align-items-end gap-2">
+        <input type="date" name="date" id="date" class="form-control me-2" value="@Context.Request.Query["date"]" style="height: 38px;" />
+        <button type="submit" class="btn btn-primary me-5" style="height: 38px;"><i class="ri-filter-2-fill me-1"></i>Filter</button>
+    </form>
+</div>
+
+
+@if (Model != null && Model.Any())
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col position-relative">
+                <div class="card h-100 shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-semibold my-5 text-dark">
+                            @item.SubjectName
+                        </h5>
+
+                        <p class="mb-2 text-muted small">
+                            <strong>Class:</strong> @item.FullClassName
+                        </p>
+
+                        <p class="mb-2 text-muted small">
+                            <strong>Schedule Date:</strong> @item.ScheduleDate.ToString("dd MMM yyyy")
+                        </p>
+
+                        <p class="mb-3 text-muted small">
+                            <strong>Time:</strong> @item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm")
+                        </p>
+
+                        <div class="mt-3 d-flex">
+                            <a href="@Url.Action("Fill", "Attendance", new { id = item.ScheduleId })" class="btn btn-outline-primary btn-sm w-100">
+                                Fill Attendance
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info rounded-4 shadow-sm">
+        No pending lectures found.
+    </div>
+}

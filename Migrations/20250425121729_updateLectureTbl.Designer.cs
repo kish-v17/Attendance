@@ -4,6 +4,7 @@ using Attendance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250425121729_updateLectureTbl")]
+    partial class updateLectureTbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace Attendance.Migrations
                         new
                         {
                             AttendanceId = 1,
-                            AttendanceDate = new DateTime(2025, 4, 25, 18, 45, 48, 51, DateTimeKind.Local).AddTicks(3078),
+                            AttendanceDate = new DateTime(2025, 4, 25, 17, 47, 23, 604, DateTimeKind.Local).AddTicks(8750),
                             ScheduleId = 1,
                             Status = 1,
                             StudentId = 1
@@ -62,7 +65,7 @@ namespace Attendance.Migrations
                         new
                         {
                             AttendanceId = 2,
-                            AttendanceDate = new DateTime(2025, 4, 25, 18, 45, 48, 51, DateTimeKind.Local).AddTicks(3096),
+                            AttendanceDate = new DateTime(2025, 4, 25, 17, 47, 23, 604, DateTimeKind.Local).AddTicks(8779),
                             ScheduleId = 2,
                             Status = 2,
                             StudentId = 1
@@ -284,34 +287,6 @@ namespace Attendance.Migrations
                             DepartmentName = "Diploma Studies",
                             DepartmentShortName = "SDS"
                         });
-                });
-
-            modelBuilder.Entity("Attendance.Models.HolidayModel", b =>
-                {
-                    b.Property<int>("HolidayId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HolidayId"));
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<DateTime>("HolidayDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRecurring")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("HolidayId");
-
-                    b.ToTable("HolidayTbl");
                 });
 
             modelBuilder.Entity("Attendance.Models.LectureStatusModel", b =>

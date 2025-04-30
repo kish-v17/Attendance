@@ -87,40 +87,40 @@
                     <li class="menu-item">
                         <a asp-area="Admin"  asp-controller="Department" asp-action="Index" class="menu-link">
                             <i class="menu-icon tf-icons ri-building-fill"></i>
-                            <div data-i18n="Department">Department</div>
+                            <div data-i18n="Department">Departments</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Subject" asp-action="Index" class="menu-link">
                             <i class="menu-icon tf-icons ri-book-fill"></i>
-                            <div data-i18n="Subject">Subject</div>
+                            <div data-i18n="Subject">Subjects</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Course" asp-action="Index" class="menu-link">
                             <i class="menu-icon tf-icons ri-graduation-cap-fill"></i>
-                            <div data-i18n="Course">Course</div>
+                            <div data-i18n="Course">Courses</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Batch" asp-action="Index" class="menu-link">
                             <i class="menu-icon tf-icons ri-group-fill"></i>
-                            <div data-i18n="Batch">Batch</div>
+                            <div data-i18n="Batch">Batches</div>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Class" asp-action="Index" asp-route-context="Students" class="menu-link">
-                            <i class="menu-icon tf-icons fa-solid fa-web-awesome"></i>
+                            <i class="menu-icon tf-icons fa-solid fa-user-graduate"></i>
                             <div data-i18n="Class">Students</div>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a asp-area="Admin" asp-controller="Faculty" asp-action="Index" class="menu-link">
                             <i class="menu-icon tf-icons fa-solid fa-chalkboard-user"></i>
-                            <div data-i18n="Faculty">Faculty</div>
+                            <div data-i18n="Faculty">Faculties</div>
                         </a>
                     </li>
                     <li class="menu-item">
@@ -130,9 +130,21 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a asp-area="Admin" asp-controller="Attendance" asp-action="Index" class="menu-link">
+                        <a asp-area="Admin" asp-controller="Holiday" asp-action="Index" class="menu-link">
+                            <i class="menu-icon tf-icons ri-calendar-close-fill"></i>
+                            <div data-i18n="Holiday">Holidays</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a asp-area="Admin" asp-controller="Lecture" asp-action="Index" class="menu-link">
+                            <i class="menu-icon tf-icons ri-calendar-schedule-fill"></i>
+                            <div data-i18n="Lecture">Lecture Status</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a asp-area="Admin" asp-controller="Class" asp-action="Index" asp-route-context="Attendance" class="menu-link">
                             <i class="menu-icon tf-icons ri-user-star-fill"></i>
-                            <div data-i18n="Attendance">Attendance</div>
+                            <div data-i18n="Class">Attendance</div>
                         </a>
                     </li>
                 </ul>

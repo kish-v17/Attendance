@@ -14,7 +14,7 @@
                 <div class="mb-3 d-flex justify-content-between">
                     <div>
                         <p><strong>Subject:</strong> @schedule.Subject.SubjectName</p>
-                        <p><strong>Class:</strong> @schedule.Class.ClassName</p>
+                        <p><strong>Class:</strong> @($"{schedule.Class.Batch.Course.CourseShortName} - {schedule.Class.Batch.Semester} - {schedule.Class.ClassName}")</p>
                         <p><strong>Time:</strong> @schedule.StartTime.ToString(@"hh\:mm") - @schedule.EndTime.ToString(@"hh\:mm")</p>
                     </div>
                     <div class="mb-3 d-flex align-items-end">

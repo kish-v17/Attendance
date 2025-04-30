@@ -44,9 +44,16 @@
                     {
                         data: 'classId',
                         render: function (data) {
-                            let targetUrl = viewContext === 'Schedule'
-                                ? `/Admin/Schedule/Index/${data}`
-                                : `/Admin/Student/Index/${data}`;
+                                let targetUrl = '';
+
+                                if (viewContext === 'Schedule') {
+                                    targetUrl = `/Admin/Schedule/Index/${data}`;
+                                } else if (viewContext === 'Student') {
+                                    targetUrl = `/Admin/Student/Index/${data}`;
+                                } else if (viewContext === 'Attendance') {
+                                    targetUrl = `/Admin/Attendance/Index/${data}`;
+                                }
+
                             return `
                                 <a href="${targetUrl}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
                                     <i class="ri-eye-line"></i>

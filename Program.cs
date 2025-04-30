@@ -13,6 +13,8 @@ builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(buil
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddHostedService<LectureSeederService>();
+
 
 
 

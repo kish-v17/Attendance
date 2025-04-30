@@ -1,59 +1,150 @@
-﻿@{
-    ViewData["Title"] = "Attendance";
+﻿@model List<Attendance.Models.AttendanceModel>
+
+@{
+    ViewData["Title"] = "Attendance Records";
+    var students = ViewBag.Students as List<Attendance.Models.StudentModel>;
+    var subjects = ViewBag.Subjects as List<Attendance.Models.SubjectModel>;
+    var faculties = ViewBag.Faculties as List<Attendance.Models.UserModel>;
+    var dates = ViewBag.Dates as List<DateTime>;
 }
 
-<div class="card">
-    <div class="row p-3">
-        <div class="col-6">
-            <h5 class="card-header">Attendance</h5>
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex align-items-end">
+            <h3 class="mb-1 me-2 text-white">Attendance</h3>
+            <h5 class="mb-3 text-white">@ViewBag.ClassName</h5>
+        </div>
+        <div class="card-body mt-5">
+
+<form method="get" asp-action="Index" class="mb-4">
+    
+
+    <div class="row d-flex align-items-end">
+        <div class="col">
+            <label class="mb-1">Student</label>
+            <select name="studentId" class="form-control">
+                <option value="">All</option>
+                @foreach (var student in students)
+                {
+                    bool isSelected = Context.Request.Query["studentId"] == student.StudentId.ToString();
+                    <option value="@student.StudentId" selected="@isSelected">
+                        @student.FullName (@student.EnrollmentNumber)
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="col">
+            <label class="mb-1">Faculty</label>
+            <select name="userId" class="form-control">
+                <option value="">All</option>
+                @foreach (var faculty in faculties)
+                {
+                    bool isSelected = Context.Request.Query["userId"] == faculty.UserId.ToString();
+                    <option value="@faculty.UserId" selected="@isSelected">
+                        Pro. @faculty.Fullname
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="col">
+            <label class="mb-1">Subject</label>
+            <select name="subjectId" class="form-control">
+                <option value="">All</option>
+                @foreach (var subject in subjects)
+                {
+                    bool isSelected = Context.Request.Query["subjectId"] == subject.SubjectId.ToString();
+                    <option value="@subject.SubjectId" selected="@isSelected">
+                        @subject.SubjectName
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label class="mb-1">Date</label>
+            <select name="date" class="form-control">
+                <option value="">All</option>
+                @foreach (var d in dates)
+                {
+                    string formatted = d.ToString("yyyy-MM-dd");
+                    bool isSelected = Context.Request.Query["date"] == formatted;
+                    <option value="@formatted" selected="@isSelected">
+                        @d.ToString("dd MMM yyyy")
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary w-100 py-3"><i class="ri-filter-2-fill"></i>Filter</button>
         </div>
     </div>
-    <hr class="my-0">
-    <div class="table-responsive p-5">
-        <table class="table table-bordered" id="attendanceTbl"></table>
+</form>
+
+
+
+<table class="table table-bordered table-striped mt-4">
+    <thead>
+        <tr>
+            <th>Enrollment No</th>
+            <th>Student Name</th>
+            <th>Subject</th>
+            <th>Faculty</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Student.EnrollmentNumber</td>
+                <td>@item.Student.FullName</td>
+                <td>@item.Schedule?.Subject?.SubjectName</td>
+                <td>@item.Schedule?.User?.Fullname</td>
+                <td>@item.AttendanceDate.ToString("dd MMM yyyy")</td>
+                <td>
+                    <span class="status-toggle badge @(item.Status == AttendanceStatus.Present ? "bg-success" : "bg-danger")"
+                          data-id="@item.AttendanceId"
+                          data-status="@(item.Status == AttendanceStatus.Present ? "Present" : "Absent")"
+                          style="cursor: pointer;">
+                        @(item.Status == AttendanceStatus.Present ? "P" : "A")
+                    </span>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+        </div>
     </div>
-</div>
 
 @section Scripts {
+    @* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
     <script>
         $(document).ready(function () {
-            loadAttendanceData();
-        });
+            $('.status-toggle').click(function () {
+                var $this = $(this);
+                var attendanceId = $this.data('id');
+                var currentStatus = $this.data('status');
+                var newStatus = currentStatus === 'Present' ? 'Absent' : 'Present';
 
-        var attendanceDataTable;
-
-        function loadAttendanceData() {
-            attendanceDataTable = $('#attendanceTbl').DataTable({
-                processing: true,
-                pageLength: 50,
-                ajax: {
-                    url: '/Admin/Attendance/GetAll',
-                },
-                columns: [
-                    { data: 'attendanceId', title: 'ID', width: "5%" },
-                    { data:'enrolment', title:'Enrolment no', width: "18%"},
-                    { data:'fullName', title:'Name', width: "22%"},
-                    { data:'subjectName', title:'Subject', width: "22%"},
-                    { data:'faculty', title:'Faculty', width: "22%"},
-                    { data: 'department', title: 'Department', width: "6%" },
-                    {data:'className',title:'Class', width:"20%"},
-                    { data: 'duration', title: 'Duration', width: "20%" },
-                    { data: 'date', title: 'Date', width: "10%" },
-                    { data: 'status', title: 'Status', width: "15%" },
-                    {
-                        data: 'attendanceId',
-                        render: function (data) {
-                            return `
-                                <a href="/Admin/Attendance/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
-                                    <i class="ri-pencil-line me-2"></i>
-                                </a>
-                            `;
-                        },
-                        title: 'Action',
-                        width: "10%"
+                $.ajax({
+                    url: '@Url.Action("UpdateStatus")',
+                    method: 'POST',
+                    data: { id: attendanceId, status: newStatus },
+                    success: function () {
+                        // Update UI on success
+                        $this.text(newStatus === 'Present' ? 'P' : 'A');
+                        $this.data('status', newStatus);
+                        $this.removeClass('bg-success bg-danger')
+                             .addClass(newStatus === 'Present' ? 'bg-success' : 'bg-danger');
                     },
-                ]
+                    error: function () {
+                        alert("Error updating status");
+                    }
+                });
             });
-        }
+        });
     </script>
 }

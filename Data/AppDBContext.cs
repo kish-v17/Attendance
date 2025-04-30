@@ -20,7 +20,7 @@ namespace Attendance.Data
         public DbSet<ScheduleModel> ScheduleTbl { get; set; }
         public DbSet<AttendanceModel> AttendanceTbl { get; set; }
         public DbSet<LectureStatusModel> LectureStatusTbl { get; set; }
-
+        public DbSet<HolidayModel> HolidayTbl { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>().HasData(

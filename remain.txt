@@ -1,2 +1,16 @@
 ﻿-delete and edit in batch,class
 -delete in all tbl
+
+----------------
+db design
+my database design is like, 
+1. User table w fields id,name,email, roll, password
+2. Department table w fields id, name
+3. course table w fields id, name, deptid(foreign key with department)
+4. subject table w fields subjectId and subjectNAme
+5. batch table w fields id,  course id(fk with course), semester, number of classes, addmission year, startdate, enddate
+6. class table w fields classid, batch id(FK with batch), classname(inserted using number of classes which filled in batch table).
+7. student table with various 18 field included classid(FK from class table)
+8. Schedule table with fields scheduleid, SubjectId(fk with Subject), ClassId(FK from class table), FacultyId(FK with UserTbl), starttime , end time , and day of week
+9. Attendance table with AttendanceId, ScheduleId(FK with Schedule) ,StudentId(FK with Student),AttendanceDate, Status(Present, Absent)
+10. LectureStatus table with Id, ScheduleId(FK with Schedule), Date, Status(Filled, Pending, Suspended, Holiday).

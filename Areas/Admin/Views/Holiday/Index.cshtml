@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Holidays";
+}
+
+<div class="card">
+    <div class="row p-3">
+        <div class="col-6">
+            <h5 class="card-header">Holidays</h5>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add Holiday</a>
+        </div>
+    </div>
+    <hr class="my-0">
+    <div class="table-responsive p-5">
+        <table class="table table-bordered" id="HolidayTbl"></table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadHolidayData();
+        });
+
+        var HolidayDataTable;
+
+        function loadHolidayData() {
+            HolidayDataTable = $('#HolidayTbl').DataTable({
+                processing: true,
+                serverSide: false,
+                pageLength: 50,
+                    ajax: {
+                        url: '/Admin/Holiday/GetAll',
+                        type: 'GET',
+                        dataType: 'json',
+                        error: function (xhr, error, thrown) {
+                            console.log("Error: ", xhr.responseText);
+                        }
+                    },
+                columns: [
+                    { data: 'holidayId', title: 'ID', width: "5%" },
+                    { data: 'title', title: 'Title', width: "15%"},
+                    { data: 'description', title: 'Description', width: "15%"},
+                    { data: 'holidayDate', title: 'Date', width: "10%" },
+                    { data: 'isRecurring', title: 'Is Recurring?', width: "10%" },
+                    {
+                        data: 'holidayId',
+                        render: function (data) {
+                            return `<a href="/Admin/Holiday/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
+                                        <i class="ri-pencil-line me-2"></i>
+                                    </a>`;
+                        },
+                        title: 'Action',
+                        width: "10%"
+                    },
+                ]
+            });
+        }
+    </script>
+}

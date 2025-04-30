@@ -9,9 +9,12 @@ namespace Attendance.Models
         public int Id { get; set; }
 
         public int ScheduleId { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime ScheduleDate { get; set; }
+        public DateTime FillDate { get; set; }
 
         public LectureStatusEnum Status { get; set; }
+
+        public String Remarks { get; set; }
         [ValidateNever]
         [ForeignKey("ScheduleId")]
         public ScheduleModel Schedule { get; set; }
