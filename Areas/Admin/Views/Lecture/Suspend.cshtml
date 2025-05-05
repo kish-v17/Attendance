@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Suspend Lecture";
+}
+
+<div class="main-content">
+    <div class="row py-3">
+        <div class="col-6">
+            <h2>Suspend Lecture</h2>
+        </div>
+    </div>
+    <form method="post" asp-action="Suspend" id="suspendForm">
+        <div class="mb-3">
+            <label class="form-label">Department</label>
+            <select class="form-control" id="DepartmentId" name="DepartmentId">
+                <option value="">All</option>
+                @foreach (var dept in ViewBag.Departments)
+                {
+                    <option value="@dept.DepartmentId">@dept.DepartmentName</option>
+                }
+            </select>
+
+            <span class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Class</label>
+            <select name="ClassId" id="ClassId" class="form-control">
+                <option value="">Select Class</option>
+            </select>
+            <span class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Time Slot</label>
+            <select name="TimeSlot" id="TimeSlot" class="form-control">
+                <option value="">All</option>
+                @foreach (var ts in ViewBag.slots)
+                {
+                    <option value="@ts.TimeRange">@ts.TimeRange</option>
+                }
+            </select>
+
+            <span class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" name="Date" id="Date" class="form-control" />
+            <span class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Remarks</label>
+            <input type="text" name="Remarks" id="Remarks" placeholder="Remarks" class="form-control" />
+            <span class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Suspend</button>
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        $(document).ready(function () {
+            $('#DepartmentId').change(function () {
+                var deptId = $(this).val();
+                $('#ClassId').empty().append('<option>Select Class</option>');
+                $('#TimeSlotId').empty().append('<option>Select Time Slot</option>');
+                if (deptId) {
+                    $.get('/Admin/Lecture/GetClasses', { departmentId: deptId }, function (data) {
+                        $.each(data, function (i, classObj) {
+                            $('#ClassId').append($('<option>').val(classObj.classId).text(classObj.className));
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+
+}

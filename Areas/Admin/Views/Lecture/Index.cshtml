@@ -4,8 +4,9 @@
 
 <div class="card">
     <div class="row p-3">
-        <div class="col-6">
-            <h5 class="card-header">Lecture Status</h5>
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h4 class="card-header">Lecture Status</h4>
+            <a class="btn btn-primary" asp-action="Suspend">Suspend Lecture</a>
         </div>
     </div>
     <hr class="my-0">
@@ -39,60 +40,49 @@
                     }
                 });
             });
-        });
 
-        var LectureDataTable;
+            var LectureDataTable;
 
-        function loadLectureData() {
-            LectureDataTable = $('#LectureTbl').DataTable({
-                processing: true,
-                serverSide: false,
-                pageLength: 50,
-                ajax: {
-                    url: '/Admin/Lecture/GetAll',
-                    type: 'GET',
-                    dataType: 'json',
-                    error: function (xhr, error, thrown) {
-                        console.log("Error: ", xhr.responseText);
-                    }
-                },
-                columns: [
-                    { data: 'lectureId', title: 'ID', width: "5%" },
-                    { data: 'className', title: 'Class' },
-                    { data: 'subject', title: 'Class' },
-                    { data: 'faculty', title: 'Faculty' },
-                    { data: 'lectureDate', title: 'Date'  },
-                    { data: 'duration', title: 'Duration'},
-                    {
-                        data: 'lectureStatus',
-                        title: 'Status',
-                        render: function (data, type, row) {
-                            const isEditable = data === 'Pending';
-
-                            return `
-                                <select class="form-select form-select-sm update-status" data-id="${row.lectureId}" ${isEditable ? '' : 'disabled'}>
-                                    <option value="Pending" ${data === 'Pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="Suspended" ${data === 'Suspended' ? 'selected' : ''}>Suspended</option>
-                                    <option value="Filled" ${data === 'Filled' ? 'selected' : ''} disabled>Filled</option>
-                                    <option value="Holiday" ${data === 'Holiday' ? 'selected' : ''} disabled>Holiday</option>
-                                </select>
-                            `;
+            function loadLectureData() {
+                LectureDataTable = $('#LectureTbl').DataTable({
+                    processing: true,
+                    serverSide: false,
+                    pageLength: 50,
+                    ajax: {
+                        url: '/Admin/Lecture/GetAll',
+                        type: 'GET',
+                        dataType: 'json',
+                        error: function (xhr, error, thrown) {
+                            console.log("Error: ", xhr.responseText);
                         }
+                    },
+                    columns: [
+                        { data: 'lectureId', title: 'ID', width: "5%" },
+                        { data: 'department', title: 'Department' },
+                        { data: 'className', title: 'Class' },
+                        { data: 'subject', title: 'Subject' },
+                        { data: 'faculty', title: 'Faculty' },
+                        { data: 'lectureDate', title: 'Date' },
+                        { data: 'duration', title: 'Duration' },
+                        {
+                            data: 'lectureStatus',
+                            title: 'Status',
+                            render: function (data, type, row) {
+                                const isEditable =data === 'Suspended';
 
-                    },
-                    {
-                        data: 'lectureId',
-                        render: function (data) {
-                            return `<a href="/Admin/Lecture/Edit/${data}" class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect">
-                                        <i class="ri-pencil-line me-2"></i>
-                                    </a>`;
-                        },
-                        title: 'Action',
-                        width: "10%"
-                    },
-                ]
-            });
-        }
+                                return `
+                                    <select class="form-select form-select-sm update-status" data-id="${row.lectureId}" ${isEditable ? '' : 'disabled'}>
+                                        <option value="Pending" ${data === 'Pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="Suspended" ${data === 'Suspended' ? 'selected' : ''}>Suspended</option>
+                                        <option value="Filled" ${data === 'Filled' ? 'selected' : ''} disabled>Filled</option>
+                                        <option value="Holiday" ${data === 'Holiday' ? 'selected' : ''} disabled>Holiday</option>
+                                    </select>
+                                `;
+                            }
+                        }
+                    ]
+                });
+            }
+        });
     </script>
 }
-

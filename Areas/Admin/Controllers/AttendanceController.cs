@@ -19,14 +19,14 @@ namespace Attendance.Areas.Admin.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int id,int? studentId, int? subjectId, DateTime? date)
+        public IActionResult Index(int id, int? studentId, int? subjectId, DateTime? date)
         {
             var query = _context.AttendanceTbl
                 .Where(a => a.Schedule.ClassId == id)
             .Include(a => a.Student)
             .Include(a => a.Schedule)
             .Include(a => a.Schedule.Class)
-            .Include(a=>a.Schedule.Subject)
+            .Include(a => a.Schedule.Subject)
             .Include(a => a.Schedule.User)
             .AsQueryable();
             if (studentId.HasValue)
@@ -48,8 +48,8 @@ namespace Attendance.Areas.Admin.Controllers
         .OrderByDescending(a => a.AttendanceDate.Date)
         .ToList();
 
-            
-            ViewBag.Students = _context.StudentTbl.Where(a=>a.ClassId==id).ToList();
+
+            ViewBag.Students = _context.StudentTbl.Where(a => a.ClassId == id).ToList();
             ViewBag.Subjects = _context.SubjectTbl.ToList();
             ViewBag.Faculties = _context.UserTbl.ToList();
             ViewBag.Dates = _context.AttendanceTbl
@@ -79,103 +79,12 @@ namespace Attendance.Areas.Admin.Controllers
 
             attendance.Status = status;
             _context.SaveChanges();
-
+            TempData["ToastMessage"] = "Status updated successfully!";
+            TempData["ToastType"] = "success";
             return Ok();
+            //return Json(new { success = true, message = "Status updated successfully!" });
+
         }
 
-        //public IActionResult Edit(int id)
-        //{
-        //    var attendance = _context.AttendanceTbl
-        //.Include(s => s.Student)
-        //.Include(s => s.Schedule)
-        //    .ThenInclude(c => c.Class)
-        //    .ThenInclude(b => b.Batch)
-        //    .ThenInclude(c => c.Course)
-        //    .ThenInclude(d => d.Department)
-        //.FirstOrDefault(a => a.AttendanceId == id);
-        //    if (attendance == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var model = new AttendanceViewModel
-        //    {
-        //        AttendanceId = attendance.AttendanceId,
-        //        Enrolment = attendance.Student.EnrollmentNumber,
-        //        FullName = attendance.Student.FullName,
-        //        Department = attendance.Schedule.Class.Batch.Course.Department.DepartmentShortName.ToString(),
-        //        ClassName = attendance.Schedule.Class != null && attendance.Schedule.Class.Batch != null && attendance.Schedule.Class.Batch.Course != null
-        //            ? $"{attendance.Schedule.Class.Batch.Year}-{attendance.Schedule.Class.Batch.Course.CourseShortName} - {attendance.Schedule.Class.Batch.Semester} - {attendance.Schedule.Class.ClassName}"
-        //            : "N/A",
-        //        Duration = attendance.Schedule.StartTime + " To " + attendance.Schedule.EndTime,
-        //        AttendanceDate = attendance.AttendanceDate.ToString("dd-MM-yyyy"),
-        //        Status = attendance.Status
-        //    };
-        //    return View(model);
-        //}
-
-        //public IActionResult GetAll(int classId)
-        //{
-        //    var attendance = _context.AttendanceTbl
-        //        .Where(s => s.Schedule.ClassId == classId)
-        //        .Include(s=>s.Student)
-        //        .Include(s => s.Schedule)
-        //            .ThenInclude(c=>c.Class)
-        //            .ThenInclude(b => b.Batch)
-        //            .ThenInclude(c => c.Course)
-        //            .ThenInclude(d => d.Department)
-        //        .Select(a => new
-        //        {
-        //            a.AttendanceId,
-        //            Enrolment=a.Student.EnrollmentNumber,
-        //            a.Student.FullName,
-        //            a.Schedule.Subject.SubjectName,
-        //            Faculty=a.Schedule.User.Fullname,
-        //            Department= a.Schedule.Class.Batch.Course.Department.DepartmentShortName.ToString(),
-        //            ClassName = a.Schedule.Class != null && a.Schedule.Class.Batch != null && a.Schedule.Class.Batch.Course != null
-        //            ? $"{a.Schedule.Class.Batch.Year}-{a.Schedule.Class.Batch.Course.CourseShortName} - {a.Schedule.Class.Batch.Semester} - {a.Schedule.Class.ClassName}"
-        //            : "N/A",
-        //            Date=a.AttendanceDate.ToString("dd-MM-yyyy"),
-        //            Duration = $"{a.Schedule.StartTime:hh\\:mm} To {a.Schedule.EndTime:hh\\:mm}",
-        //            Status =a.Status.ToString(),
-        //        }).ToList();
-
-        //    return Json(new { data = attendance });
-        //}
-
-        //[HttpPost]
-        //public IActionResult Edit(AttendanceViewModel model)
-        //{
-        //    var attendance = _context.AttendanceTbl.Find(model.AttendanceId);
-        //    if (attendance == null)
-        //    {
-        //        TempData["ToastMessage"] = "Attendance not found.";
-        //        TempData["ToastType"] = "error";
-        //        return NotFound();
-        //    }
-
-        //    attendance.Status = model.Status; 
-        //    _context.SaveChanges();
-
-        //    TempData["ToastMessage"] = "Attendance updated successfully!";
-        //    TempData["ToastType"] = "success";
-        //    return RedirectToAction("Index");
-        //} //[HttpPost]
-        //public IActionResult Edit(AttendanceViewModel model)
-        //{
-        //    var attendance = _context.AttendanceTbl.Find(model.AttendanceId);
-        //    if (attendance == null)
-        //    {
-        //        TempData["ToastMessage"] = "Attendance not found.";
-        //        TempData["ToastType"] = "error";
-        //        return NotFound();
-        //    }
-
-        //    attendance.Status = model.Status; 
-        //    _context.SaveChanges();
-
-        //    TempData["ToastMessage"] = "Attendance updated successfully!";
-        //    TempData["ToastType"] = "success";
-        //    return RedirectToAction("Index");
-        //}
     }
 }
