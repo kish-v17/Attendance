@@ -38,10 +38,10 @@
                         </p>
 
                         <div class="mt-3 d-flex">
-                            <a href="@Url.Action("Fill", "Attendance", new { id = item.ScheduleId })" class="btn btn-outline-primary btn-sm w-100">
-                                Fill Attendance
+                            <a href="@Url.Action("Fill", "Attendance", new { id = item.ScheduleId,date = item.ScheduleDate.ToString("yyyy-MM-dd")})" class="btn btn-outline-primary btn-sm w-100">
+                                Fill Attendance 
                             </a>
-                        </div>
+                         </div>
                     </div>
                 </div>
             </div>

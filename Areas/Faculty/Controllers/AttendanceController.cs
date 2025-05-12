@@ -1,8 +1,10 @@
 ﻿using Attendance.Data;
 using Attendance.Models;
+using Attendance.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Security.Claims;
 
 namespace Attendance.Areas.Faculty.Controllers
@@ -13,11 +15,14 @@ namespace Attendance.Areas.Faculty.Controllers
     {
         private readonly AppDBContext _context;
 
-        public AttendanceController(AppDBContext context)
+        private readonly WhatsAppService _whatsAppService;
+
+        public AttendanceController(AppDBContext context, WhatsAppService whatsAppService)
         {
             _context = context;
+            _whatsAppService = whatsAppService;
         }
-       private int fetchFacultyId()
+        private int fetchFacultyId()
         {
             var identity = (ClaimsIdentity)User.Identity;
             var facultyIdClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
@@ -58,13 +63,12 @@ namespace Attendance.Areas.Faculty.Controllers
 
             return View(lecturesWithStatus);
         }
-
-        public IActionResult Fill(int id)
+        public IActionResult Fill(int id, DateTime? date)
         {
             var schedule = _context.ScheduleTbl
                 .Include(s => s.Class)
-                .Include(s=>s.Class.Batch)
-                .Include(s=>s.Class.Batch.Course)
+                .Include(s => s.Class.Batch)
+                .Include(s => s.Class.Batch.Course)
                 .Include(s => s.Subject)
                 .FirstOrDefault(s => s.ScheduleId == id);
 
@@ -75,9 +79,10 @@ namespace Attendance.Areas.Faculty.Controllers
                 return RedirectToAction("Index");
             }
 
-            var today = DateTime.Today;
+            var attendanceDate = date ?? DateTime.Today;
+
             var statusExists = _context.LectureStatusTbl
-                .Any(ls => ls.ScheduleId == id && ls.ScheduleDate == today && ls.Status != LectureStatusEnum.Pending);
+                .Any(ls => ls.ScheduleId == id && ls.ScheduleDate == attendanceDate && ls.Status != LectureStatusEnum.Pending);
 
             if (statusExists)
             {
@@ -91,48 +96,94 @@ namespace Attendance.Areas.Faculty.Controllers
                 .ToList();
 
             ViewBag.Schedule = schedule;
+            ViewBag.AttendanceDate = attendanceDate;
             return View(students);
         }
 
         [HttpPost]
-        public IActionResult Fill(int scheduleId, List<int> presentStudentIds)
+        public async Task<IActionResult> Fill(int scheduleId, List<int> presentStudentIds, bool sendMessage)
         {
+            var classId = _context.ScheduleTbl
+                .Where(sc => sc.ScheduleId == scheduleId)
+                .Select(sc => sc.ClassId)
+                .FirstOrDefault();
+
+            var lectureStatus = _context.LectureStatusTbl
+                .FirstOrDefault(l => l.ScheduleId == scheduleId);
+
+            if (lectureStatus == null)
+                return NotFound("Lecture status not found.");
+
+            var lectureDate = lectureStatus.ScheduleDate.Date;
+
+            var subjectName = _context.ScheduleTbl
+                .Where(sc => sc.ScheduleId == scheduleId)
+                .Select(sc => sc.Subject.SubjectName)
+                .FirstOrDefault();
+            subjectName = subjectName?.Trim();
+
+
             var students = _context.StudentTbl
-                .Where(s => s.ClassId == _context.ScheduleTbl
-                    .Where(sc => sc.ScheduleId == scheduleId)
-                    .Select(sc => sc.ClassId)
-                    .FirstOrDefault())
+                .Where(s => s.ClassId == classId)
                 .ToList();
 
             if (students == null || !students.Any())
-            {
-                return NotFound();
-            }
+                return NotFound("No students found for this class.");
+
+            var absentees = new List<StudentModel>();
 
             foreach (var student in students)
             {
+                bool isPresent = presentStudentIds.Contains(student.StudentId);
+
                 var attendance = new AttendanceModel
                 {
                     ScheduleId = scheduleId,
                     StudentId = student.StudentId,
-                    AttendanceDate = DateTime.Now.Date,
-                    Status = presentStudentIds.Contains(student.StudentId) ? AttendanceStatus.Present : AttendanceStatus.Absent
+                    AttendanceDate = lectureDate,
+                    Status = isPresent ? AttendanceStatus.Present : AttendanceStatus.Absent
                 };
 
                 _context.AttendanceTbl.Add(attendance);
+
+                if (!isPresent && sendMessage)
+                {
+                    absentees.Add(student);
+                }
             }
 
-            var lectureStatus = _context.LectureStatusTbl.FirstOrDefault(l => l.ScheduleId == scheduleId);
-            if (lectureStatus != null)
-            {
-                lectureStatus.Status = LectureStatusEnum.Filled;
-                lectureStatus.FillDate = DateTime.Now.Date;
-            }
+            lectureStatus.Status = LectureStatusEnum.Filled;
+            lectureStatus.FillDate = DateTime.Now.Date;
 
             _context.SaveChanges();
 
+            if (sendMessage && absentees.Any())
+            {
+                var whatsappService = HttpContext.RequestServices.GetService<WhatsAppService>();
+
+                foreach (var student in absentees)
+                {
+                    string message = $"Dear Parent,\n\n" +
+     $"We would like to inform you that your child, *{student.FullName}*, was marked absent on *{lectureDate:dd-MMM-yyyy}* for the subject *{subjectName}*.\n\n" +
+     "Please take note of this. If there's a valid reason for the absence, do let us know.\n\n" +
+     "Warm regards,\nAttendance Department";
+
+
+
+                    var parentNumber = student.ParentMobileNo.Trim();
+                    if (!parentNumber.StartsWith("+91"))
+                    {
+                        parentNumber = "+91" + parentNumber;
+                    }
+
+                    await whatsappService.SendMessageAsync(parentNumber, message);
+                }
+            }
+
             return RedirectToAction("Index", "Attendance");
         }
+
+
 
         public IActionResult PendingAttendance(DateTime? date)
         {
@@ -171,47 +222,5 @@ namespace Attendance.Areas.Faculty.Controllers
             var result = query.ToList();
             return View(result);
         }
-
-
-
-        //public IActionResult SuspendLecture(int id)
-        //{
-        //    var schedule = _context.ScheduleTbl
-        //        .Include(s => s.Class)
-        //        .FirstOrDefault(s => s.ScheduleId == id);
-
-        //    if (schedule == null)
-        //    {
-        //        TempData["ToastMessage"] = "Schedule not found.";
-        //        TempData["ToastType"] = "error";
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    var today = DateTime.Today;
-
-        //    var statusExists = _context.LectureStatusTbl
-        //        .Any(ls => ls.ScheduleId == id && ls.Date == today && ls.Status != LectureStatusEnum.Pending);
-
-        //    if (statusExists)
-        //    {
-        //        TempData["ToastMessage"] = "Lecture already processed.";
-        //        TempData["ToastType"] = "error";
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    var lectureStatus = new LectureStatusModel
-        //    {
-        //        ScheduleId = id,
-        //        Date = today,
-        //        Status = LectureStatusEnum.Suspended
-        //    };
-
-        //    _context.LectureStatusTbl.Add(lectureStatus);
-        //    _context.SaveChanges();
-
-        //    TempData["ToastMessage"] = "Lecture suspended successfully.";
-        //    TempData["ToastType"] = "success";
-        //    return RedirectToAction("Index");
-        //}
     }
 }

@@ -13,6 +13,7 @@ builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(buil
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddHttpClient<WhatsAppService>();
 builder.Services.AddHostedService<LectureSeederService>();
 
 

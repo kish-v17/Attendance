@@ -15,6 +15,7 @@
                     <div>
                         <p><strong>Subject:</strong> @schedule.Subject.SubjectName</p>
                         <p><strong>Class:</strong> @($"{schedule.Class.Batch.Course.CourseShortName} - {schedule.Class.Batch.Semester} - {schedule.Class.ClassName}")</p>
+                        <p><strong>Date:</strong> @ViewBag.AttendanceDate.ToString("dd MMM yyyy")</p>
                         <p><strong>Time:</strong> @schedule.StartTime.ToString(@"hh\:mm") - @schedule.EndTime.ToString(@"hh\:mm")</p>
                     </div>
                     <div class="mb-3 d-flex align-items-end">
@@ -51,16 +52,38 @@
                         }
                     </tbody>
                 </table>
+                <input type="hidden" name="sendMessage" id="sendMessage" value="false" />
+
 
                 <div class="mt-3 d-flex justify-content-between">
-                    <button type="submit" class="btn btn-success">
-                        Submit Attendance
-                    </button>
                     <a href="@Url.Action("Index", "Attendance")" class="btn btn-secondary">
                         Cancel
                     </a>
+                    <button type="button" class="btn btn-success" id="submitAttendanceBtn">
+                        Submit Attendance
+                    </button>
+
                 </div>
             </form>
+            <!-- Confirmation Modal -->
+            <div class="modal fade" id="sendMessageModal" tabindex="-1" aria-labelledby="sendMessageModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="sendMessageModalLabel">Send Message to Parents</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to notify the parents about their child's attendance status?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-primary" id="confirmSendMessage">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -124,5 +147,30 @@
             document.getElementById("toggleAllBtn").textContent = allMarkedPresent ? "Mark All Absent" : "Mark All Present";
         }
     </script>
+    <script>
+        document.getElementById('submitAttendanceBtn').addEventListener('click', function () {
+            const selected = document.querySelectorAll('.attendance-toggle-btn.present').length;
+            if (selected === 0) {
+                alert('Please mark attendance before submitting.');
+                return;
+            }
+
+            const modal = new bootstrap.Modal(document.getElementById('sendMessageModal'));
+            modal.show();
+        });
+
+        document.getElementById('confirmSendMessage').addEventListener('click', function () {
+            document.getElementById('sendMessage').value = "true";
+            document.querySelector('form').submit();
+        });
+
+        // Optional: if user clicks "No", it still submits form without sending message
+        document.querySelector('#sendMessageModal .btn-secondary').addEventListener('click', function () {
+            setTimeout(() => {
+                document.querySelector('form').submit(); // short delay to let modal hide
+            }, 300);
+        });
+    </script>
+
 }
 
